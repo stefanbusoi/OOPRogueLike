@@ -73,6 +73,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         ../OOPRogueLike/CPP_Files/IRenderable.cpp
         CPP_Files/Collider.h
         CPP_Files/Collider.cpp
+        CPP_Files/Collider.cpp
 )
 
 
