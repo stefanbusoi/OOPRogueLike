@@ -19,6 +19,5 @@ inline Collider::Collider(GeometryShape geometryShape, CollisionType collisionTy
        :transform(transform),
       geometryShape(geometryShape),
       collisionType(collisionType),
-      colliderMask(mask),
-
+      colliderMask(mask)
 {}
