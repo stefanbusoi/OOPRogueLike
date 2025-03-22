@@ -83,7 +83,7 @@ protected:
 public:
     UpdateOrder getUpdateOrder() const {return m_updateOrder;}
     /*Used for Game class only*/
-    GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity,GameObject* parent=nullptr);
+    explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity,GameObject* parent=nullptr);
     virtual ~GameObject();
 
     virtual void update(float deltaT);

@@ -29,7 +29,7 @@ private:
     friend std::ostream & operator<<(std::ostream &os, const Player &obj);
 
 public:
-    Player( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
+    explicit Player( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
     Player()=delete;
 };
 

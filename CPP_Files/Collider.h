@@ -24,9 +24,9 @@ enum class ColliderMask {
 class Collider{
         GameObject* gameObject;
         sf::Transform transform;
-        GeometryShape geometryShape;
-        CollisionType collisionType;
-        ColliderMask colliderMask;
+        [[maybe_unused]] GeometryShape geometryShape;
+        [[maybe_unused]] CollisionType collisionType;
+        [[maybe_unused]]ColliderMask colliderMask;
     public:
     sf::Transform getGlobalTransform();
     sf::Transform& getLocalTransform();

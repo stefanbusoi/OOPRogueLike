@@ -13,7 +13,7 @@ public:
     friend std::ostream & operator<<(std::ostream &os, const Camera &obj);
     ~Camera();
 
-    Camera( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
+    explicit Camera( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
     sf::Transform& getTransform() ;
     void draw(const sf::Drawable &drawable, const sf::Transform &transform) const;
     void setTransform(const sf::Transform &transform){m_transform=transform;}

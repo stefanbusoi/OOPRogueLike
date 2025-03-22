@@ -15,7 +15,7 @@ class GameMap:public GameObject,public IRenderable{
 
 public:
     void Render() override;
-    GameMap( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
+    explicit GameMap( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
 
     ~GameMap() override;
 
