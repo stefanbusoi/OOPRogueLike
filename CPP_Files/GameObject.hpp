@@ -7,7 +7,7 @@
 #include <vector>
 
 
-#include "IColiderable.h"
+#include "Collider.h"
 #include "IRenderable.hpp"
 #include "UpdateOrder.hpp"
 #include "SFML/Graphics/Transform.hpp"

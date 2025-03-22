@@ -71,8 +71,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         ../OOPRogueLike/CPP_Files/IRenderable.hpp
         ../OOPRogueLike/CPP_Files/gameObjectComp.hpp
         ../OOPRogueLike/CPP_Files/IRenderable.cpp
-        ../OOPRogueLike/CPP_Files/IColiderable.h
-        ../OOPRogueLike/CPP_Files/IColiderable.cpp
+        CPP_Files/Collider.h
+        CPP_Files/Collider.cpp
 )
 
 

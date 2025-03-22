@@ -1,4 +1,4 @@
-#include "IColiderable.h"
+#include "Collider.h"
 #include "GameObject.hpp"
 
 sf::Transform Collider::getGlobalTransform() {
@@ -15,5 +15,10 @@ sf::Transform & Collider::getLocalTransform() {
 
 
 inline Collider::Collider(GeometryShape geometryShape, CollisionType collisionType,
-    ColliderMask mask,sf::Transform transform):geometryShape(geometryShape),collisionType(collisionType),colliderMask(mask),transform(transform)
+    ColliderMask mask,sf::Transform transform)
+       :transform(transform),
+      geometryShape(geometryShape),
+      collisionType(collisionType),
+      colliderMask(mask),
+
 {}
