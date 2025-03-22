@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.26)
 set(MAIN_PROJECT_NAME "oop")
 set(MAIN_EXECUTABLE_NAME "${MAIN_PROJECT_NAME}")
 
+add_compile_options(-Wno-unused-function)
 
 project(${MAIN_PROJECT_NAME})
 # set(CMAKE_PROJECT_VERSION_MAJOR 0)
