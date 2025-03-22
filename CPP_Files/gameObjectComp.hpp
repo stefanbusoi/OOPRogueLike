@@ -2,7 +2,7 @@
 
 class iRendableComp {
 public:
-    bool operator()( IRenderable *lhs,  IRenderable *rhs) const {
+    bool operator()(const IRenderable *lhs,const  IRenderable *rhs) const {
         if (lhs->getRenderOrder()==rhs->getRenderOrder()) {
           //TODO: Make this work return dynamic_cast<GameObject*>(lhs)->GetId()<dynamic_cast<GameObject*>(rhs)->GetId();
             return lhs<rhs;

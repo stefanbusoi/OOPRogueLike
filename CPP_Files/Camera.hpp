@@ -11,7 +11,7 @@ class Camera:public GameObject{
     Player* m_player=nullptr;
 public:
     friend std::ostream & operator<<(std::ostream &os, const Camera &obj);
-    ~Camera();
+    ~Camera() override;
 
     explicit Camera( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
     sf::Transform& getTransform() ;

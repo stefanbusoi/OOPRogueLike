@@ -10,69 +10,16 @@
 #include "Collider.h"
 #include "IRenderable.hpp"
 #include "UpdateOrder.hpp"
-#include "SFML/Graphics/Transform.hpp"
 class GameObject {
 protected:
     static int GLOBAL_ID;
     int LOCAL_ID;
 
 public:
-    GameObject(const GameObject &other)
-        : LOCAL_ID(GLOBAL_ID++),
-          m_transform(other.m_transform),
-          m_children(other.m_children),
-          m_name(other.m_name),
-          m_parent(other.m_parent),
-          m_updateOrder(other.m_updateOrder),
-          objectColliders(other.objectColliders) {
-
-    }
-    GameObject& operator=(const GameObject &other) {
-        if (other.m_parent!=nullptr) {
-            throw std::runtime_error("Can t create a game object with a parent alocated");
-        }
-        if (other.m_children.size()!=0) {
-            throw std::runtime_error("Can t create a game object with a children alocated");
-        }
-        if (this == &other)
-            return *this;
-        LOCAL_ID = other.LOCAL_ID;
-        m_transform = other.m_transform;
-        m_children = other.m_children;
-        m_name = other.m_name;
-        m_parent = other.m_parent;
-        m_updateOrder = other.m_updateOrder;
-        objectColliders = other.objectColliders;
-        return *this;
-    }
-
-    GameObject(GameObject &&other) noexcept
-        : LOCAL_ID(other.LOCAL_ID),
-          m_transform(std::move(other.m_transform)),
-          m_children(std::move(other.m_children)),
-          m_name(std::move(other.m_name)),
-          m_parent(other.m_parent),
-          m_updateOrder(other.m_updateOrder),
-          objectColliders(std::move(other.objectColliders)) {
-        other.m_parent=nullptr;
-    }
-
-
-
-    GameObject & operator=(GameObject &&other) noexcept {
-        if (this == &other)
-            return *this;
-        LOCAL_ID = other.LOCAL_ID;
-        m_transform = std::move(other.m_transform);
-        m_children = std::move(other.m_children);
-        m_name = std::move(other.m_name);
-        m_parent = other.m_parent;
-        m_updateOrder = other.m_updateOrder;
-        objectColliders = std::move(other.objectColliders);
-        other.m_parent=nullptr;
-        return *this;
-    }
-
+    GameObject(const GameObject &other);
+    GameObject& operator=(const GameObject &other);
+    GameObject(GameObject &&other) noexcept;
+    GameObject & operator=(GameObject &&other) noexcept;
 protected:
     sf::Transform m_transform;
     std::set<GameObject*> m_children;
@@ -88,7 +35,7 @@ public:
 
     virtual void update(float deltaT);
     void AddGameObjectToGame(GameObject* gameObject);
-    std::set<GameObject*> getChildrens() {return m_children;}
+    const std::set<GameObject*>& getChildrens() {return m_children;}
     int GetId() const {return LOCAL_ID;}
     sf::Transform getGlobalTransform();
     sf::Transform& getLocalTransform();
