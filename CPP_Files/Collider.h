@@ -31,7 +31,7 @@ class Collider{
     sf::Transform getGlobalTransform();
     sf::Transform& getLocalTransform();
     void setGameObject(GameObject* obj){gameObject=obj;};
-    GameObject* getGameObject() const {return gameObject;}
+    [[maybe_unused]] GameObject* getGameObject() const {return gameObject;}
     Collider(GeometryShape geometryShape, CollisionType collisionType,ColliderMask mask,sf::Transform transform=sf::Transform::Identity);
 };
 

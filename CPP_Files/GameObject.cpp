@@ -109,7 +109,7 @@ void GameObject::AddGameObjectToRenderObjects(IRenderable *game_object) {
 
 }
 
-void GameObject::addCollider(Collider &collider) {
+[[maybe_unused]] void GameObject::addCollider(Collider &collider) {
     collider.setGameObject(this);
     Game::getInstance()->getColliders().insert(&collider);
 }
@@ -118,7 +118,7 @@ std::ostream & operator<<(std::ostream &os, const GameObject &obj) {
     os<<"Name: "<< obj.m_name
             <<" Id:"<< obj.LOCAL_ID
             << " GameObjects:{ ";
-    for (auto x:obj.m_children) {
+    for (const auto x:obj.m_children) {
         os<<x->m_name<<" ";
     }
     os<<"}";

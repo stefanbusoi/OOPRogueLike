@@ -39,7 +39,7 @@ public:
     int GetId() const {return LOCAL_ID;}
     sf::Transform getGlobalTransform();
     sf::Transform& getLocalTransform();
-    void setName(const std::string& name) {m_name=name;}
+    [[maybe_unused]] void setName(const std::string& name) {m_name=name;}
     void AddGameObjectToRenderObjects(IRenderable * game_object);
     void addCollider(Collider& collider);
     friend std::ostream & operator<<(std::ostream &os, const GameObject &obj);

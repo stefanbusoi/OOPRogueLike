@@ -39,7 +39,7 @@ Player::Player(const Player &other): GameObject(other),
 }
 
 Player::Player(Player &&other) noexcept: GameObject(std::move(other)),
-                                         IRenderable(std::move(other)) {
+                                         IRenderable(other) {
 }
 
 Player & Player::operator=(const Player &other) {
