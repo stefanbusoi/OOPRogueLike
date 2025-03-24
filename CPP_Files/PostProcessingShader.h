@@ -1,12 +1,7 @@
-//
-// Created by stefa on 3/23/2025.
-//
-
 #ifndef POSTPROCESSINGSHADER_H
 #define POSTPROCESSINGSHADER_H
 #include "GameObject.hpp"
 #include "IRenderable.hpp"
-#include "SFML/Graphics/Shader.hpp"
 
 
 class PostProcessingShader:public GameObject,public IRenderable {
