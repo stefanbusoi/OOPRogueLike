@@ -4,7 +4,6 @@
 
 #include "Camera.hpp"
 
-#include <cmath>
 
 #include "Game.hpp"
 

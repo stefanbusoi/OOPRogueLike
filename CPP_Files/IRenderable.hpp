@@ -1,12 +1,13 @@
 #pragma once
-#include <iostream>
 
 #include "RenderOrder.hpp"
 class IRenderable {
     protected:
         RenderOrder m_renderOrder;
     public:
-        IRenderable()=default;
+        IRenderable() {
+            m_renderOrder = RenderOrder::Default;
+        }
         IRenderable(const IRenderable &other)
             : m_renderOrder(other.m_renderOrder) {
         }

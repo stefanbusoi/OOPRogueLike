@@ -33,15 +33,12 @@ void Player::update(float deltaT)  {
 }
 
 Player::~Player() = default;
-
 Player::Player(const Player &other): GameObject(other),
                                      IRenderable(other) {
 }
-
 Player::Player(Player &&other) noexcept: GameObject(std::move(other)),
                                          IRenderable(other) {
 }
-
 Player & Player::operator=(const Player &other) {
     if (this == &other)
         return *this;
@@ -49,13 +46,11 @@ Player & Player::operator=(const Player &other) {
     IRenderable::operator =(other);
     return *this;
 }
-
 Player & Player::operator=(Player &&other) noexcept {
     if (this == &other)
         return *this;
     GameObject::operator =(std::move(other));
     IRenderable::operator =(other);
-    other.m_parent=nullptr;
     return *this;
 }
 

@@ -1,7 +1,7 @@
 #include "Collider.h"
 #include "GameObject.hpp"
 
-sf::Transform Collider::getGlobalTransform() {
+sf::Transform Collider::getGlobalTransform() const {
     if (m_gameObject) {
         sf::Transform localTransform = m_gameObject->getLocalTransform();
         return localTransform.combine(m_transform);
@@ -15,7 +15,7 @@ sf::Transform & Collider::getLocalTransform() {
 
 
 inline Collider::Collider(GeometryShape geometryShape, CollisionType collisionType,
-    ColliderMask mask,sf::Transform transform)
+    ColliderMask mask, const sf::Transform &transform)
     : m_gameObject(nullptr),
         m_transform(transform),
       m_geometryShape(geometryShape),

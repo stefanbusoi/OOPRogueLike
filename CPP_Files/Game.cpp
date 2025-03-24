@@ -31,8 +31,8 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     m_window.create(video_mode, Title, sf::State::Fullscreen);
     Player player("Player");
     AddGameObject<Player>(std::move(player));
-    Camera cAmera;
-    m_camera=AddGameObject<Camera>(std::move(cAmera));
+    Camera camera;
+    m_camera=AddGameObject<Camera>(std::move(camera));
     AddGameObject<GameMap>("GameMap");
 }
 

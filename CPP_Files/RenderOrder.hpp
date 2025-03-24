@@ -7,6 +7,7 @@
 
 enum class RenderOrder {
     Terrain=10,
+    Default=40,
     Player=60,
     PostProcessing=100,
 };
