@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "RenderOrder.hpp"
-#include "GameObject.hpp"
 class IRenderable {
     protected:
         RenderOrder m_renderOrder;

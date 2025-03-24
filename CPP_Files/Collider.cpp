@@ -2,23 +2,23 @@
 #include "GameObject.hpp"
 
 sf::Transform Collider::getGlobalTransform() {
-    if (gameObject) {
-        sf::Transform localTransform = gameObject->getLocalTransform();
-        return localTransform.combine(transform);
+    if (m_gameObject) {
+        sf::Transform localTransform = m_gameObject->getLocalTransform();
+        return localTransform.combine(m_transform);
     }
-    return transform;
+    return m_transform;
 }
 
 sf::Transform & Collider::getLocalTransform() {
-    return transform;
+    return m_transform;
 }
 
 
 inline Collider::Collider(GeometryShape geometryShape, CollisionType collisionType,
     ColliderMask mask,sf::Transform transform)
-    : gameObject(nullptr),
-        transform(transform),
-      geometryShape(geometryShape),
-      collisionType(collisionType),
-      colliderMask(mask) {
+    : m_gameObject(nullptr),
+        m_transform(transform),
+      m_geometryShape(geometryShape),
+      m_collisionType(collisionType),
+      m_colliderMask(mask) {
 }

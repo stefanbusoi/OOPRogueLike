@@ -3,20 +3,20 @@
 //
 
 #include "GameObject.hpp"
-
+#include "gameObjectComp.hpp"
 #include <iostream>
 #include <utility>
 
 #include "Game.hpp"
-int GameObject::GLOBAL_ID = 0;
+int GameObject::s_globalId = 0;
 
-GameObject::GameObject(const GameObject &other): LOCAL_ID(GLOBAL_ID++),
+GameObject::GameObject(const GameObject &other): m_localId(s_globalId++),
                                                  m_transform(other.m_transform),
                                                  m_children(other.m_children),
                                                  m_name(other.m_name),
                                                  m_parent(other.m_parent),
                                                  m_updateOrder(other.m_updateOrder),
-                                                 objectColliders(other.objectColliders) {
+                                                 m_objectColliders(other.m_objectColliders) {
 
 }
 
@@ -29,41 +29,41 @@ GameObject & GameObject::operator=(const GameObject &other) {
     }
     if (this == &other)
         return *this;
-    LOCAL_ID = other.LOCAL_ID;
+    m_localId = other.m_localId;
     m_transform = other.m_transform;
     m_children = other.m_children;
     m_name = other.m_name;
     m_parent = other.m_parent;
     m_updateOrder = other.m_updateOrder;
-    objectColliders = other.objectColliders;
+    m_objectColliders = other.m_objectColliders;
     return *this;
 }
 
-GameObject::GameObject(GameObject &&other) noexcept: LOCAL_ID(other.LOCAL_ID),
+GameObject::GameObject(GameObject &&other) noexcept: m_localId(other.m_localId),
                                                      m_transform(std::move(other.m_transform)),
                                                      m_children(std::move(other.m_children)),
                                                      m_name(std::move(other.m_name)),
                                                      m_parent(other.m_parent),
                                                      m_updateOrder(other.m_updateOrder),
-                                                     objectColliders(std::move(other.objectColliders)) {
+                                                     m_objectColliders(std::move(other.m_objectColliders)) {
     other.m_parent=nullptr;
 }
 
 GameObject & GameObject::operator=(GameObject &&other) noexcept {
     if (this == &other)
         return *this;
-    LOCAL_ID = other.LOCAL_ID;
+    m_localId = other.m_localId;
     m_transform = std::move(other.m_transform);
     m_children = std::move(other.m_children);
     m_name = std::move(other.m_name);
     m_parent = other.m_parent;
     m_updateOrder = other.m_updateOrder;
-    objectColliders = std::move(other.objectColliders);
+    m_objectColliders = std::move(other.m_objectColliders);
     other.m_parent=nullptr;
     return *this;
 }
 
-GameObject::GameObject(std::string name,sf::Transform transform,GameObject *parent): LOCAL_ID(GLOBAL_ID++),
+GameObject::GameObject(std::string name,sf::Transform transform,GameObject *parent): m_localId(s_globalId++),
     m_transform(transform),
     m_name(std::move(name)),
     m_parent(parent),
@@ -116,7 +116,7 @@ void GameObject::AddGameObjectToRenderObjects(IRenderable *game_object) {
 
 std::ostream & operator<<(std::ostream &os, const GameObject &obj) {
     os<<"Name: "<< obj.m_name
-            <<" Id:"<< obj.LOCAL_ID
+            <<" Id:"<< obj.m_localId
             << " GameObjects:{ ";
     for (const auto x:obj.m_children) {
         os<<x->m_name<<" ";

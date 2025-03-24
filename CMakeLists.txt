@@ -58,22 +58,23 @@ endif()
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/main.cpp
-        generated/src/Helper.cpp
         CPP_Files/Camera.cpp
         CPP_Files/GameObject.cpp
-        ../OOPRogueLike/CPP_Files/Game.cpp
-        ../OOPRogueLike/CPP_Files/Player.cpp
-        ../OOPRogueLike/CPP_Files/Player.hpp
-        ../OOPRogueLike/CPP_Files/GameMap.cpp
-        ../OOPRogueLike/CPP_Files/GameMap.hpp
-        ../OOPRogueLike/CPP_Files/RenderOrder.hpp
-        ../OOPRogueLike/CPP_Files/UpdateOrder.hpp
-        ../OOPRogueLike/CPP_Files/IRenderable.hpp
-        ../OOPRogueLike/CPP_Files/gameObjectComp.hpp
-        ../OOPRogueLike/CPP_Files/IRenderable.cpp
+        CPP_Files/Game.cpp
+        CPP_Files/Player.cpp
+        CPP_Files/Player.hpp
+        CPP_Files/GameMap.cpp
+        CPP_Files/GameMap.hpp
+        CPP_Files/RenderOrder.hpp
+        CPP_Files/UpdateOrder.hpp
+        CPP_Files/IRenderable.hpp
+        CPP_Files/gameObjectComp.hpp
+        CPP_Files/gameObjectComp.cpp
+        CPP_Files/IRenderable.cpp
         CPP_Files/Collider.h
         CPP_Files/Collider.cpp
-        CPP_Files/Collider.cpp
+        CPP_Files/PostProcessingShader.cpp
+        CPP_Files/PostProcessingShader.h
 )
 
 

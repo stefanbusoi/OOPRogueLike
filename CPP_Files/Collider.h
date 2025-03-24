@@ -22,16 +22,16 @@ enum class ColliderMask {
 };
 
 class Collider{
-        GameObject* gameObject;
-        sf::Transform transform;
-        [[maybe_unused]] GeometryShape geometryShape;
-        [[maybe_unused]] CollisionType collisionType;
-        [[maybe_unused]]ColliderMask colliderMask;
+        GameObject* m_gameObject;
+        sf::Transform m_transform;
+        [[maybe_unused]] GeometryShape m_geometryShape;
+        [[maybe_unused]] CollisionType m_collisionType;
+        [[maybe_unused]]ColliderMask m_colliderMask;
     public:
     sf::Transform getGlobalTransform();
     sf::Transform& getLocalTransform();
-    void setGameObject(GameObject* obj){gameObject=obj;};
-    [[maybe_unused]] GameObject* getGameObject() const {return gameObject;}
+    void setGameObject(GameObject* obj){m_gameObject=obj;};
+    [[maybe_unused]] GameObject* getGameObject() const {return m_gameObject;}
     Collider(GeometryShape geometryShape, CollisionType collisionType,ColliderMask mask,sf::Transform transform=sf::Transform::Identity);
 };
 

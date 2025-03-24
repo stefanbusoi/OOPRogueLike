@@ -3,14 +3,15 @@
 //
 
 #include "Camera.hpp"
+
+#include <cmath>
+
 #include "Game.hpp"
 
 Camera::~Camera() {
-        std::cout<<"Camera Destructor\n";
 }
 
 Camera::Camera( const std::string &name, const sf::Transform &transform,GameObject* parent):GameObject(name,transform,parent),m_window(&Game::getInstance()->getWindow()) {
-        std::cout<<"Camera Constructor\n";
         for (const auto& player:Game::getInstance()->getChildrens()) {
                 m_player=dynamic_cast<Player*>(player);
                 if (m_player!=nullptr)
@@ -23,8 +24,7 @@ sf::Transform& Camera::getTransform(){
         return m_transform;
 }
 void Camera::update([[maybe_unused]]float deltaT) {
-
-        m_transform=m_player->getGlobalTransform();
+m_transform=m_player->getGlobalTransform();
 }
 
 float Camera::getViewRadius() const {return sf::Vector2f({m_window->getSize().x/-2.0f,m_window->getSize().y/-2.0f}).length()/2.0f;}

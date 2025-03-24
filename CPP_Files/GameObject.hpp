@@ -6,14 +6,14 @@
 #include <string>
 #include <vector>
 
+#include "IRenderable.hpp"
 
 #include "Collider.h"
-#include "IRenderable.hpp"
 #include "UpdateOrder.hpp"
 class GameObject {
 protected:
-    static int GLOBAL_ID;
-    int LOCAL_ID;
+    static int s_globalId;
+    int m_localId;
 
 public:
     GameObject(const GameObject &other);
@@ -26,7 +26,7 @@ protected:
     std::string m_name;
     GameObject* m_parent;
     UpdateOrder m_updateOrder;
-    std::vector<Collider> objectColliders;
+    std::vector<Collider> m_objectColliders;
 public:
     UpdateOrder getUpdateOrder() const {return m_updateOrder;}
     /*Used for Game class only*/
@@ -36,11 +36,11 @@ public:
     virtual void update(float deltaT);
     void AddGameObjectToGame(GameObject* gameObject);
     const std::set<GameObject*>& getChildrens() {return m_children;}
-    int GetId() const {return LOCAL_ID;}
+    int GetId() const {return m_localId;}
     sf::Transform getGlobalTransform();
     sf::Transform& getLocalTransform();
     [[maybe_unused]] void setName(const std::string& name) {m_name=name;}
-    void AddGameObjectToRenderObjects(IRenderable * game_object);
+    void AddGameObjectToRenderObjects(IRenderable* game_object);
     void addCollider(Collider& collider);
     friend std::ostream & operator<<(std::ostream &os, const GameObject &obj);
     template <class T=GameObject>

@@ -1,22 +1,15 @@
 #pragma once
+#include "GameObject.hpp"
+#include "IRenderable.hpp"
 
 class iRendableComp {
 public:
-    bool operator()(const IRenderable *lhs,const  IRenderable *rhs) const {
-        if (lhs->getRenderOrder()==rhs->getRenderOrder()) {
-          //TODO: Make this work return dynamic_cast<GameObject*>(lhs)->GetId()<dynamic_cast<GameObject*>(rhs)->GetId();
-            return lhs<rhs;
-        }
-        return lhs->getRenderOrder()<rhs->getRenderOrder();
-    }
+    bool operator()(const IRenderable *lhs,const  IRenderable *rhs) const;
 };
+
 class gameObjectComp {
     public:
-    bool operator()(const GameObject *lhs, const GameObject *rhs) const {
-        if (lhs->getUpdateOrder()==rhs->getUpdateOrder()) {
-            return lhs->GetId() < rhs->GetId();
-        }
-        return lhs->getUpdateOrder()<rhs->getUpdateOrder();
-    }
+    bool operator()(const GameObject *lhs, const GameObject *rhs) const;
 };
+
 

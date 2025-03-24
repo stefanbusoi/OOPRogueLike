@@ -11,13 +11,16 @@
 int main() {
     Game game(sf::VideoMode({1920, 1080}), "RogueLike");
     std::cout<<game<<"\n";
+    for (auto i:game.getGameObjects()) {
+        std::cout<<*i<<"\n";
+    }
     sf::Font font("../Minecraft.ttf");
 
-    while(game.IsRunning()) {
-        float time=game.ProcessGameFrame();
+    while(game.isRunning()) {
+        float time=game.processGameFrame();
         while(const std::optional event = game.getWindow().pollEvent()) {
             if (event->is<sf::Event::Closed>()) {
-                game.Exit();
+                game.exit();
             }
             else if (event->is<sf::Event::Resized>()) {
                 std::cout << "New width: " << game.getWindow().getSize().x << '\n'
@@ -26,7 +29,7 @@ int main() {
             else if (event->is<sf::Event::KeyPressed>()) {
                 const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
                 if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
-                    game.Exit();
+                    game.exit();
                 }
             }else if (event->is<sf::Event::MouseButtonPressed>()) {
                 const auto* keyPressed = event->getIf<sf::Event::MouseButtonPressed>();
