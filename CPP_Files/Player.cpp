@@ -54,7 +54,7 @@ Player & Player::operator=(Player &&other) noexcept {
     if (this == &other)
         return *this;
     GameObject::operator =(std::move(other));
-    IRenderable::operator =(std::move(other));
+    IRenderable::operator =(other);
     other.m_parent=nullptr;
     return *this;
 }
