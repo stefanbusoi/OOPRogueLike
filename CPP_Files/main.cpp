@@ -11,7 +11,7 @@
 int main() {
     Game game(sf::VideoMode({1920, 1080}), "RogueLike");
     std::cout<<game<<"\n";
-    for (auto i:game.getGameObjects()) {
+    for (const auto* i:game.getGameObjects()) {
         std::cout<<*i<<"\n";
     }
     sf::Font font("../Minecraft.ttf");

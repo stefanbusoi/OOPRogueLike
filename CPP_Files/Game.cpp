@@ -24,6 +24,7 @@ void Game::renderAll() {
 Game *Game::getInstance() {return s_instance;}
 
 Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject(Title){
+    m_totalTime=0.0f;
     if (s_instance==nullptr) {
         s_instance=this;
     }
