@@ -27,7 +27,7 @@ void Camera::update([[maybe_unused]]float deltaT) {
 m_transform=m_player->getGlobalTransform();
 }
 
-float Camera::getViewRadius() const {return sf::Vector2f({m_window->getSize().x/-2.0f,m_window->getSize().y/-2.0f}).length()/2.0f;}
+[[maybe_unused]] float Camera::getViewRadius() const {return sf::Vector2f({m_window->getSize().x/-2.0f,m_window->getSize().y/-2.0f}).length()/2.0f;}
 
 void Camera::draw(const sf::Drawable& drawable, const sf::Transform &transform) const {
         sf::Transform tr=m_transform;

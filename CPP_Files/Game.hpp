@@ -27,7 +27,7 @@ public:
     bool isRunning() const;
     sf::RenderWindow &getWindow() {return m_window;}
     Camera& getCamera() const {return *m_camera;}
-    sf::Clock &getClock() {return m_clock;}
+   [[maybe_unused]] sf::Clock &getClock() {return m_clock;}
     float getTotalTime(){return m_totalTime;}
     void exit();
     float processGameFrame();
