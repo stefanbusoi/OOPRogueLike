@@ -1,10 +1,26 @@
 #pragma once
 
+#include <ostream>
+
 #include "RenderOrder.hpp"
 class IRenderable {
     protected:
         RenderOrder m_renderOrder;
     public:
+        friend std::ostream & operator<<(std::ostream &os, const IRenderable &obj) {
+            os << "m_renderOrder: ";
+            switch (obj.m_renderOrder) {
+                case RenderOrder::Default:
+                    return os << "Default";
+                case RenderOrder::Player:
+                    return os << "Player";
+                case RenderOrder::Terrain:
+                    return os << "Terrain";
+                case RenderOrder::PostProcessing:
+                    return os << "PostProcessing";
+            }
+        }
+
         IRenderable() {
             m_renderOrder = RenderOrder::Default;
         }

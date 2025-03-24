@@ -1,4 +1,6 @@
 #pragma once
+#include <ostream>
+
 #include "GameObject.hpp"
 #include "IRenderable.hpp"
 
@@ -10,6 +12,7 @@ public:
 class gameObjectComp {
     public:
     bool operator()(const GameObject *lhs, const GameObject *rhs) const;
+
 };
 
 

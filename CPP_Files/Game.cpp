@@ -38,10 +38,6 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
 
 Game::~Game() {
     if (isRunning()) exit();
-    for (const auto& gameObject:m_children) {
-        delete gameObject;
-    }
-    m_children.clear();
 }
 
 bool Game::isRunning() const {
@@ -50,6 +46,10 @@ bool Game::isRunning() const {
 }
 
 void Game::exit() {
+    for (const auto& gameObject:m_children) {
+        delete gameObject;
+    }
+    m_children.clear();
     m_window.close();
     std::cout << "Fereastra a fost inchisa\n";
 }

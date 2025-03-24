@@ -49,6 +49,5 @@ int main() {
         game.getWindow().draw(text);
        // std::cout<<1/time<<"\n";
     }
-
     return 0;
 }
