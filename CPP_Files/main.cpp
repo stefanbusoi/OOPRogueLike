@@ -38,13 +38,13 @@ int main() {
         }
 
         sf::Text text(font);
-        text.setString(std::to_string(time));
+        text.setString("MS per frame:"+std::to_string(time));
         text.setPosition(sf::Vector2f(30,30));
         text.setFillColor(sf::Color::White);
         text.setCharacterSize(20);
         game.getWindow().draw(text);
 
-        text.setString(std::to_string((int)(1/time)));
+        text.setString("FPS:"+std::to_string((int)(1/time)));
         text.setPosition(sf::Vector2f(30,50));
         game.getWindow().draw(text);
        // std::cout<<1/time<<"\n";

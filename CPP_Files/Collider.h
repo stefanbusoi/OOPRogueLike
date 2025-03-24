@@ -33,8 +33,4 @@ class Collider{
     [[maybe_unused]] GameObject* getGameObject() const {return m_gameObject;}
     Collider(GeometryShape geometryShape, CollisionType collisionType,ColliderMask mask, const sf::Transform &transform=sf::Transform::Identity);
 };
-
-
-
-
 #endif //ICOLIDERABLE_H
