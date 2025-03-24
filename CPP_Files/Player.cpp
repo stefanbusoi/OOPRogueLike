@@ -62,7 +62,7 @@ void Player::Render() {
     sf::Transform transform=this->m_transform;
 
     camera.draw(shape,transform);
-    static sf::Font font("../Minecraft.ttf");
+    static sf::Font font("Minecraft.ttf");
 
     sf::Text text(font);
     text.setString(m_name);

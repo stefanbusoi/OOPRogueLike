@@ -26,7 +26,7 @@ void GameMap::Render() {
 GameMap::GameMap( const std::string &name, const sf::Transform &transform,GameObject* parent):GameObject(name,transform,parent) {
     m_renderOrder=RenderOrder::Terrain;
     m_updateOrder=UpdateOrder::Default;
-    if (! m_shader.loadFromFile("../Shaders/fragment.frag", sf::Shader::Type::Fragment)) {
+    if (! m_shader.loadFromFile("Shaders/fragment.frag", sf::Shader::Type::Fragment)) {
         std::cerr<<"Failed to load fragment shader"<<std::endl;
     }
 
