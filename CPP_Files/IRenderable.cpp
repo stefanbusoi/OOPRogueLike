@@ -3,5 +3,5 @@
 //
 #include "Game.hpp"
 IRenderable::~IRenderable() {
-    Game::getInstance()->getRenderOrder().erase(this);
+    Game::getInstance()->getRenderObjects().erase(this);
 }

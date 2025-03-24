@@ -105,7 +105,7 @@ sf::Transform GameObject::getGlobalTransform() {
 }
 
 void GameObject::AddGameObjectToRenderObjects(IRenderable *game_object) {
-    Game::getInstance()->getRenderOrder().insert(game_object);
+    Game::getInstance()->getRenderObjects().insert(game_object);
 
 }
 

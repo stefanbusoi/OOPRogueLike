@@ -8,7 +8,7 @@ class IRenderable {
         RenderOrder m_renderOrder;
     public:
         friend std::ostream & operator<<(std::ostream &os, const IRenderable &obj) {
-            os << "m_renderOrder: ";
+            os << "IRenderable: m_renderOrder: ";
             switch (obj.m_renderOrder) {
                 case RenderOrder::Default:
                     return os << "Default";
@@ -18,6 +18,8 @@ class IRenderable {
                     return os << "Terrain";
                 case RenderOrder::PostProcessing:
                     return os << "PostProcessing";
+                default:
+                    return os;
             }
         }
 

@@ -14,6 +14,9 @@ int main() {
     for (const auto* i:game.getGameObjects()) {
         std::cout<<*i<<"\n";
     }
+    for (const auto* i:game.getRenderObjects()) {
+        std::cout<<*i<<"\n";
+    }
     sf::Font font("Minecraft.ttf");
 
     while(game.isRunning()) {

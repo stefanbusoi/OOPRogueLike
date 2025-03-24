@@ -336,12 +336,5 @@
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/INDENT_STYLE/@EntryValue" value="Space" type="string" />
     <option name="/Default/CodeStyle/CodeFormatting/CppFormatting/CONTINUOUS_LINE_INDENT/@EntryValue" value="Double" type="string" />
     <option name="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=8BC9CEB8_002D8B4A_002D11D0_002D8D11_002D00A0C91BC942_002Fd_003ACPP_005FFiles_002Ff_003ACamera_002Ecpp/@EntryIndexedValue" value="ForceIncluded" type="string" />
-    <option name="/Default/CodeStyle/Generate/=CppStreamOperations/@KeyIndexDefined" value="true" type="bool" />
-    <option name="/Default/CodeStyle/Generate/=CppStreamOperations/Options/=OperationType/@EntryIndexedValue" value="Output operator" type="string" />
-    <option name="/Default/CodeStyle/Generate/=CppStreamOperations/Options/=OperationType/@EntryIndexRemoved" />
-    <option name="/Default/CodeStyle/Generate/=CppStreamOperations/Options/=UseWideStream/@EntryIndexedValue" value="False" type="string" />
-    <option name="/Default/CodeStyle/Generate/=CppStreamOperations/Options/=UseWideStream/@EntryIndexRemoved" />
-    <option name="/Default/CodeStyle/Generate/=CppStreamOperations/Options/=PrivateBoostSerializeOperations/@EntryIndexedValue" value="True" type="string" />
-    <option name="/Default/CodeStyle/Generate/=CppStreamOperations/Options/=PrivateBoostSerializeOperations/@EntryIndexRemoved" />
   </component>
 </project>
