@@ -35,5 +35,7 @@ void Camera::draw(const sf::Drawable& drawable, const sf::Transform &transform) 
 }
 
 std::ostream & operator<<(std::ostream &os, const Camera &obj) {
-        return os<< "CLASS Camera " << static_cast<const GameObject &>(obj);
+        os<<"test";
+         os<< "CLASS Camera " << static_cast<const GameObject &>(obj);
+        return os;
 }
