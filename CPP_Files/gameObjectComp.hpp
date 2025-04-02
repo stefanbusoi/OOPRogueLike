@@ -6,7 +6,7 @@
 
 class iRendableComp {
 public:
-    bool operator()(const IRenderable *lhs,const  IRenderable *rhs) const;
+    bool operator()( IRenderable *lhs,  IRenderable *rhs) const;
 };
 
 class gameObjectComp {

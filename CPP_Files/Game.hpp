@@ -1,5 +1,4 @@
 #pragma once
-
 #include <iostream>
 #include <set>
 
@@ -14,6 +13,7 @@ class Game :public GameObject{
     sf::Clock m_clock;
     float m_totalTime;
     Camera* m_camera;
+    sf::RenderTexture m_renderTexture;
     static Game* s_instance;
     void renderAll();
     std::set<Collider*> m_colliders;
@@ -26,6 +26,7 @@ public:
     ~Game() override;
     bool isRunning() const;
     sf::RenderWindow &getWindow() {return m_window;}
+    sf::RenderTexture &getRenderTexture() {return m_renderTexture;}
     Camera& getCamera() const {return *m_camera;}
    [[maybe_unused]] sf::Clock &getClock() {return m_clock;}
     float getTotalTime(){return m_totalTime;}

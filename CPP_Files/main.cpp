@@ -18,7 +18,6 @@ int main() {
         std::cout<<*i<<"\n";
     }
     sf::Font font("Minecraft.ttf");
-
     while(game.isRunning()) {
         float time=game.processGameFrame();
         while(const std::optional event = game.getWindow().pollEvent()) {

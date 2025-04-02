@@ -38,7 +38,6 @@ GameObject & GameObject::operator=(const GameObject &other) {
     m_objectColliders = other.m_objectColliders;
     return *this;
 }
-
 GameObject::GameObject(GameObject &&other) noexcept: m_localId(other.m_localId),
                                                      m_transform(std::move(other.m_transform)),
                                                      m_children(std::move(other.m_children)),
@@ -48,7 +47,6 @@ GameObject::GameObject(GameObject &&other) noexcept: m_localId(other.m_localId),
                                                      m_objectColliders(std::move(other.m_objectColliders)) {
     other.m_parent=nullptr;
 }
-
 GameObject & GameObject::operator=(GameObject &&other) noexcept {
     if (this == &other)
         return *this;
@@ -62,7 +60,6 @@ GameObject & GameObject::operator=(GameObject &&other) noexcept {
     other.m_parent=nullptr;
     return *this;
 }
-
 GameObject::GameObject(std::string name,sf::Transform transform,GameObject *parent): m_localId(s_globalId++),
     m_transform(transform),
     m_name(std::move(name)),

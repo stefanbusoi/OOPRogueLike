@@ -1,36 +1,13 @@
 #include "Camera.hpp"
 #include "Player.hpp"
+
+#include <cmath>
+#include <math.h>
+
 #include "Game.hpp"
 
 
-void Player::update(float deltaT)  {
-    float SpeedConst=500;
 
-    sf::Vector2f speed;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) {
-        speed+=sf::Vector2f({-1.0f,0.0f});
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
-       speed+=sf::Vector2f({-1.0f,0.0f});
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
-        speed+=sf::Vector2f({1.0f,0.0f});
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {
-        speed+=sf::Vector2f({0.0f,-1.0f});
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
-        speed+=sf::Vector2f({0.0f,1.0f});
-    }
-    if (speed.x!=0||speed.y!=0) {
-        speed=speed.normalized();
-        speed=speed*deltaT*SpeedConst;
-    }
-
-    m_transform.translate(speed);
-
-
-}
 
 Player::~Player() = default;
 Player::Player(const Player &other): GameObject(other),
@@ -53,24 +30,45 @@ Player & Player::operator=(Player &&other) noexcept {
     IRenderable::operator =(other);
     return *this;
 }
-
+void Player::update(float deltaT)  {
+    float SpeedConst=500;
+    sf::Vector2i pos=sf::Mouse::getPosition();
+    sf::Vector2f speed;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
+        speed+=sf::Vector2f({-1.0f,0.0f});
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
+        speed+=sf::Vector2f({1.0f,0.0f});
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {
+        speed+=sf::Vector2f({0.0f,-1.0f});
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
+        speed+=sf::Vector2f({0.0f,1.0f});
+    }
+    if (speed.x!=0||speed.y!=0) {
+        speed=speed.normalized();
+        speed=speed*deltaT*SpeedConst;
+    }
+    pos-={960,540};
+    m_transform.rotate(sf::radians(atan2f(pos.x,pos.y)));
+    m_transform.translate(speed);
+}
 void Player::Render() {
     const Camera& camera=Game::getInstance()->getCamera();
+    sf::Transform transform=m_transform;
+
     sf::CircleShape shape(40.f);
+    shape.setOrigin({40, 40});
     shape.setFillColor(sf::Color(100, 250, 50));
-    shape.setPosition(sf::Vector2f(-40,-40));
-    sf::Transform transform=this->m_transform;
+    camera.draw(shape,m_transform);
 
-    camera.draw(shape,transform);
-    static sf::Font font("Minecraft.ttf");
+    sf::RectangleShape rect({10.0f,40.0f});
+    rect.setOrigin({5, -40});
 
-    sf::Text text(font);
-    text.setString(m_name);
-    text.setPosition(sf::Vector2f(-20,-47));
-    text.setFillColor(sf::Color::White);
-    text.setCharacterSize(20);
+    rect.setFillColor(sf::Color(0, 0, 0));
+    camera.draw(rect,m_transform);
 
-    camera.draw(text,m_transform);
 }
 
 

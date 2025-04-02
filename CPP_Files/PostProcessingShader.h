@@ -5,6 +5,7 @@
 #define POSTPROCESSINGSHADER_H
 #include "GameObject.hpp"
 #include "IRenderable.hpp"
+#include <SFML/Graphics.hpp>
 
 
 class PostProcessingShader:public GameObject,public IRenderable {

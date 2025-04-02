@@ -7,6 +7,7 @@
 #include "GameMap.hpp"
 #include "Player.hpp"
 #include "PostProcessingShader.h"
+#include <SFML/Graphics.hpp>
 
 
 Game* Game::s_instance = nullptr;
@@ -17,6 +18,9 @@ void Game::renderAll() {
     for (const auto& gameObject:m_renderableObjects) {
          gameObject->Render();
     }
+    m_renderTexture.display();
+    sf::Sprite sprite(m_renderTexture.getTexture());
+    m_window.draw(sprite);
 
 }
 
@@ -29,11 +33,13 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
         s_instance=this;
     }
     m_window.create(video_mode, Title, sf::State::Fullscreen);
+    m_renderTexture.resize(m_window.getSize());
     Player player("Player");
     AddGameObject<Player>(std::move(player));
     Camera camera;
     m_camera=AddGameObject<Camera>(std::move(camera));
     AddGameObject<GameMap>("GameMap");
+    AddGameObject<PostProcessingShader>("PostProcessingShader");
 }
 
 Game::~Game() {

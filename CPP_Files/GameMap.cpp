@@ -12,13 +12,14 @@ void GameMap::Render() {
     Camera &camera=Game::getInstance()->getCamera();
 
     sf::RenderWindow& window=Game::getInstance()->getWindow();
+    sf::RenderTarget& render_texture=Game::getInstance()->getRenderTexture();
     sf::RectangleShape fullscreenQuad(sf::Vector2f(window.getSize().x, window.getSize().y));
     fullscreenQuad.setPosition({0, 0});
     float totalTime=Game::getInstance()->getTotalTime();
     m_shader.setUniform("resolution",sf::Vector2f(window.getSize().x,window.getSize().y));
     m_shader.setUniform("position",camera.getTransform().transformPoint({0,0}));
     m_shader.setUniform("time",totalTime  );
-    window.draw(fullscreenQuad,&m_shader);
+    render_texture.draw(fullscreenQuad,&m_shader);
 
 
 }

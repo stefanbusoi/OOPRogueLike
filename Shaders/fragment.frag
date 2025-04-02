@@ -7,7 +7,6 @@ void main()
 {
     vec2 center=resolution/2/100;
     vec2 ShaderPosition=position/100;
-    ShaderPosition.y=-ShaderPosition.y;
 
     vec2 uv = gl_FragCoord.xy / vec2(1920, 1080);
 
@@ -34,5 +33,5 @@ void main()
     float modTime = abs(cos(time));
 
 
-    gl_FragColor = vec4(color*(1-d/5),1);
+    gl_FragColor = vec4(color*(clamp(1-d/5,0.3,1)),1);
 }

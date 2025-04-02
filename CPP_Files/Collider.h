@@ -27,10 +27,10 @@ class Collider{
         [[maybe_unused]] CollisionType m_collisionType;
         [[maybe_unused]]ColliderMask m_colliderMask;
     public:
-    sf::Transform getGlobalTransform() const;
-    sf::Transform& getLocalTransform();
-    void setGameObject(GameObject* obj){m_gameObject=obj;};
-    [[maybe_unused]] GameObject* getGameObject() const {return m_gameObject;}
-    Collider(GeometryShape geometryShape, CollisionType collisionType,ColliderMask mask, const sf::Transform &transform=sf::Transform::Identity);
+        sf::Transform getGlobalTransform() const;
+        sf::Transform& getLocalTransform();
+        void setGameObject(GameObject* obj){m_gameObject=obj;};
+        [[maybe_unused]] GameObject* getGameObject() const {return m_gameObject;}
+        Collider(GeometryShape geometryShape, CollisionType collisionType,ColliderMask mask, const sf::Transform &transform=sf::Transform::Identity);
 };
 #endif //ICOLIDERABLE_H

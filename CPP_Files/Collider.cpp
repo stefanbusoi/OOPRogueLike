@@ -17,7 +17,7 @@ sf::Transform & Collider::getLocalTransform() {
 inline Collider::Collider(GeometryShape geometryShape, CollisionType collisionType,
     ColliderMask mask, const sf::Transform &transform)
     : m_gameObject(nullptr),
-        m_transform(transform),
+      m_transform(transform),
       m_geometryShape(geometryShape),
       m_collisionType(collisionType),
       m_colliderMask(mask) {

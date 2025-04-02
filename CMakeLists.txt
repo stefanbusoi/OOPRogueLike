@@ -73,8 +73,9 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/IRenderable.cpp
         CPP_Files/Collider.h
         CPP_Files/Collider.cpp
-#        CPP_Files/PostProcessingShader.cpp
-#        CPP_Files/PostProcessingShader.h
+        CPP_Files/PostProcessingShader.cpp
+        CPP_Files/PostProcessingShader.h
+        CPP_Files/UtilityiesFunctions.hpp
 )
 
 
