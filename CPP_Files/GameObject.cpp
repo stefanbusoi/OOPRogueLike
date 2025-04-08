@@ -75,6 +75,20 @@ GameObject::~GameObject() {
         delete x;
     }
 }
+//4star make set parent work corectly
+void GameObject::SetParent(GameObject *p_parent) {
+    Game* instance=Game::getInstance();
+    if (instance->IsInHirarchy(m_parent)&&!instance->IsInHirarchy(p_parent)) {
+        AddGameObjectToGame();
+    }
+    if (!instance->IsInHirarchy(m_parent)&&instance->IsInHirarchy(p_parent)) {
+        RemoveGameObjectFromGame();
+    }
+    m_parent->m_children.erase(this);
+    p_parent->m_children.insert(this);
+    m_parent=p_parent;
+}
+
 
 
 
@@ -87,10 +101,12 @@ sf::Transform & GameObject::getLocalTransform() {
     return m_transform;
 }
 
-void GameObject::AddGameObjectToGame(GameObject *gameObject) {
-    Game::getInstance()->getGameObjects().insert(gameObject);
+void GameObject::AddGameObjectToGame() {
+    Game::getInstance()->getGameObjects().insert(this);
+}
 
-
+void GameObject::RemoveGameObjectFromGame() {
+    Game::getInstance()->getGameObjects().erase(this);
 }
 
 sf::Transform GameObject::getGlobalTransform() {

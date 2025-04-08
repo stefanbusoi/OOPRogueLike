@@ -40,6 +40,16 @@ void GameMap::update(float deltaT) {
     (void)deltaT;
 }
 
+void GameMap::AddGameObjectToGame() {
+    GameObject::AddGameObjectToGame();
+    IRenderable::AddToRenderObjects();
+}
+
+void GameMap::RemoveGameObjectFromGame() {
+    GameObject::RemoveGameObjectFromGame();
+    IRenderable::RemoveFromRenderObjects();
+}
+
 std::ostream & operator<<(std::ostream &os, const GameMap &obj) {
     return os<<"CLASS GameMap "<< static_cast<const GameObject &>(obj);
 }

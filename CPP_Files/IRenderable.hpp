@@ -47,6 +47,8 @@ class IRenderable {
 
         virtual void Render() = 0;
         virtual ~IRenderable();
+        void AddToRenderObjects();
+        void RemoveFromRenderObjects();
         RenderOrder getRenderOrder() const {return m_renderOrder;}
 };
 

@@ -30,6 +30,7 @@ public:
     Camera& getCamera() const {return *m_camera;}
    [[maybe_unused]] sf::Clock &getClock() {return m_clock;}
     float getTotalTime(){return m_totalTime;}
+    bool IsInHirarchy(GameObject *p_gameObject);
     void exit();
     float processGameFrame();
     std::set<GameObject*,gameObjectComp>& getGameObjects(){return m_gameObjects;}

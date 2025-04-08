@@ -15,6 +15,7 @@ Game* Game::s_instance = nullptr;
 void Game::renderAll() {
     m_window.display();
     m_window.clear();
+
     for (const auto& gameObject:m_renderableObjects) {
          gameObject->Render();
     }
@@ -49,6 +50,15 @@ Game::~Game() {
 bool Game::isRunning() const {
     return m_window.isOpen();
 
+}
+
+bool Game::IsInHirarchy(GameObject *p_gameObject) {
+    if (p_gameObject==nullptr) return false;
+    while (p_gameObject->getParent() != nullptr) {
+        p_gameObject=p_gameObject->getParent();
+    }
+    if (p_gameObject==static_cast<GameObject *>(getInstance())) return true;
+    return false;
 }
 
 void Game::exit() {

@@ -27,15 +27,18 @@ protected:
     GameObject* m_parent;
     UpdateOrder m_updateOrder;
     std::vector<Collider> m_objectColliders;
+    virtual void AddGameObjectToGame();
+    virtual void RemoveGameObjectFromGame();
 public:
     UpdateOrder getUpdateOrder() const {return m_updateOrder;}
     /*Used for Game class only*/
     explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity,GameObject* parent=nullptr);
     virtual ~GameObject();
-
+    void SetParent(GameObject* p_parent);
+    bool IsInGame();
     virtual void update(float deltaT);
-    void AddGameObjectToGame(GameObject* gameObject);
-    const std::set<GameObject*>& getChildrens() {return m_children;}
+     const std::set<GameObject*>& getChildrens() {return m_children;}
+    GameObject* getParent() {return m_parent;}
     int GetId() const {return m_localId;}
     sf::Transform getGlobalTransform();
     sf::Transform& getLocalTransform();
@@ -60,7 +63,7 @@ T* GameObject::AddGameObject(std::string name, sf::Transform transform) {
     }
 
     m_children.insert(newGameObject);
-    AddGameObjectToGame(dynamic_cast<GameObject*>(newGameObject));
+    newGameObject->AddGameObjectToGame();
     return newGameObject;
 }
 
@@ -79,7 +82,7 @@ T* GameObject:: AddGameObject(T&& temp){
         AddGameObjectToRenderObjects(renderableComponent);
     }
     m_children.insert(newGameObject);
-    AddGameObjectToGame(dynamic_cast<GameObject*>(newGameObject));
+    newGameObject->AddGameObjectToGame();
 
 
     return newGameObject;

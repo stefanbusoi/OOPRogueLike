@@ -35,10 +35,10 @@ void Player::update(float deltaT)  {
     sf::Vector2i pos=sf::Mouse::getPosition();
     sf::Vector2f speed;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
-        speed+=sf::Vector2f({-1.0f,0.0f});
+        speed+=sf::Vector2f({1.0f,0.0f});
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
-        speed+=sf::Vector2f({1.0f,0.0f});
+        speed+=sf::Vector2f({-1.0f,0.0f});
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {
         speed+=sf::Vector2f({0.0f,-1.0f});
@@ -51,7 +51,9 @@ void Player::update(float deltaT)  {
         speed=speed*deltaT*SpeedConst;
     }
     pos-={960,540};
-    m_transform.rotate(sf::radians(atan2f(pos.x,pos.y)));
+    sf::Vector2f point=m_transform.transformPoint(sf::Vector2f( 1.0f,0.0f))-m_transform.transformPoint(sf::Vector2f(0.0f,0.0f));
+    float angle=-atan2(point.y,point.x);
+    m_transform.rotate(sf::radians(atan2f(-pos.x,pos.y)+angle));
     m_transform.translate(speed);
 }
 void Player::Render() {
@@ -61,13 +63,13 @@ void Player::Render() {
     sf::CircleShape shape(40.f);
     shape.setOrigin({40, 40});
     shape.setFillColor(sf::Color(100, 250, 50));
-    camera.draw(shape,m_transform);
+    camera.draw(shape,transform);
 
     sf::RectangleShape rect({10.0f,40.0f});
-    rect.setOrigin({5, -40});
+    rect.setOrigin({5, 0});
 
     rect.setFillColor(sf::Color(0, 0, 0));
-    camera.draw(rect,m_transform);
+    camera.draw(rect,transform);
 
 }
 
