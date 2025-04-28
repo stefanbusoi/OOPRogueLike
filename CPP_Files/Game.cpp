@@ -34,11 +34,12 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
         s_instance=this;
     }
     m_window.create(video_mode, Title, sf::State::Fullscreen);
-    m_renderTexture.resize(m_window.getSize());
-    Player player("Player");
-    AddGameObject<Player>(std::move(player));
-    Camera camera;
-    m_camera=AddGameObject<Camera>(std::move(camera));
+    if (!m_renderTexture.resize(m_window.getSize())) {
+        throw std::runtime_error("Failed to resize render texture");
+    }
+
+    AddGameObject<Player>("Player");
+    m_camera=AddGameObject<Camera>("Camera");
     AddGameObject<GameMap>("GameMap");
     AddGameObject<PostProcessingShader>("PostProcessingShader");
 }
@@ -76,6 +77,7 @@ float Game::processGameFrame() {
     for (const auto& gameObject:m_gameObjects) {
         gameObject->update(deltaTime.asSeconds());
     }
+
     renderAll();
     return  deltaTime.asSeconds();
 

@@ -19,7 +19,6 @@ public:
     ~GameMap() override;
     void update(float deltaT) override;
 
-protected:
     void AddGameObjectToGame() override;
 
     void RemoveGameObjectFromGame() override;

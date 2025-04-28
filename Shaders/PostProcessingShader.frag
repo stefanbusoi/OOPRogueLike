@@ -9,7 +9,7 @@ void main()
 
     vec2 uv = (gl_FragCoord.xy) / resolution;
 
-    float pixelSize=5;
+    float pixelSize=max(2,-60+100/time);
     vec4 Data = texture(tex, (uv*resolution-mod(uv*resolution,pixelSize)+pixelSize/2)/resolution);
     // float modTime = sin(time * 2) + cos(time * 1.3193);
     // modTime *= 40.0;

@@ -17,18 +17,14 @@ class Player :public GameObject,public IRenderable{
 public:
     ~Player() override;
 
-    Player(const Player &other);
-
-    Player(Player &&other) noexcept;
-
-    Player & operator=(const Player &other);
-
-    Player & operator=(Player &&other) noexcept;
-
 private:
     friend std::ostream & operator<<(std::ostream &os, const Player &obj);
 
 public:
+    void AddGameObjectToGame() override;
+
+    void RemoveGameObjectFromGame() override;
+
     explicit Player( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
     Player()=delete;
 };

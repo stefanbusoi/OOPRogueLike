@@ -11,9 +11,13 @@
 class PostProcessingShader:public GameObject,public IRenderable {
     sf::Shader* m_shader;
     public:
-    PostProcessingShader(std::string name,sf::Transform transform,GameObject* game_object);
+    PostProcessingShader(std::string name,sf::Transform transform);
     void Render() override;
     void update(float deltaT) override;
+
+    void AddGameObjectToGame() override;
+
+    void RemoveGameObjectFromGame() override;
 };
 
 

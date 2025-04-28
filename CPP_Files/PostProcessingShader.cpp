@@ -6,12 +6,12 @@
 #include "Game.hpp"
 
 
-PostProcessingShader::PostProcessingShader(std::string name, sf::Transform transform, GameObject* game_object): GameObject(name,transform,game_object) {
+PostProcessingShader::PostProcessingShader(std::string name, sf::Transform transform): GameObject(name,transform) {
     m_renderOrder=RenderOrder::PostProcessing;
     m_shader=new sf::Shader();
-    if (!m_shader->loadFromFile("Shaders/PostProcessingShader.frag", sf::Shader::Type::Fragment)){
-        std::cerr<<"Failed to load fragment shader"<<std::endl;
-    }
+        if (!m_shader->loadFromFile("Shaders/PostProcessingShader.frag", sf::Shader::Type::Fragment)){
+            std::cerr<<"Failed to load fragment shader"<<std::endl;
+        }
 }
 
 void PostProcessingShader::Render() {
@@ -37,4 +37,14 @@ void PostProcessingShader::Render() {
 
 void PostProcessingShader::update([[maybe_unused]]float deltaT) {
 
+}
+
+void PostProcessingShader::AddGameObjectToGame() {
+    GameObject::AddGameObjectToGame();
+    IRenderable::AddToRenderObjects();
+}
+
+void PostProcessingShader::RemoveGameObjectFromGame() {
+    GameObject::RemoveGameObjectFromGame();
+    IRenderable::RemoveFromRenderObjects();
 }

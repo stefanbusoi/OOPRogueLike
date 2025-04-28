@@ -19,7 +19,6 @@ class Game :public GameObject{
     std::set<Collider*> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;
-
 public:
     static Game *getInstance();
     Game(sf::VideoMode video_mode, const std::string &Title);

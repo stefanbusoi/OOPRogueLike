@@ -76,6 +76,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/PostProcessingShader.cpp
         CPP_Files/PostProcessingShader.h
         CPP_Files/UtilityiesFunctions.hpp
+        CPP_Files/ColisionPrimitive.cpp
+        CPP_Files/ColisionPrimitive.hpp
 )
 
 

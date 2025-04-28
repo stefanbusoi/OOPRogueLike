@@ -9,6 +9,10 @@ bool gameObjectComp::operator()(const GameObject *lhs, const GameObject *rhs) co
     return lhs->getUpdateOrder()<rhs->getUpdateOrder();
 }
 
+IRenderable::IRenderable() {
+    m_renderOrder = RenderOrder::Default;
+}
+
 bool iRendableComp::operator()( IRenderable *lhs,  IRenderable *rhs) const {
     if (lhs->getRenderOrder()==rhs->getRenderOrder()) {
         return (dynamic_cast<GameObject*>(lhs)->GetId()) <

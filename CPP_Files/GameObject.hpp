@@ -15,11 +15,6 @@ protected:
     static int s_globalId;
     int m_localId;
 
-public:
-    GameObject(const GameObject &other);
-    GameObject& operator=(const GameObject &other);
-    GameObject(GameObject &&other) noexcept;
-    GameObject & operator=(GameObject &&other) noexcept;
 protected:
     sf::Transform m_transform;
     std::set<GameObject*> m_children;
@@ -27,17 +22,22 @@ protected:
     GameObject* m_parent;
     UpdateOrder m_updateOrder;
     std::vector<Collider> m_objectColliders;
+
+public:
     virtual void AddGameObjectToGame();
     virtual void RemoveGameObjectFromGame();
-public:
+
     UpdateOrder getUpdateOrder() const {return m_updateOrder;}
+
+
     /*Used for Game class only*/
     explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity,GameObject* parent=nullptr);
     virtual ~GameObject();
     void SetParent(GameObject* p_parent);
     bool IsInGame();
     virtual void update(float deltaT);
-     const std::set<GameObject*>& getChildrens() {return m_children;}
+
+    const std::set<GameObject*>& getChildrens() {return m_children;}
     GameObject* getParent() {return m_parent;}
     int GetId() const {return m_localId;}
     sf::Transform getGlobalTransform();
@@ -56,14 +56,9 @@ public:
 
 template<class T>
 T* GameObject::AddGameObject(std::string name, sf::Transform transform) {
-    T* newGameObject = new T(name,transform,this);
-    auto* renderableComponent = dynamic_cast<IRenderable *>(newGameObject);
-    if (renderableComponent) {
-        AddGameObjectToRenderObjects(renderableComponent);
-    }
-
+    T* newGameObject = new T(name,transform );
+    newGameObject->SetParent(this);
     m_children.insert(newGameObject);
-    newGameObject->AddGameObjectToGame();
     return newGameObject;
 }
 
