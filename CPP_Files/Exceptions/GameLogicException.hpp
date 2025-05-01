@@ -16,7 +16,7 @@ public:
 #endif
   }
 
-  const std::string &what() {
-      return m_message;
+  const char *what() {
+    return m_message.c_str();
   }
 };
