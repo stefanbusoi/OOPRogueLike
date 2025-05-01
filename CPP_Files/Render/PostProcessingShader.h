@@ -3,15 +3,15 @@
 
 #ifndef POSTPROCESSINGSHADER_H
 #define POSTPROCESSINGSHADER_H
-#include "GameObject.hpp"
+#include "../GameObject.hpp"
 #include "IRenderable.hpp"
-#include <SFML/Graphics.hpp>
+#include <../../cmake-build-debug/_deps/sfml-src/include/SFML/Graphics.hpp>
 
 
 class PostProcessingShader:public GameObject,public IRenderable {
     sf::Shader* m_shader;
     public:
-    PostProcessingShader(std::string name,sf::Transform transform);
+    PostProcessingShader(std::string name,sf::Transform transform=sf::Transform::Identity);
     void Render() override;
     void update(float deltaT) override;
 

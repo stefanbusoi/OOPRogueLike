@@ -1,10 +1,8 @@
 #ifndef ICOLIDERABLE_H
 #define ICOLIDERABLE_H
 
-//#include "GameObject.hpp"
+#include "GameObject.hpp"
 #include "SFML/Graphics/Transform.hpp"
-
-class GameObject;
 
 
 enum class CollisionType{
@@ -16,21 +14,35 @@ enum class ColliderMask {
     Map=1,
     Enemy=2,
 };
+enum class GeometryShape{
+    Square=0,
+    Circle=1,
+  };
 /*
  *5star: make collider work
  *
  */
-
-class Collider/*:public GameObject*/{
-        GameObject* m_gameObject;
+struct collisionData {
+    int x;
+};
+class Collider:public GameObject{
         sf::Transform m_transform;
         CollisionType m_collisionType;
         ColliderMask m_colliderMask;
+        GeometryShape m_shape;
+        float m_weight;
     public:
-        sf::Transform getGlobalTransform() const;
-        sf::Transform& getLocalTransform();
-        void setGameObject(GameObject* obj){m_gameObject=obj;};
-        GameObject* getGameObject() const {return m_gameObject;}
-        Collider( CollisionType collisionType,ColliderMask mask, const sf::Transform &transform=sf::Transform::Identity);
+        void AddGameObjectToGame() override;
+        void RemoveGameObjectFromGame() override;
+        void update(float  deltaT) override;
+
+        collisionData ColCircleCircle(const sf::Transform & Tr1, const sf::Transform & Tr2);
+
+        collisionData ColCircleSquare(const sf::Transform & Tr1, const sf::Transform & Tr2);
+
+        collisionData ColSqueareSquare(const sf::Transform & Tr1, const sf::Transform & Tr2);
+
+        collisionData CheckCollision(Collider col1,Collider col2);
+        Collider( CollisionType collisionType,ColliderMask mask,GeometryShape shape,float weight, const sf::Transform &transform=sf::Transform::Identity);
 };
 #endif //ICOLIDERABLE_H

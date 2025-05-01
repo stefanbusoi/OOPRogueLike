@@ -7,7 +7,7 @@
 #include <ostream>
 
 #include "GameObject.hpp"
-#include "IRenderable.hpp"
+#include "Render/IRenderable.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
 class GameMap:public GameObject,public IRenderable{

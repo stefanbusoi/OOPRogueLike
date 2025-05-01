@@ -58,26 +58,34 @@ endif()
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/main.cpp
-        CPP_Files/Camera.cpp
+        CPP_Files/Render/Camera.cpp
         CPP_Files/GameObject.cpp
         CPP_Files/Game.cpp
         CPP_Files/Player.cpp
         CPP_Files/Player.hpp
         CPP_Files/GameMap.cpp
         CPP_Files/GameMap.hpp
-        CPP_Files/RenderOrder.hpp
+        CPP_Files/Render/RenderOrder.hpp
         CPP_Files/UpdateOrder.hpp
-        CPP_Files/IRenderable.hpp
+        CPP_Files/Render/IRenderable.hpp
         CPP_Files/gameObjectComp.hpp
         CPP_Files/gameObjectComp.cpp
-        CPP_Files/IRenderable.cpp
+        CPP_Files/Render/IRenderable.cpp
         CPP_Files/Collider.h
         CPP_Files/Collider.cpp
-        CPP_Files/PostProcessingShader.cpp
-        CPP_Files/PostProcessingShader.h
+        CPP_Files/Render/PostProcessingShader.cpp
+        CPP_Files/Render/PostProcessingShader.h
         CPP_Files/UtilityiesFunctions.hpp
-        CPP_Files/ColisionPrimitive.cpp
-        CPP_Files/ColisionPrimitive.hpp
+        CPP_Files/Render/DebugMenu.cpp
+        CPP_Files/Render/DebugMenu.hpp
+        CPP_Files/Resources.cpp
+        CPP_Files/Resources.hpp
+        CPP_Files/Exceptions/GameLogicException.cpp
+        CPP_Files/Exceptions/GameLogicException.hpp
+        CPP_Files/Exceptions/ShaderExceptions.cpp
+        CPP_Files/Exceptions/ShaderExceptions.hpp
+        CPP_Files/Exceptions/FileException.cpp
+        CPP_Files/Exceptions/FileException.hpp
 )
 
 

@@ -1,5 +1,5 @@
 #include "gameObjectComp.hpp"
-#include "IRenderable.hpp"
+#include "Render/IRenderable.hpp"
 #include "GameObject.hpp"
 
 bool gameObjectComp::operator()(const GameObject *lhs, const GameObject *rhs) const {

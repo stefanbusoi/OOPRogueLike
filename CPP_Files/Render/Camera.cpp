@@ -5,7 +5,8 @@
 #include "Camera.hpp"
 
 
-#include "Game.hpp"
+#include "../Game.hpp"
+#include "../Exceptions/GameLogicException.hpp"
 
 Camera::~Camera() {
 }
@@ -16,6 +17,8 @@ Camera::Camera( const std::string &name, const sf::Transform &transform,GameObje
                 if (m_player!=nullptr)
                         break;
         }
+        if (m_player==nullptr)
+                throw GameLogicException("Player does not exist");
         m_updateOrder=UpdateOrder::Camera;
 }
 

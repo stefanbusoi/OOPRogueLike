@@ -3,14 +3,15 @@
 
 #include "PostProcessingShader.h"
 
-#include "Game.hpp"
+#include "../Game.hpp"
+#include "../Exceptions/GameLogicException.hpp"
 
 
 PostProcessingShader::PostProcessingShader(std::string name, sf::Transform transform): GameObject(name,transform) {
     m_renderOrder=RenderOrder::PostProcessing;
     m_shader=new sf::Shader();
         if (!m_shader->loadFromFile("Shaders/PostProcessingShader.frag", sf::Shader::Type::Fragment)){
-            std::cerr<<"Failed to load fragment shader"<<std::endl;
+           throw GameLogicException("Failed to load fragment shader");
         }
 }
 

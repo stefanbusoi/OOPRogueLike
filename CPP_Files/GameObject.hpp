@@ -6,10 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "IRenderable.hpp"
+#include "Render/IRenderable.hpp"
 
-#include "Collider.h"
 #include "UpdateOrder.hpp"
+#include "SFML/Graphics/Transform.hpp"
+class Collider;
 class GameObject {
 protected:
     static int s_globalId;
@@ -21,7 +22,6 @@ protected:
     std::string m_name;
     GameObject* m_parent;
     UpdateOrder m_updateOrder;
-    std::vector<Collider> m_objectColliders;
 
 public:
     virtual void AddGameObjectToGame();
@@ -48,12 +48,10 @@ public:
     friend std::ostream & operator<<(std::ostream &os, const GameObject &obj);
     template <class T=GameObject>
     T* AddGameObject(std::string name="NONAME", sf::Transform transform=sf::Transform::Identity);
-
-    template <class T=GameObject>
-    T* AddGameObject(T&& temp);
+    template <class T=GameObject,class ...ARGS>
+    T* EmplaceGameObject(std::string Name,ARGS&&...);
 
 };
-
 template<class T>
 T* GameObject::AddGameObject(std::string name, sf::Transform transform) {
     T* newGameObject = new T(name,transform );
@@ -62,23 +60,11 @@ T* GameObject::AddGameObject(std::string name, sf::Transform transform) {
     return newGameObject;
 }
 
-template<class T>
-T* GameObject:: AddGameObject(T&& temp){
-    if (temp.m_parent!=nullptr) {
-        throw std::runtime_error("Can t add a game object already alocated");
-    }
-    if (temp.m_children.size()!=0) {
-        throw std::runtime_error("Can t add a game object with childs");
-    }
-    T* newGameObject = new T(std::move(temp));
-    newGameObject->m_parent = this;
-    auto* renderableComponent = dynamic_cast<IRenderable *>(newGameObject);
-    if (renderableComponent) {
-        AddGameObjectToRenderObjects(renderableComponent);
-    }
+
+template <class T, class... ARGS>
+T* GameObject::EmplaceGameObject(std::string Name,ARGS&&... args) {
+    T* newGameObject = new T(Name,std::forward<ARGS>(args)...);
+    newGameObject->SetParent(this);
     m_children.insert(newGameObject);
-    newGameObject->AddGameObjectToGame();
-
-
     return newGameObject;
 }

@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "Game.hpp"
+#include "Collider.h"
+#include "Exceptions/GameLogicException.hpp"
 int GameObject::s_globalId = 0;
 
 GameObject::GameObject(std::string name,sf::Transform transform,GameObject *parent): m_localId(s_globalId++),
@@ -45,7 +47,7 @@ void GameObject::SetParent(GameObject *p_parent) {
 
 void GameObject::update(float deltaT) {
     (void)deltaT;
-    std::cout<<"Start not implemented";
+    throw GameLogicException("GameObject::update(): Not Implemented");
 }
 
 sf::Transform & GameObject::getLocalTransform() {
@@ -75,10 +77,7 @@ sf::Transform GameObject::getGlobalTransform() {
 }
 
 
-[[maybe_unused]] void GameObject::addCollider(Collider &collider) {
-    collider.setGameObject(this);
-    Game::getInstance()->getColliders().insert(&collider);
-}
+
 
 std::ostream & operator<<(std::ostream &os, const GameObject &obj) {
     os<<"Name: "<< obj.m_name

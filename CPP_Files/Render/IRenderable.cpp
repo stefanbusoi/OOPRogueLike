@@ -1,5 +1,5 @@
 
-#include "Game.hpp"
+#include "../Game.hpp"
 IRenderable::~IRenderable() {
     if (Game::getInstance()->IsInHirarchy(dynamic_cast<GameObject *>(this))) {
         RemoveFromRenderObjects();

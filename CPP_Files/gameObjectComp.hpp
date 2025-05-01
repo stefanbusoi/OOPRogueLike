@@ -2,12 +2,13 @@
 #include <ostream>
 
 #include "GameObject.hpp"
-#include "IRenderable.hpp"
+#include "Render/IRenderable.hpp"
 
 class iRendableComp {
 public:
     bool operator()( IRenderable *lhs,  IRenderable *rhs) const;
 };
+
 
 class gameObjectComp {
     public:

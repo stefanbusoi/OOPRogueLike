@@ -1,4 +1,4 @@
-#include "Camera.hpp"
+#include "Render/Camera.hpp"
 #include "Player.hpp"
 
 #include <cmath>
@@ -14,16 +14,16 @@ void Player::update(float deltaT)  {
     float SpeedConst=500;
     sf::Vector2i pos=sf::Mouse::getPosition();
     sf::Vector2f speed;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::A)) {
+    if (isKeyPressed(sf::Keyboard::Scancode::A)) {
         speed+=sf::Vector2f({-1.0f,0.0f});
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::D)) {
+    if (isKeyPressed(sf::Keyboard::Scancode::D)) {
         speed+=sf::Vector2f({1.0f,0.0f});
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::W)) {
+    if (isKeyPressed(sf::Keyboard::Scancode::W)) {
         speed+=sf::Vector2f({0.0f,1.0f});
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::S)) {
+    if (isKeyPressed(sf::Keyboard::Scancode::S)) {
         speed+=sf::Vector2f({0.0f,-1.0f});
     }
     if (speed.x!=0||speed.y!=0) {

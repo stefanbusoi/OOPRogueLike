@@ -1,8 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include "GameObject.hpp"
-#include "Player.hpp"
+#include "../GameObject.hpp"
+#include "../Player.hpp"
 
 class Camera:public GameObject{
 

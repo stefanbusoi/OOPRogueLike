@@ -6,8 +6,10 @@
 
 #include "GameMap.hpp"
 #include "Player.hpp"
-#include "PostProcessingShader.h"
+#include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
+
+#include "Render/DebugMenu.hpp"
 
 
 Game* Game::s_instance = nullptr;
@@ -38,10 +40,12 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
         throw std::runtime_error("Failed to resize render texture");
     }
 
-    AddGameObject<Player>("Player");
-    m_camera=AddGameObject<Camera>("Camera");
-    AddGameObject<GameMap>("GameMap");
-    AddGameObject<PostProcessingShader>("PostProcessingShader");
+    EmplaceGameObject<Player>("Player");
+    m_camera=EmplaceGameObject<Camera>("Camera");
+    EmplaceGameObject<GameMap>("GameMap");
+    EmplaceGameObject<PostProcessingShader>("PostProcessingShader");
+    auto debugMenu=EmplaceGameObject<DebugMenu>("DebugMenu");
+    debugMenu->AddPrintList({"ms:{}",&m_precedentFrameTime,Type::FLOAT});
 }
 
 Game::~Game() {
@@ -70,16 +74,41 @@ void Game::exit() {
     m_window.close();
     std::cout << "Fereastra a fost inchisa\n";
 }
-float Game::processGameFrame() {
+
+void Game::handleEvents() {
+    while(const std::optional event = getWindow().pollEvent()) {
+        if (event->is<sf::Event::Closed>()) {
+            exit();
+        }
+        else if (event->is<sf::Event::Resized>()) {
+            std::cout << "New width: " << getWindow().getSize().x << '\n'
+                      << "New height: " << getWindow().getSize().y << '\n';
+        }
+        else if (event->is<sf::Event::KeyPressed>()) {
+            const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
+            if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
+                exit();
+            }
+        }else if (event->is<sf::Event::MouseButtonPressed>()) {
+            const auto* keyPressed = event->getIf<sf::Event::MouseButtonPressed>();
+            std::cout << "X: " << (keyPressed->position.x)<<",Y: "<<keyPressed->position.y ;
+        }
+    }
+}
+
+void Game::processGameFrame() {
     sf::Time deltaTime = m_clock.getElapsedTime();
     m_totalTime+=deltaTime.asSeconds();
     m_clock.restart();
-    for (const auto& gameObject:m_gameObjects) {
-        gameObject->update(deltaTime.asSeconds());
-    }
+    handleEvents();
+    if (isRunning()) {
+        for (const auto& gameObject:m_gameObjects) {
+            gameObject->update(deltaTime.asSeconds());
+        }
 
-    renderAll();
-    return  deltaTime.asSeconds();
+        renderAll();
+        m_precedentFrameTime=deltaTime.asSeconds();
+    }
 
 }
 
