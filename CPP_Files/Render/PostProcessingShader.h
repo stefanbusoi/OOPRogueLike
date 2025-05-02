@@ -9,7 +9,12 @@
 
 class PostProcessingShader:public GameObject,public IRenderable {
     sf::Shader m_shader;
-    public:
+    std::filesystem::path m_path;
+
+protected:
+    void print(std::ostream &os) const override;
+
+public:
     PostProcessingShader(std::string name, std::filesystem::path ShaderPath);
     void Render() override;
     void update(float deltaT) override;

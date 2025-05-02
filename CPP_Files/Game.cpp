@@ -105,7 +105,6 @@ void Game::processGameFrame() {
         for (const auto& gameObject:m_gameObjects) {
             gameObject->update(deltaTime.asSeconds());
         }
-
         renderAll();
         m_precedentFrameTime=deltaTime.asSeconds();
     }

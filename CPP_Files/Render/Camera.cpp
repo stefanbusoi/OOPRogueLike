@@ -8,6 +8,11 @@
 #include "../Game.hpp"
 #include "../Exceptions/GameLogicException.hpp"
 
+void Camera::print(std::ostream &os) const {
+        os<<"Class Camera";
+        GameObject::print(os);
+}
+
 Camera::~Camera() {
 }
 

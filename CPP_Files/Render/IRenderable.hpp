@@ -18,6 +18,12 @@ class IRenderable {
                     return os << "Terrain";
                 case RenderOrder::PostProcessing:
                     return os << "PostProcessing";
+                case RenderOrder::PlayerWeapons:
+                    return os << "PlayerWeapons";
+                case RenderOrder::UIPreProcessing:
+                    return os << "UIPreProcessing";
+                case RenderOrder::UIPostProcessing:
+                    return os << "UIPostProcessing";
                 default:
                     return os;
             }

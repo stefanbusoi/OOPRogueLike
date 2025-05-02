@@ -4,6 +4,6 @@
 
 #include "FileException.hpp"
 
-const char * FileException::what() const {
+const char * FileException::what()  {
   return m_message.c_str();
 }

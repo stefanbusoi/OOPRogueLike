@@ -50,6 +50,8 @@ void GameObject::update(float deltaT) {
     throw GameLogicException("GameObject::update(): Not Implemented");
 }
 
+
+
 sf::Transform & GameObject::getLocalTransform() {
     return m_transform;
 }
@@ -78,14 +80,16 @@ sf::Transform GameObject::getGlobalTransform() {
 
 
 
-
-std::ostream & operator<<(std::ostream &os, const GameObject &obj) {
-    os<<"Name: "<< obj.m_name
-            <<" Id:"<< obj.m_localId
+void GameObject::print(std::ostream& os) const{
+    os<<"Name: "<< m_name
+            <<" Id:"<< m_localId
             << " GameObjects:{ ";
-    for (const auto x:obj.m_children) {
+    for (const auto x:m_children) {
         os<<x->m_name<<" ";
     }
     os<<"}";
+}
+std::ostream & operator<<(std::ostream &os, const GameObject &obj) {
+    obj.print(os);
     return os;
 }

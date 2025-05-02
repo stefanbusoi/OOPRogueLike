@@ -86,6 +86,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Exceptions/ShaderExceptions.hpp
         CPP_Files/Exceptions/FileException.cpp
         CPP_Files/Exceptions/FileException.hpp
+        CPP_Files/Render/ShapeRenderer.cpp
+        CPP_Files/Render/ShapeRenderer.hpp
 )
 
 

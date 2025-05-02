@@ -6,8 +6,7 @@
 
 #include "Game.hpp"
 #include "UtilityiesFunctions.hpp"
-
-
+#include "Render/ShapeRenderer.hpp"
 Player::~Player() = default;
 
 void Player::update(float deltaT)  {
@@ -38,12 +37,7 @@ void Player::update(float deltaT)  {
 }
 void Player::Render() {
     const Camera& camera=Game::getInstance()->getCamera();
-    sf::Transform transform=m_transform;
-
-    sf::CircleShape shape(40.f);
-    shape.setOrigin({40, 40});
-    shape.setFillColor(sf::Color(100, 250, 50));
-    camera.draw(shape,transform);
+    sf::Transform transform=getGlobalTransform();
 
     sf::RectangleShape rect({10.0f,40.0f});
     rect.setOrigin({5, 0});
@@ -51,6 +45,11 @@ void Player::Render() {
     rect.setFillColor(sf::Color(0, 0, 0));
     camera.draw(rect,transform);
 
+}
+
+void Player::print(std::ostream &os) const {
+    os<<"CLASS Player:";
+    GameObject::print(os);
 }
 
 
@@ -65,12 +64,13 @@ void Player::RemoveGameObjectFromGame() {
 }
 
 Player::Player( const std::string &name, const sf::Transform &transform,GameObject* parent): GameObject(name, transform,parent) {
-    m_renderOrder=RenderOrder::Player;
+    m_renderOrder=RenderOrder::PlayerWeapons;
     m_updateOrder=UpdateOrder::Default;
+    sf::Transform tr=sf::Transform::Identity;
+    tr=tr.scale(sf::Vector2f(40.0f,40.0f));
+    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Square);
+    //3STAR: ADD COLISIONS
+    //EmplaceGameObject<Collider>();
 
-    //this->addCollider();
 }
 
-std::ostream & operator<<(std::ostream &os, const Player &obj) {
-    return os <<"CLASS Player "<<static_cast<const GameObject &>(obj);
-}

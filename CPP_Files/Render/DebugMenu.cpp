@@ -43,6 +43,11 @@ void DebugMenu::Render() {
     }
 }
 
+void DebugMenu::print(std::ostream &os) const {
+  os<<"Class DebugMenu:";
+  GameObject::print(os);
+}
+
 void DebugMenu::AddGameObjectToGame() {
   GameObject::AddGameObjectToGame();
   IRenderable::AddToRenderObjects();
@@ -51,4 +56,9 @@ void DebugMenu::AddGameObjectToGame() {
 void DebugMenu::RemoveGameObjectFromGame() {
   GameObject::RemoveGameObjectFromGame();
   IRenderable::RemoveFromRenderObjects();
+}
+
+std::ostream & operator<<(std::ostream &os, const DebugMenu &obj) {
+    obj.print(os);
+    return os;
 }

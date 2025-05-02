@@ -8,6 +8,10 @@ class Camera:public GameObject{
 
     sf::RenderWindow* m_window;
     Player* m_player=nullptr;
+
+protected:
+    void print(std::ostream &os) const override;
+
 public:
     friend std::ostream & operator<<(std::ostream &os, const Camera &obj);
     ~Camera() override;

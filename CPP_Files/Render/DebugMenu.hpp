@@ -5,6 +5,8 @@
 #ifndef DEBUGMENU_HPP
 #define DEBUGMENU_HPP
 
+#include <ostream>
+
 #include "../GameObject.hpp"
 
 enum class Type{
@@ -29,9 +31,14 @@ public:
   void AddPrintList(PrintList p) {
     m_printList.push_back(p);
   }
+
+protected:
+  friend std::ostream & operator<<(std::ostream &os, const DebugMenu &obj) ;
+  void print(std::ostream &os) const override;
+
+public:
   void AddGameObjectToGame() override;
   void update(float deltaT) override;
-
   void RemoveGameObjectFromGame() override;
 };
 

@@ -7,8 +7,14 @@
 #include "../Exceptions/FileException.hpp"
 
 
+void PostProcessingShader::print(std::ostream &os) const {
+    os<<"Class PPShader: Shader:"<<m_path.filename()<<",";
+    GameObject::print(os);
+}
+
 PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::path ShaderPath): GameObject(name,sf::Transform::Identity) {
     m_renderOrder=RenderOrder::PostProcessing;
+    m_path=ShaderPath;
         if (!m_shader.loadFromFile(ShaderPath, sf::Shader::Type::Fragment)){
            throw FileException("Failed to load fragment shader:\""+ShaderPath.string()+"\"");
         }

@@ -8,6 +8,11 @@
 
 #include "Game.hpp"
 
+void GameMap::print(std::ostream &os) const {
+    os<<"CLASS GameMap:";
+    GameObject::print(os);
+}
+
 void GameMap::Render() {
     Game& instance=*Game::getInstance();
     Camera& camera=instance.getCamera();
@@ -51,6 +56,3 @@ void GameMap::RemoveGameObjectFromGame() {
     IRenderable::RemoveFromRenderObjects();
 }
 
-std::ostream & operator<<(std::ostream &os, const GameMap &obj) {
-    return os<<"CLASS GameMap "<< static_cast<const GameObject &>(obj);
-}

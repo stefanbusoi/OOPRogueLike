@@ -31,6 +31,7 @@ class Collider:public GameObject{
         ColliderMask m_colliderMask;
         GeometryShape m_shape;
         float m_weight;
+
     public:
         void AddGameObjectToGame() override;
         void RemoveGameObjectFromGame() override;

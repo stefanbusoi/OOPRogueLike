@@ -15,6 +15,7 @@ class GameObject {
 protected:
     static int s_globalId;
     int m_localId;
+    virtual void print(std::ostream& os)const;
 
 protected:
     sf::Transform m_transform;
@@ -46,10 +47,12 @@ public:
     void AddGameObjectToRenderObjects(IRenderable* game_object);
     void addCollider(Collider& collider);
     friend std::ostream & operator<<(std::ostream &os, const GameObject &obj);
+
     template <class T=GameObject>
     T* AddGameObject(std::string name="NONAME", sf::Transform transform=sf::Transform::Identity);
+
     template <class T=GameObject,class ...ARGS>
-    T* EmplaceGameObject(std::string Name,ARGS&&...);
+    T* EmplaceGameObject(const std::string& Name,ARGS&&...);
 
 };
 template<class T>
@@ -62,7 +65,7 @@ T* GameObject::AddGameObject(std::string name, sf::Transform transform) {
 
 
 template <class T, class... ARGS>
-T* GameObject::EmplaceGameObject(std::string Name,ARGS&&... args) {
+T* GameObject::EmplaceGameObject(const std::string& Name,ARGS&&... args) {
     T* newGameObject = new T(Name,std::forward<ARGS>(args)...);
     newGameObject->SetParent(this);
     m_children.insert(newGameObject);

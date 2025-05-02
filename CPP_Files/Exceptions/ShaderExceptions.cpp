@@ -4,6 +4,6 @@
 
 #include "ShaderExceptions.hpp"
 
-const char * ShaderExceptions::what() const {
+const char * ShaderExceptions::what()  {
   return m_message.c_str();
 }

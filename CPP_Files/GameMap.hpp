@@ -12,10 +12,13 @@
 
 class GameMap:public GameObject,public IRenderable{
     sf::Shader m_shader;
+
+protected:
+    void print(std::ostream &os) const override;
+
 public:
     void Render() override;
     explicit GameMap( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
-    friend std::ostream & operator<<(std::ostream &os, const GameMap &obj);
     ~GameMap() override;
     void update(float deltaT) override;
 

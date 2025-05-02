@@ -4,6 +4,6 @@
 
 #include "GameLogicException.hpp"
 
-const char * GameLogicException::what() const{
+const char * GameLogicException::what() {
   return m_message.c_str();
 }
