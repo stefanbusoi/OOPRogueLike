@@ -7,11 +7,10 @@
 #include "../Exceptions/FileException.hpp"
 
 
-PostProcessingShader::PostProcessingShader(std::string name, sf::Transform transform): GameObject(name,transform) {
+PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::path ShaderPath): GameObject(name,sf::Transform::Identity) {
     m_renderOrder=RenderOrder::PostProcessing;
-    m_shader=new sf::Shader();
-        if (!m_shader->loadFromFile("Shaders/PostProcessingShader.frag", sf::Shader::Type::Fragment)){
-           throw FileException("Failed to load fragment shader");
+        if (!m_shader.loadFromFile(ShaderPath, sf::Shader::Type::Fragment)){
+           throw FileException("Failed to load fragment shader:\""+ShaderPath.string()+"\"");
         }
 }
 
@@ -26,14 +25,14 @@ void PostProcessingShader::Render() {
 
     renderTexture.display();
     float time=Game::getInstance()->getTotalTime();
-    m_shader->setUniform("tex", renderTexture.getTexture());
-    m_shader->setUniform("time", time);
-    m_shader->setUniform("resolution",sf::Vector2f(window.getSize().x,window.getSize().y));
-    m_shader->setUniform("position",camera.getTransform().transformPoint({0,0}));
-    renderTextureB.draw(fullscreenQuad,m_shader);
+    m_shader.setUniform("tex", renderTexture.getTexture());
+    m_shader.setUniform("time", time);
+    m_shader.setUniform("resolution",sf::Vector2f(window.getSize().x,window.getSize().y));
+    m_shader.setUniform("position",camera.getTransform().transformPoint({0,0}));
+    renderTextureB.draw(fullscreenQuad,&m_shader);
     renderTextureB.display();
-    m_shader->setUniform("tex", renderTextureB.getTexture());
-    renderTexture.draw(fullscreenQuad,m_shader);
+    m_shader.setUniform("tex", renderTextureB.getTexture());
+    renderTexture.draw(fullscreenQuad,&m_shader);
 }
 
 void PostProcessingShader::update([[maybe_unused]]float deltaT) {
@@ -49,3 +48,4 @@ void PostProcessingShader::RemoveGameObjectFromGame() {
     GameObject::RemoveGameObjectFromGame();
     IRenderable::RemoveFromRenderObjects();
 }
+

@@ -43,7 +43,7 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     EmplaceGameObject<Player>("Player");
     m_camera=EmplaceGameObject<Camera>("Camera");
     EmplaceGameObject<GameMap>("GameMap");
-    EmplaceGameObject<PostProcessingShader>("PostProcessingShader");
+    EmplaceGameObject<PostProcessingShader>("PostProcessingShader",std::filesystem::path("Shaders/PostProcessingShader.frag"));
     auto debugMenu=EmplaceGameObject<DebugMenu>("DebugMenu");
     debugMenu->AddPrintList({"ms:{}",&m_precedentFrameTime,Type::FLOAT});
 }

@@ -12,7 +12,7 @@ private:
 public:
   explicit GameLogicException(const std::string& message):m_message(message ){
 #ifndef NDEBUG
-    __debugbreak();
+    //__debugbreak();
 #endif
   }
 

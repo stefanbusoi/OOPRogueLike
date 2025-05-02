@@ -8,7 +8,7 @@ private:
 public:
   explicit ShaderExceptions(const std::string& message):m_message(message ){
 #ifndef NDEBUG
-    __debugbreak();
+    //__debugbreak();
 #endif
   }
   const char *what() {

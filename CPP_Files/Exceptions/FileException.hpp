@@ -10,7 +10,7 @@ private:
 public:
   explicit FileException(const std::string& message):m_message(message ){
 #ifndef NDEBUG
-    __debugbreak();
+   // __debugbreak();
 #endif
   }
 

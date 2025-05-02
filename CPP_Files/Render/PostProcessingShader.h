@@ -9,9 +9,9 @@
 
 
 class PostProcessingShader:public GameObject,public IRenderable {
-    sf::Shader* m_shader;
+    sf::Shader m_shader;
     public:
-    PostProcessingShader(std::string name,sf::Transform transform=sf::Transform::Identity);
+    PostProcessingShader(std::string name, std::filesystem::path ShaderPath);
     void Render() override;
     void update(float deltaT) override;
 
