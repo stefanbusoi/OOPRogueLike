@@ -3,3 +3,7 @@
 //
 
 #include "FileException.hpp"
+
+const char * FileException::what() const {
+  return m_message.c_str();
+}

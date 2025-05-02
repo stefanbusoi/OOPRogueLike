@@ -3,3 +3,7 @@
 //
 
 #include "ShaderExceptions.hpp"
+
+const char * ShaderExceptions::what() const {
+  return m_message.c_str();
+}

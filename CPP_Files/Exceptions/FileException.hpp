@@ -14,8 +14,6 @@ public:
 #endif
   }
 
-  const char *what() {
-    return m_message.c_str();
-  }
+  const char *what() const override;
 };
 

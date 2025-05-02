@@ -3,3 +3,7 @@
 //
 
 #include "GameLogicException.hpp"
+
+const char * GameLogicException::what() const{
+  return m_message.c_str();
+}
