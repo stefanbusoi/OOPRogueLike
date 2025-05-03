@@ -6,6 +6,7 @@
 
 
 #include "../Game.hpp"
+#include "../UtilityiesFunctions.hpp"
 #include "../Exceptions/GameLogicException.hpp"
 
 void Camera::print(std::ostream &os) const {
@@ -32,15 +33,17 @@ sf::Transform& Camera::getTransform(){
 }
 void Camera::update([[maybe_unused]]float deltaT) {
         sf::Transform transform=sf::Transform::Identity;
-        m_transform=transform.translate(m_player->getGlobalTransform().transformPoint(sf::Vector2f(0.0f,0.0f)));
+        m_transform=transform.translate(Utils::getPosition(m_player->getGlobalTransform()));
 }
 
 [[maybe_unused]] float Camera::getViewRadius() const {return sf::Vector2f({m_window->getSize().x/-2.0f,m_window->getSize().y/-2.0f}).length()/2.0f;}
 
 void Camera::draw(const sf::Drawable& drawable, const sf::Transform &transform) const {
-        sf::Transform tr=m_transform;
-        tr.translate({m_window->getSize().x/-2.0f,m_window->getSize().y/-2.0f});
-        Game::getInstance()->getRenderTexture().draw(drawable,tr.getInverse()*transform);
+        sf::Transform viewTransform=m_transform;
+        viewTransform.translate({m_window->getSize().x/-2.0f,m_window->getSize().y/-2.0f});
+
+        sf::Transform finalTransform = viewTransform.getInverse() * transform;
+        Game::getInstance()->getRenderTexture().draw(drawable, finalTransform);
 }
 
 std::ostream & operator<<(std::ostream &os, const Camera &obj) {

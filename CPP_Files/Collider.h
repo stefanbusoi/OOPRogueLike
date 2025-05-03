@@ -23,7 +23,10 @@ enum class GeometryShape{
  *
  */
 struct collisionData {
-    int x;
+    bool collided;
+    sf::Vector2f normal;
+    sf::Vector2f contactPoint;
+    float penetration;
 };
 class Collider:public GameObject{
         sf::Transform m_transform;
@@ -43,7 +46,7 @@ class Collider:public GameObject{
 
         collisionData ColSqueareSquare(const sf::Transform & Tr1, const sf::Transform & Tr2);
 
-        collisionData CheckCollision(Collider col1,Collider col2);
+        collisionData CheckCollision(const Collider& col1,const Collider& col2);
         Collider( CollisionType collisionType,ColliderMask mask,GeometryShape shape,float weight, const sf::Transform &transform=sf::Transform::Identity);
 };
 #endif //ICOLIDERABLE_H

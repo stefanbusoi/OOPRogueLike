@@ -20,10 +20,10 @@ void Player::update(float deltaT)  {
         speed+=sf::Vector2f({1.0f,0.0f});
     }
     if (isKeyPressed(sf::Keyboard::Scancode::W)) {
-        speed+=sf::Vector2f({0.0f,1.0f});
+        speed+=sf::Vector2f({0.0f,-1.0f});
     }
     if (isKeyPressed(sf::Keyboard::Scancode::S)) {
-        speed+=sf::Vector2f({0.0f,-1.0f});
+        speed+=sf::Vector2f({0.0f,1.0f});
     }
     if (speed.x!=0||speed.y!=0) {
         speed=speed.normalized();
@@ -68,9 +68,9 @@ Player::Player( const std::string &name, const sf::Transform &transform,GameObje
     m_updateOrder=UpdateOrder::Default;
     sf::Transform tr=sf::Transform::Identity;
     tr=tr.scale(sf::Vector2f(40.0f,40.0f));
-    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Square);
-    //3STAR: ADD COLISIONS
-    //EmplaceGameObject<Collider>();
+    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
 
+     auto x=EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,20.0f,tr)->getGlobalTransform();
+    std::cout<<Utils::getSize(x).x;
 }
 

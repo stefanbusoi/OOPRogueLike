@@ -17,7 +17,12 @@ class Game :public GameObject{
     Camera* m_camera;
     sf::RenderTexture m_renderTexture;
     static Game* s_instance;
-    std::set<Collider*> m_colliders;
+    GameObject* game_object_;
+    Player* player_;
+    sf::Vector2f m_transform_Player;
+    sf::Vector2f m_Position_Camera;
+    sf::Vector2f m_Scale_Camera;
+    std::set<Collider*,ColliderComp> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;
     void renderAll();
@@ -40,7 +45,7 @@ public:
     void processGameFrame();
     std::set<GameObject*,gameObjectComp>& getGameObjects(){return m_gameObjects;}
     std::set<IRenderable*,iRendableComp>& getRenderObjects(){return m_renderableObjects;};
-    std::set<Collider*>& getColliders(){return m_colliders;}
+    std::set<Collider*,ColliderComp>& getColliders(){return m_colliders;}
     Game(const Game&) = delete;
     Game& operator=(const Game&) = delete;
 

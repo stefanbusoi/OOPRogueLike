@@ -9,7 +9,9 @@
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
+#include "UtilityiesFunctions.hpp"
 #include "Render/DebugMenu.hpp"
+#include "Render/ShapeRenderer.hpp"
 
 
 Game* Game::s_instance = nullptr;
@@ -17,7 +19,9 @@ Game* Game::s_instance = nullptr;
 void Game::renderAll() {
     m_window.display();
     m_window.clear();
-
+    m_transform_Player=Utils::getPosition(player_->getGlobalTransform());
+    m_Position_Camera=Utils::getPosition(getCamera().getGlobalTransform());
+    m_Scale_Camera=Utils::getSize(getCamera().getGlobalTransform());
     for (const auto& gameObject:m_renderableObjects) {
          gameObject->Render();
     }
@@ -30,7 +34,7 @@ void Game::renderAll() {
 
 Game *Game::getInstance() {return s_instance;}
 
-Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject(Title){
+Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject(Title) {
     m_totalTime=0.0f;
     if (s_instance==nullptr) {
         s_instance=this;
@@ -40,12 +44,25 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
         throw std::runtime_error("Failed to resize render texture");
     }
 
-    EmplaceGameObject<Player>("Player");
+     player_=EmplaceGameObject<Player>("Player");
     m_camera=EmplaceGameObject<Camera>("Camera");
     EmplaceGameObject<GameMap>("GameMap");
     EmplaceGameObject<PostProcessingShader>("PostProcessingShader",std::filesystem::path("Shaders/PostProcessingShader.frag"));
     auto debugMenu=EmplaceGameObject<DebugMenu>("DebugMenu");
+
+    sf::Transform transform=sf::Transform::Identity;
+    transform.translate({100.0f,100.0f});
+    transform.scale({40.0f,40.0f});
+    game_object_=EmplaceGameObject<GameObject>("GameObject",transform);
+
+
+    game_object_->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,20.0f,sf::Transform::Identity);
+
+    game_object_->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
     debugMenu->AddPrintList({"ms:{}",&m_precedentFrameTime,Type::FLOAT});
+    debugMenu->AddPrintList({"Player Pos:{} and {}",&m_transform_Player,Type::INT2F});
+    debugMenu->AddPrintList({"Camera Pos: {} and {}",&m_Position_Camera,Type::INT2F});
+    debugMenu->AddPrintList({"Camera Pos: {} and {}",&m_Scale_Camera,Type::INT2F});
 }
 
 Game::~Game() {

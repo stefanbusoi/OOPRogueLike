@@ -8,7 +8,8 @@ namespace Utils{
     return tr.transformPoint(sf::Vector2f(0, 0));
   }
   inline sf::Vector2f getSize(const sf::Transform& tr) {
-    return sf::Vector2f(tr.transformPoint(sf::Vector2f(1,0)).length(),tr.transformPoint(sf::Vector2f(0,1)).length());
+    return sf::Vector2f((tr.transformPoint(sf::Vector2f(1,0))-tr.transformPoint({0.0f,0.0f})).length()
+                       ,(tr.transformPoint(sf::Vector2f(0,1))-tr.transformPoint({0.0f,0.0f})).length());
   }
 
   inline sf::Angle getAngle(const sf::Transform& tr) {

@@ -47,7 +47,6 @@ void GameObject::SetParent(GameObject *p_parent) {
 
 void GameObject::update(float deltaT) {
     (void)deltaT;
-    throw GameLogicException("GameObject::update(): Not Implemented");
 }
 
 
@@ -70,14 +69,12 @@ void GameObject::RemoveGameObjectFromGame() {
     }
 }
 
-sf::Transform GameObject::getGlobalTransform() {
+sf::Transform GameObject::getGlobalTransform() const {
     if (m_parent) {
-        sf::Transform localTransform = m_parent->getLocalTransform();
-        return localTransform.combine(m_transform);
+        return m_parent->getGlobalTransform() * m_transform;
     }
     return m_transform;
 }
-
 
 
 void GameObject::print(std::ostream& os) const{

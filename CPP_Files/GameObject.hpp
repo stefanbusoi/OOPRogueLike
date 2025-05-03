@@ -41,7 +41,7 @@ public:
     const std::set<GameObject*>& getChildrens() {return m_children;}
     GameObject* getParent() {return m_parent;}
     int GetId() const {return m_localId;}
-    sf::Transform getGlobalTransform();
+    sf::Transform getGlobalTransform() const;
     sf::Transform& getLocalTransform();
     [[maybe_unused]] void setName(const std::string& name) {m_name=name;}
     void AddGameObjectToRenderObjects(IRenderable* game_object);
@@ -52,7 +52,7 @@ public:
     T* AddGameObject(std::string name="NONAME", sf::Transform transform=sf::Transform::Identity);
 
     template <class T=GameObject,class ...ARGS>
-    T* EmplaceGameObject(const std::string& Name,ARGS&&...);
+    T* EmplaceGameObject(ARGS&&...);
 
 };
 template<class T>
@@ -65,8 +65,8 @@ T* GameObject::AddGameObject(std::string name, sf::Transform transform) {
 
 
 template <class T, class... ARGS>
-T* GameObject::EmplaceGameObject(const std::string& Name,ARGS&&... args) {
-    T* newGameObject = new T(Name,std::forward<ARGS>(args)...);
+T* GameObject::EmplaceGameObject(ARGS&&... args) {
+    T* newGameObject = new T(std::forward<ARGS>(args)...);
     newGameObject->SetParent(this);
     m_children.insert(newGameObject);
     return newGameObject;

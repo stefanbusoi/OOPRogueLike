@@ -8,6 +8,7 @@
 
 #include "../Game.hpp"
 #include "../Resources.hpp"
+#include "../Exceptions/GameLogicException.hpp"
 
 DebugMenu::DebugMenu( const std::string &name, const sf::Transform &transform,GameObject* parent):
 GameObject(name, transform,parent)
@@ -38,7 +39,11 @@ void DebugMenu::Render() {
         Game::getInstance()->getRenderTexture().draw(text);
         continue;
       }
-      throw std::runtime_error("Type not implemented");
+      if (p.type==Type::INT2F) {
+        text.setString(std::vformat(p.formatString,std::make_format_args(static_cast<sf::Vector2f*>(p.pt)->x,static_cast<sf::Vector2f*>(p.pt)->y)));
+        Game::getInstance()->getRenderTexture().draw(text);
+        continue;      }
+      throw GameLogicException("Type not implemented");
 
     }
 }

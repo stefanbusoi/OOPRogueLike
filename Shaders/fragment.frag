@@ -9,6 +9,7 @@ void main()
     vec2 ShaderPosition=position/100;
 
     vec2 uv = gl_FragCoord.xy / vec2(1920, 1080);
+    uv.y=-uv.y;
 
     //uv = vec2(pow(uv.x-.5,cos(time)),pow(uv.y-.5,sin(time))) ;
 

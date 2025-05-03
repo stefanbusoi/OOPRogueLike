@@ -15,5 +15,9 @@ class gameObjectComp {
     bool operator()(const GameObject *lhs, const GameObject *rhs) const;
 
 };
+class ColliderComp {
+    public:
+    bool operator()(const Collider *lhs, const Collider *rhs) const;
+};
 
 
