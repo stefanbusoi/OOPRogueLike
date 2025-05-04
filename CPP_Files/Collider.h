@@ -29,7 +29,6 @@ struct collisionData {
     float penetration;
 };
 class Collider:public GameObject{
-        sf::Transform m_transform;
         CollisionType m_collisionType;
         ColliderMask m_colliderMask;
         GeometryShape m_shape;

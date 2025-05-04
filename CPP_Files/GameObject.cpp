@@ -55,6 +55,16 @@ sf::Transform & GameObject::getLocalTransform() {
     return m_transform;
 }
 
+void GameObject::MoveTransform(sf::Vector2f movement) {
+    m_transform.translate(movement);
+}
+
+void GameObject::GlobalMoveTransform(sf::Vector2f movement) {
+    sf::Transform transform=sf::Transform::Identity;
+    transform.translate(movement);
+    m_transform=m_parent->getGlobalTransform().getInverse()*transform*getGlobalTransform();
+}
+
 void GameObject::AddGameObjectToGame() {
     Game::getInstance()->getGameObjects().insert(this);
     for (auto i:getChildrens()) {

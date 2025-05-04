@@ -19,9 +19,6 @@ Game* Game::s_instance = nullptr;
 void Game::renderAll() {
     m_window.display();
     m_window.clear();
-    m_transform_Player=Utils::getPosition(player_->getGlobalTransform());
-    m_Position_Camera=Utils::getPosition(getCamera().getGlobalTransform());
-    m_Scale_Camera=Utils::getSize(getCamera().getGlobalTransform());
     for (const auto& gameObject:m_renderableObjects) {
          gameObject->Render();
     }
@@ -53,16 +50,19 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     sf::Transform transform=sf::Transform::Identity;
     transform.translate({100.0f,100.0f});
     transform.scale({40.0f,40.0f});
-    game_object_=EmplaceGameObject<GameObject>("GameObject",transform);
+    for (auto i=1;i<=1;i++) {
+        for (auto j=1;j<=1;j++) {
+            sf::Transform transform=sf::Transform::Identity;
+            transform.translate({i*80.0f,j*80.0f});
+            transform.scale({40.0f,40.0f});
+            game_object_=EmplaceGameObject<GameObject>("GameObject",transform);
+            game_object_->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,20.0f,sf::Transform::Identity);
+            game_object_->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
 
-
-    game_object_->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,20.0f,sf::Transform::Identity);
-
-    game_object_->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
-    debugMenu->AddPrintList({"ms:{}",&m_precedentFrameTime,Type::FLOAT});
-    debugMenu->AddPrintList({"Player Pos:{} and {}",&m_transform_Player,Type::INT2F});
-    debugMenu->AddPrintList({"Camera Pos: {} and {}",&m_Position_Camera,Type::INT2F});
-    debugMenu->AddPrintList({"Camera Pos: {} and {}",&m_Scale_Camera,Type::INT2F});
+        }
+    }
+   debugMenu->AddPrintList({"ms:{}",&m_precedentFrameTime,Type::FLOAT});
+    debugMenu->AddPrintList({"FPS:{}",&fps,Type::FLOAT});
 }
 
 Game::~Game() {
@@ -124,6 +124,7 @@ void Game::processGameFrame() {
         }
         renderAll();
         m_precedentFrameTime=deltaTime.asSeconds();
+        fps=1.0f/deltaTime.asSeconds();
     }
 
 }

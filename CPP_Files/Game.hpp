@@ -14,14 +14,13 @@ class Game :public GameObject{
     sf::Clock m_clock;
     float m_totalTime;
     float m_precedentFrameTime;
+    float fps;
     Camera* m_camera;
     sf::RenderTexture m_renderTexture;
     static Game* s_instance;
     GameObject* game_object_;
     Player* player_;
-    sf::Vector2f m_transform_Player;
-    sf::Vector2f m_Position_Camera;
-    sf::Vector2f m_Scale_Camera;
+
     std::set<Collider*,ColliderComp> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;

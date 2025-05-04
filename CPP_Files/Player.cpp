@@ -7,6 +7,8 @@
 #include "Game.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Render/ShapeRenderer.hpp"
+#include "Weapons/Firearm.hpp"
+
 Player::~Player() = default;
 
 void Player::update(float deltaT)  {
@@ -31,9 +33,9 @@ void Player::update(float deltaT)  {
     }
     pos-={960,540};
     sf::Angle ang=Utils::getAngle(m_transform);
-     speed= speed.rotatedBy(ang);
+    GlobalMoveTransform(speed);
     m_transform.rotate(sf::radians(atan2f(-pos.x,pos.y)+ang.asRadians()));
-    m_transform.translate(speed);
+
 }
 void Player::Render() {
     const Camera& camera=Game::getInstance()->getCamera();
@@ -67,10 +69,11 @@ Player::Player( const std::string &name, const sf::Transform &transform,GameObje
     m_renderOrder=RenderOrder::PlayerWeapons;
     m_updateOrder=UpdateOrder::Default;
     sf::Transform tr=sf::Transform::Identity;
-    tr=tr.scale(sf::Vector2f(40.0f,40.0f));
+    tr.scale(sf::Vector2f(40.0f,40.0f));
     EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
-
-     auto x=EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,20.0f,tr)->getGlobalTransform();
-    std::cout<<Utils::getSize(x).x;
+    sf::Transform tr2=sf::Transform::Identity;
+    tr2.scale(sf::Vector2f(40.0f,40.0f));
+    EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,112.0f,tr2);
+    m_firearm=EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }
 

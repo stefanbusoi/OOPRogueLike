@@ -7,9 +7,9 @@
 
 
  Collider::Collider( CollisionType collisionType,
-                           ColliderMask mask,GeometryShape shape ,float weight, const sf::Transform &transform)
+                          ColliderMask mask,GeometryShape shape ,float weight, const sf::Transform &transform)
     :
-      m_transform(transform),
+      GameObject("COLLIDER",transform,nullptr),
       m_collisionType(collisionType),
       m_colliderMask(mask),
       m_shape(shape),
@@ -29,16 +29,27 @@ void Collider::RemoveGameObjectFromGame(){
 }
 void Collider::update(float deltaTime) {
   std::set<Collider*,ColliderComp>& colliders = Game::getInstance()->getColliders();
-  for (const auto& collider:colliders) {
+  for (const auto& collider:colliders)
+   {
     if (collider->GetId()==this->GetId())
       continue;
     auto collisionData=CheckCollision(*this,*collider);
+
     if (collisionData.collided==true) {
-      //5star: solve this code
         auto Obj1=this->m_parent;
         auto Obj2=collider->m_parent;
-        Obj1->getLocalTransform().translate(collisionData.normal*collisionData.penetration/2.0f);
-        Obj2->getLocalTransform().translate(-collisionData.normal*collisionData.penetration/2.0f);
+
+        auto mass1=this->m_weight;
+        auto mass2=collider->m_weight;
+
+        float totalWeight = mass1+mass2;
+        if (totalWeight==0) totalWeight = 1;//3star: consider an exception
+
+        float move1=mass2/totalWeight;
+        float move2=mass1/totalWeight;
+
+        Obj1->GlobalMoveTransform(-collisionData.normal*collisionData.penetration*move1);
+        Obj2->GlobalMoveTransform(collisionData.normal*collisionData.penetration*move2);
     }
   }
 
@@ -64,13 +75,12 @@ collisionData Collider::ColCircleCircle(const sf::Transform &tr1, const sf::Tran
     float penetration = radiusSum - distance;
 
     data.collided = true;
-    data.normal = normal;
+    data.normal = normal.normalized();
     data.penetration = penetration;
     data.contactPoint = pos1 + normal * (radius1 - penetration * 0.5f);
   } else {
     data.collided = false;
   }
-  std::cout << data.collided << std::endl;
   return data;
 }
 

@@ -29,7 +29,8 @@ void main()
 
 
     vec3 color=mod(floor(uv.x+ShaderPosition.x)+floor(uv.y+ShaderPosition.y),2)==0?vec3(0.4,0.4,0.4):vec3(0.2,0.2,0.2);
-    float d=distance(uv,center);
+    float d=distance(vec2(uv.x,-uv.y),center);
+
 
     float modTime = abs(cos(time));
 

@@ -88,6 +88,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Exceptions/FileException.hpp
         CPP_Files/Render/ShapeRenderer.cpp
         CPP_Files/Render/ShapeRenderer.hpp
+        CPP_Files/Weapons/Firearm.cpp
+        CPP_Files/Weapons/Firearm.hpp
 )
 
 

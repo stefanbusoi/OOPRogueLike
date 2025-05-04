@@ -4,12 +4,13 @@
 
 #include "GameObject.hpp"
 #include "Render/IRenderable.hpp"
+#include "Weapons/Firearm.hpp"
 
 
 class Player :public GameObject,public IRenderable{
     void update(float deltaT) override;
     void Render() override;
-
+    Firearm* m_firearm;
 protected:
     void print(std::ostream &os) const override;
 

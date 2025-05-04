@@ -43,6 +43,8 @@ public:
     int GetId() const {return m_localId;}
     sf::Transform getGlobalTransform() const;
     sf::Transform& getLocalTransform();
+    void MoveTransform(sf::Vector2f movement);
+    void GlobalMoveTransform(sf::Vector2f movement);
     [[maybe_unused]] void setName(const std::string& name) {m_name=name;}
     void AddGameObjectToRenderObjects(IRenderable* game_object);
     void addCollider(Collider& collider);
