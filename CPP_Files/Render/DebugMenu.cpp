@@ -4,7 +4,6 @@
 
 #include "DebugMenu.hpp"
 
-#include <format>
 
 #include "../Game.hpp"
 #include "../Resources.hpp"

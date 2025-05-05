@@ -28,6 +28,7 @@ void Collider::RemoveGameObjectFromGame(){
   Game::getInstance()->getColliders().erase(this);
 }
 void Collider::update(float deltaTime) {
+   (void)deltaTime;
   std::set<Collider*,ColliderComp>& colliders = Game::getInstance()->getColliders();
   for (const auto& collider:colliders)
    {
@@ -162,4 +163,5 @@ collisionData Collider::CheckCollision(const Collider& col1,const Collider& col2
     if (col1.m_shape==GeometryShape::Square && col2.m_shape==GeometryShape::Square) {
       return ColSqueareSquare(col1.getGlobalTransform(),col2.getGlobalTransform());
     }
+   return collisionData();
 }
