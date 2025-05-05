@@ -90,6 +90,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Render/ShapeRenderer.hpp
         CPP_Files/Weapons/Firearm.cpp
         CPP_Files/Weapons/Firearm.hpp
+        CPP_Files/physicObject.cpp
+        CPP_Files/physicObject.hpp
 )
 
 

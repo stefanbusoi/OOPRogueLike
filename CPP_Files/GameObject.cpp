@@ -12,7 +12,7 @@
 #include "Exceptions/GameLogicException.hpp"
 int GameObject::s_globalId = 0;
 
-GameObject::GameObject(std::string name,sf::Transform transform,GameObject *parent): m_localId(s_globalId++),
+GameObject::GameObject(std::string name,sf::Transform transform,GameObject *parent): m_localId(getGlobalId()),
     m_transform(transform),
     m_name(std::move(name)),
     m_parent(parent),
@@ -49,6 +49,34 @@ void GameObject::update(float deltaT) {
     (void)deltaT;
 }
 
+GameObject & GameObject::Clone() const {
+    GameObject* clone =new GameObject();
+    for (auto i:m_children) {
+        clone->EmplaceClone(*i);
+    }
+    clone->m_transform = m_transform;
+    clone->m_name =m_name;
+    clone->m_parent = nullptr;
+    clone->m_updateOrder = m_updateOrder;
+    return *clone;
+}
+
+GameObject::GameObject(const GameObject &other){
+    *this=other.Clone();
+}
+
+GameObject & GameObject::operator=(const GameObject &other) {
+
+    if (this == &other)
+        return *this;
+    m_localId = other.m_localId;
+    m_transform = other.m_transform;
+    m_children = other.m_children;
+    m_name = other.m_name;
+    m_parent = other.m_parent;
+    m_updateOrder = other.m_updateOrder;
+    return *this;
+}
 
 
 sf::Transform & GameObject::getLocalTransform() {

@@ -9,6 +9,7 @@
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
+#include "physicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Render/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
@@ -50,16 +51,15 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     sf::Transform transform=sf::Transform::Identity;
     transform.translate({100.0f,100.0f});
     transform.scale({40.0f,40.0f});
-    for (auto i=1;i<=1;i++) {
-        for (auto j=1;j<=1;j++) {
-            sf::Transform transform=sf::Transform::Identity;
-            transform.translate({i*80.0f,j*80.0f});
-            transform.scale({40.0f,40.0f});
-            game_object_=EmplaceGameObject<GameObject>("GameObject",transform);
-            game_object_->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,20.0f,sf::Transform::Identity);
-            game_object_->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
-
-        }
+    GameObject* game_object=new GameObject("GameObject",transform);
+    game_object->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,sf::Transform::Identity);
+    game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
+    game_object->EmplaceGameObject<PhysicObject>(40.0f,0.6f);
+    for (auto i=1;i<=10;i++) {
+        for (auto j=1;j<=10;j++) {
+            auto* x=EmplaceClone(*game_object);
+            x->GlobalMoveTransform({i*100.0f,j*100.0f});
+         }
     }
    debugMenu->AddPrintList({"ms:{}",&m_precedentFrameTime,Type::FLOAT});
     debugMenu->AddPrintList({"FPS:{}",&fps,Type::FLOAT});

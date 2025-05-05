@@ -2,14 +2,19 @@
 #include "IRenderable.hpp"
 #include "../GameObject.hpp"
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Texture.hpp>
 
 #include "../Collider.h"
 
 class ShapeRenderer: public IRenderable,public GameObject{
   sf::Color m_circleColor;
   GeometryShape m_shape;
+  sf::Texture m_texture;
+  bool texture;
 public:
+  GameObject & Clone() const override;
   ShapeRenderer(const std::string& name,const sf::Transform& transform,const sf::Color& color,const RenderOrder& render_order,GeometryShape geometry_shape);
+  ShapeRenderer(const std::string& name,const sf::Transform& transform,const std::filesystem::path& path,const RenderOrder& render_order,GeometryShape geometry_shape);
   void update(float deltaTime) override;
   void Render() override;
   void AddGameObjectToGame() override;

@@ -1,0 +1,32 @@
+//
+// Created by stefa on 5/4/2025.
+//
+#include <cmath>
+#include "PhysicObject.hpp"
+
+PhysicObject::PhysicObject(float mass, float friction) {
+    m_name="PhysicObject";
+    m_mass = mass;
+    m_friction = friction;
+    m_updateOrder = UpdateOrder::PhisicsUpdate;
+}
+
+GameObject & PhysicObject::Clone() const {
+    PhysicObject* clone=new PhysicObject(m_mass,m_friction);
+    clone->m_Acceleration=m_Acceleration;
+    clone->m_Speed=m_Speed;
+    for (auto i:m_children) {
+        clone->EmplaceClone(*i);
+    }
+    clone->m_transform = m_transform;
+    clone->m_name =m_name;
+    clone->m_parent = nullptr;
+    clone->m_updateOrder = m_updateOrder;
+    return *clone;
+}
+
+void PhysicObject::update(float deltaT) {
+    m_Speed+=m_Acceleration*deltaT;
+    m_Speed *= std::exp(-m_friction * deltaT);
+    m_parent->GlobalMoveTransform(deltaT*m_Speed);
+}

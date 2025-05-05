@@ -18,10 +18,7 @@ enum class GeometryShape{
     Square=0,
     Circle=1,
   };
-/*
- *5star: make collider work
- *
- */
+
 struct collisionData {
     bool collided;
     sf::Vector2f normal;
@@ -32,13 +29,12 @@ class Collider:public GameObject{
         CollisionType m_collisionType;
         ColliderMask m_colliderMask;
         GeometryShape m_shape;
-        float m_weight;
 
     public:
         void AddGameObjectToGame() override;
         void RemoveGameObjectFromGame() override;
         void update(float  deltaT) override;
-
+        GameObject& Clone() const override;
         collisionData ColCircleCircle(const sf::Transform & Tr1, const sf::Transform & Tr2);
 
         collisionData ColCircleSquare(const sf::Transform & Tr1, const sf::Transform & Tr2);
@@ -46,6 +42,6 @@ class Collider:public GameObject{
         collisionData ColSqueareSquare(const sf::Transform & Tr1, const sf::Transform & Tr2);
 
         collisionData CheckCollision(const Collider& col1,const Collider& col2);
-        Collider( CollisionType collisionType,ColliderMask mask,GeometryShape shape,float weight, const sf::Transform &transform=sf::Transform::Identity);
+        Collider( CollisionType collisionType,ColliderMask mask,GeometryShape shape, const sf::Transform &transform=sf::Transform::Identity);
 };
 #endif //ICOLIDERABLE_H

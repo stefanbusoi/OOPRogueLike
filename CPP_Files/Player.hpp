@@ -3,14 +3,16 @@
 #include <ostream>
 
 #include "GameObject.hpp"
+#include "PhysicObject.hpp"
 #include "Render/IRenderable.hpp"
 #include "Weapons/Firearm.hpp"
 
 
-class Player :public GameObject,public IRenderable{
+class Player :public GameObject{
     void update(float deltaT) override;
-    void Render() override;
     Firearm* m_firearm;
+    PhysicObject * m_phisicsObject;
+
 protected:
     void print(std::ostream &os) const override;
 

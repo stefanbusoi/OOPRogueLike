@@ -12,8 +12,10 @@
 #include "SFML/Graphics/Transform.hpp"
 class Collider;
 class GameObject {
-protected:
+private:
     static int s_globalId;
+protected:
+    int getGlobalId(){ return s_globalId++; }
     int m_localId;
     virtual void print(std::ostream& os)const;
 
@@ -34,9 +36,14 @@ public:
     /*Used for Game class only*/
     explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity,GameObject* parent=nullptr);
     virtual ~GameObject();
-    void SetParent(GameObject* p_parent);
+    virtual void SetParent(GameObject* p_parent);
     bool IsInGame();
     virtual void update(float deltaT);
+    virtual GameObject& Clone() const;
+
+    GameObject(const GameObject &other);
+
+    GameObject & operator=(const GameObject &other);
 
     const std::set<GameObject*>& getChildrens() {return m_children;}
     GameObject* getParent() {return m_parent;}
@@ -50,19 +57,17 @@ public:
     void addCollider(Collider& collider);
     friend std::ostream & operator<<(std::ostream &os, const GameObject &obj);
 
-    template <class T=GameObject>
-    T* AddGameObject(std::string name="NONAME", sf::Transform transform=sf::Transform::Identity);
 
     template <class T=GameObject,class ...ARGS>
     T* EmplaceGameObject(ARGS&&...);
-
+    GameObject* EmplaceClone(const GameObject& obj);
 };
-template<class T>
-T* GameObject::AddGameObject(std::string name, sf::Transform transform) {
-    T* newGameObject = new T(name,transform );
-    newGameObject->SetParent(this);
-    m_children.insert(newGameObject);
-    return newGameObject;
+
+inline GameObject * GameObject::EmplaceClone(const GameObject &obj){
+    auto* x=&obj.Clone();
+    x->SetParent(this);
+    m_children.insert(x);
+    return x;
 }
 
 

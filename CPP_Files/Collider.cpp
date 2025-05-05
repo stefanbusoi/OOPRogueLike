@@ -2,18 +2,18 @@
 
 #include "Game.hpp"
 #include "GameObject.hpp"
+#include "physicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Exceptions/GameLogicException.hpp"
 
 
  Collider::Collider( CollisionType collisionType,
-                          ColliderMask mask,GeometryShape shape ,float weight, const sf::Transform &transform)
+                          ColliderMask mask,GeometryShape shape , const sf::Transform &transform)
     :
       GameObject("COLLIDER",transform,nullptr),
       m_collisionType(collisionType),
       m_colliderMask(mask),
-      m_shape(shape),
-      m_weight(weight)
+      m_shape(shape)
     {
 
     m_updateOrder=UpdateOrder::Collisions;
@@ -39,8 +39,26 @@ void Collider::update(float deltaTime) {
         auto Obj1=this->m_parent;
         auto Obj2=collider->m_parent;
 
-        auto mass1=this->m_weight;
-        auto mass2=collider->m_weight;
+        float mass1=0.0f;
+        float mass2=0.0f;
+        auto p1=this->m_parent;
+        auto p2=collider->m_parent;
+
+        for (auto i:p1->getChildrens()) {
+          PhysicObject* x=dynamic_cast<PhysicObject*>(i);
+          if (x!=nullptr) {
+            mass1=x->GetMass();
+            break;
+          }
+        }
+        for (auto i:p2->getChildrens()) {
+          PhysicObject* x=dynamic_cast<PhysicObject*>(i);
+          if (x!=nullptr) {
+            mass2=x->GetMass();
+            break;
+          }
+       }
+
 
         float totalWeight = mass1+mass2;
         if (totalWeight==0) totalWeight = 1;//3star: consider an exception
@@ -54,6 +72,19 @@ void Collider::update(float deltaTime) {
   }
 
 }
+
+
+GameObject & Collider::Clone() const {
+    Collider* clone= new Collider(m_collisionType,m_colliderMask,m_shape,m_transform);
+   for (auto i:m_children) {
+     clone->EmplaceClone(*i);
+   }
+   clone->m_name =m_name;
+   clone->m_parent = nullptr;
+   clone->m_updateOrder = m_updateOrder;
+   return *clone;
+ }
+
 collisionData Collider::ColCircleCircle(const sf::Transform &tr1, const sf::Transform &tr2) {
     sf::Vector2f pos1=Utils::getPosition(tr1);
     sf::Vector2f pos2=Utils::getPosition(tr2);
