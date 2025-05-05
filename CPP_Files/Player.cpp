@@ -5,7 +5,7 @@
 #include <math.h>
 
 #include "Game.hpp"
-#include "physicObject.hpp"
+#include "PhysicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Render/ShapeRenderer.hpp"
 #include "Weapons/Firearm.hpp"

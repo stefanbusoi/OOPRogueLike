@@ -9,7 +9,7 @@
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
-#include "physicObject.hpp"
+#include "PhysicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Render/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
