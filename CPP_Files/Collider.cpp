@@ -2,7 +2,7 @@
 
 #include "Game.hpp"
 #include "GameObject.hpp"
-#include "physicObject.hpp"
+#include "PhysicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Exceptions/GameLogicException.hpp"
 
