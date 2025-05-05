@@ -116,6 +116,7 @@ collisionData Collider::ColCircleCircle(const sf::Transform &tr1, const sf::Tran
 }
 
 collisionData Collider::ColCircleSquare(const sf::Transform &tr1, const sf::Transform &tr2) {
+   /*
    sf::Vector2f pos1=Utils::getPosition(tr1);
    sf::Vector2f pos2=Utils::getPosition(tr2);
 
@@ -124,19 +125,26 @@ collisionData Collider::ColCircleSquare(const sf::Transform &tr1, const sf::Tran
 
    sf::Vector2f scale1=Utils::getSize(tr1);
    sf::Vector2f scale2=Utils::getSize(tr2);
+*/
+   (void)tr1;
+   (void)tr2;
    throw(GameLogicException("Collider::ColCircleSquare not implemented"));
    return collisionData{};
 }
 
 collisionData Collider::ColSqueareSquare(const sf::Transform &tr1, const sf::Transform &tr2) {
-  sf::Vector2f pos1=Utils::getPosition(tr1);
-  sf::Vector2f pos2=Utils::getPosition(tr2);
+   /*
+   sf::Vector2f pos1=Utils::getPosition(tr1);
+   sf::Vector2f pos2=Utils::getPosition(tr2);
 
-  sf::Angle ang1=Utils::getAngle(tr1);
-  sf::Angle ang2=Utils::getAngle(tr2);
+   sf::Angle ang1=Utils::getAngle(tr1);
+   sf::Angle ang2=Utils::getAngle(tr2);
 
-  sf::Vector2f scale1=Utils::getSize(tr1);
-  sf::Vector2f scale2=Utils::getSize(tr2);
+   sf::Vector2f scale1=Utils::getSize(tr1);
+   sf::Vector2f scale2=Utils::getSize(tr2);
+*/
+   (void)tr1;
+   (void)tr2;
   throw(GameLogicException("Collider::ColSqueareSquare not implemented"));
    return collisionData{};
 }
