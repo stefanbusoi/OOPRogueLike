@@ -33,17 +33,18 @@ void Firearm::update(float deltaTime) {
 
 Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(name,transform,nullptr) {
     lastShot=0;
-    m_timer=0.5f;
+    m_timer=0.5;
     CurrentTimer=0;
     sf::Transform BulletTransform;
+    BulletTransform.translate({0.0f,-2.f});
     BulletTransform.scale({10.f,10.f});
     bulletPrefab=new GameObject("Bullet",BulletTransform);
     sf::Transform BulletTransformHitbox;
     BulletTransformHitbox.scale({0.3f,0.3f});
     auto col=bulletPrefab->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Bullets,GeometryShape::Circle,BulletTransformHitbox);
     col->getOnCollide()=[](Collider& ths,Collider& col) {
-        GameObject* ph;
-        GameObject* cl;
+        GameObject* ph = nullptr;
+        GameObject* cl = nullptr;
         auto parent=ths.getParent();
         for (auto i:parent->getChildrens()) {
             if (dynamic_cast<PhysicObject*>(i)) {
@@ -60,7 +61,7 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
 
     };
     bulletPrefab->EmplaceGameObject<ShapeRenderer>("CircleRenderer",BulletTransform, "Assets/arrow.png", RenderOrder::Player,GeometryShape::Square);
-    bulletPrefab->EmplaceGameObject<PhysicObject>(40.0f,0.6f);
+    bulletPrefab->EmplaceGameObject<PhysicObject>(40.0f,0.0f);
     sf::Transform tr=sf::Transform::Identity;
     tr.translate(sf::Vector2f(0.0f,40.0f)).scale(sf::Vector2f(100.f, -130.0f));
     EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PostProcessing,GeometryShape::Square);

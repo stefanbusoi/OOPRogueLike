@@ -41,7 +41,7 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     if (!m_renderTexture.resize(m_window.getSize())) {
         throw std::runtime_error("Failed to resize render texture");
     }
-    m_window.setFramerateLimit(144);
+   // m_window.setFramerateLimit(144);
      player_=EmplaceGameObject<Player>("Player");
     m_camera=EmplaceGameObject<Camera>("Camera");
     EmplaceGameObject<GameMap>("GameMap");
@@ -84,6 +84,7 @@ bool Game::IsInHirarchy(GameObject *p_gameObject) {
 }
 
 void Game::MarkForDeletion(GameObject *p_gameObject) {
+    if (p_gameObject==nullptr) return;
     m_ToDelete.push_back(p_gameObject);
 }
 
