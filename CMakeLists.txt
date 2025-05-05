@@ -90,8 +90,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Render/ShapeRenderer.hpp
         CPP_Files/Weapons/Firearm.cpp
         CPP_Files/Weapons/Firearm.hpp
-        CPP_Files/physicObject.cpp
-        CPP_Files/physicObject.hpp
+        CPP_Files/PhysicObject.cpp
+        CPP_Files/PhysicObject.hpp
 )
 
 
@@ -129,5 +129,6 @@ endif()
 copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES Minecraft.ttf COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(DIRECTORY Shaders COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(DIRECTORY Assets COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
