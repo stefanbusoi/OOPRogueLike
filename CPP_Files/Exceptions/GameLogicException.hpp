@@ -16,5 +16,5 @@ public:
 #endif
   }
 
- const char *what() ;
+ const char *what() const noexcept;
 };

@@ -11,6 +11,6 @@ public:
     //__debugbreak();
 #endif
   }
-  const char* what() ;
+  const char* what()const noexcept ;
 };
 
