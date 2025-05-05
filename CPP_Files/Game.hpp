@@ -18,7 +18,6 @@ class Game :public GameObject{
     Camera* m_camera;
     sf::RenderTexture m_renderTexture;
     static Game* s_instance;
-    GameObject* game_object_;
     Player* player_;
 
     std::set<Collider*,ColliderComp> m_colliders;

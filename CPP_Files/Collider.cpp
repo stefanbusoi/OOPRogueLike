@@ -129,7 +129,7 @@ collisionData Collider::ColCircleSquare(const sf::Transform &tr1, const sf::Tran
 */
    (void)tr1;
    (void)tr2;
-   throw(GameLogicException("Collider::ColCircleSquare not implemented"));
+   //throw(GameLogicException("Collider::ColCircleSquare not implemented"));
    return collisionData{};
 }
 
@@ -146,7 +146,7 @@ collisionData Collider::ColSqueareSquare(const sf::Transform &tr1, const sf::Tra
 */
    (void)tr1;
    (void)tr2;
-  throw(GameLogicException("Collider::ColSqueareSquare not implemented"));
+  //throw(GameLogicException("Collider::ColSqueareSquare not implemented"));
    return collisionData{};
 }
 
