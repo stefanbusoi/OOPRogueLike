@@ -36,6 +36,7 @@ void Player::update(float deltaT)  {
     sf::Angle ang=Utils::getAngle(m_transform);
     m_phisicsObject->SetAcceleration(speed);
     m_transform.rotate(sf::radians(atan2f(-pos.x,pos.y)+ang.asRadians()));
+    (void)deltaT;
 
 }
 void Player::print(std::ostream &os) const {
