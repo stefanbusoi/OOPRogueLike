@@ -21,6 +21,7 @@ GameObject::GameObject(std::string name,sf::Transform transform,GameObject *pare
 
 
 GameObject::~GameObject() {
+
     if (m_parent!=nullptr) {
         Game::getInstance()->getGameObjects().erase(this);
     }for ( GameObject* x:m_children) {
@@ -29,6 +30,9 @@ GameObject::~GameObject() {
 }
 void GameObject::SetParent(GameObject *p_parent) {
     Game* instance=Game::getInstance();
+    if (instance->IsInHirarchy(m_parent)&&instance->IsInHirarchy(p_parent)) {
+        m_transform=p_parent->getGlobalTransform().getInverse()*getGlobalTransform();
+    }
     if (!instance->IsInHirarchy(m_parent)&&instance->IsInHirarchy(p_parent)) {
         AddGameObjectToGame();
     }
@@ -38,8 +42,11 @@ void GameObject::SetParent(GameObject *p_parent) {
     if (m_parent!=nullptr) {
         m_parent->m_children.erase(this);
     }
-    p_parent->m_children.insert(this);
+    if (p_parent!=nullptr) {
+        p_parent->m_children.insert(this);
+    }
     m_parent=p_parent;
+
 }
 
 

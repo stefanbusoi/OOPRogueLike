@@ -41,7 +41,7 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     if (!m_renderTexture.resize(m_window.getSize())) {
         throw std::runtime_error("Failed to resize render texture");
     }
-
+    m_window.setFramerateLimit(144);
      player_=EmplaceGameObject<Player>("Player");
     m_camera=EmplaceGameObject<Camera>("Camera");
     EmplaceGameObject<GameMap>("GameMap");
@@ -52,11 +52,11 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     transform.translate({100.0f,100.0f});
     transform.scale({40.0f,40.0f});
     GameObject* game_object=new GameObject("GameObject",transform);
-    game_object->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,sf::Transform::Identity);
+    game_object->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Enemy,GeometryShape::Circle,sf::Transform::Identity);
     game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
     game_object->EmplaceGameObject<PhysicObject>(40.0f,0.6f);
-    for (auto i=1;i<=10;i++) {
-        for (auto j=1;j<=10;j++) {
+    for (auto i=1;i<=4;i++) {
+        for (auto j=1;j<=4;j++) {
             auto* x=EmplaceClone(*game_object);
             x->GlobalMoveTransform({i*100.0f,j*100.0f});
          }
@@ -81,6 +81,10 @@ bool Game::IsInHirarchy(GameObject *p_gameObject) {
     }
     if (p_gameObject==static_cast<GameObject *>(getInstance())) return true;
     return false;
+}
+
+void Game::MarkForDeletion(GameObject *p_gameObject) {
+    m_ToDelete.push_back(p_gameObject);
 }
 
 void Game::exit() {
@@ -125,6 +129,12 @@ void Game::processGameFrame() {
         renderAll();
         m_precedentFrameTime=deltaTime.asSeconds();
         fps=1.0f/deltaTime.asSeconds();
+        std::set<GameObject*> m_ToDeleteSet(m_ToDelete.begin(), m_ToDelete.end());
+        for (auto* gameObject:m_ToDeleteSet) {
+            gameObject->SetParent(nullptr);
+            delete gameObject;
+        }
+        m_ToDelete.clear();
     }
 
 }

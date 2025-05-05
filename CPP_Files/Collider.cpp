@@ -5,8 +5,18 @@
 #include "PhysicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Exceptions/GameLogicException.hpp"
-
-
+int Collider::ColliderMatrix[4][4] = {
+  {1,0,1,1},
+  {0,1,1,1},
+  {1,1,0,1},
+  {1,1,1,1}
+};
+/*
+ * player=0
+ * Bullets=1,
+ * Map=2,
+ * Enemy=3,
+ */
  Collider::Collider( CollisionType collisionType,
                           ColliderMask mask,GeometryShape shape , const sf::Transform &transform)
     :
@@ -14,6 +24,7 @@
       m_collisionType(collisionType),
       m_colliderMask(mask),
       m_shape(shape)
+
     {
 
     m_updateOrder=UpdateOrder::Collisions;
@@ -33,6 +44,8 @@ void Collider::update(float deltaTime) {
   for (const auto& collider:colliders)
    {
     if (collider->GetId()==this->GetId())
+      continue;
+    if (ColliderMatrix[(int)collider->m_colliderMask][(int)this->m_colliderMask]==0)
       continue;
     auto collisionData=CheckCollision(*this,*collider);
 
@@ -69,6 +82,10 @@ void Collider::update(float deltaTime) {
 
         Obj1->GlobalMoveTransform(-collisionData.normal*collisionData.penetration*move1);
         Obj2->GlobalMoveTransform(collisionData.normal*collisionData.penetration*move2);
+        if (this->getOnCollide())
+          this->getOnCollide()(*this,*collider);
+        if (collider->getOnCollide())
+          collider->getOnCollide()(*collider,*this);
     }
   }
 
@@ -83,6 +100,7 @@ GameObject & Collider::Clone() const {
    clone->m_name =m_name;
    clone->m_parent = nullptr;
    clone->m_updateOrder = m_updateOrder;
+   clone->OnCollide=OnCollide;
    return *clone;
  }
 

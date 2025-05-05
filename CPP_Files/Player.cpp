@@ -35,6 +35,9 @@ void Player::update(float deltaT)  {
     pos-={960,540};
     sf::Angle ang=Utils::getAngle(m_transform);
     m_phisicsObject->SetAcceleration(speed);
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+        m_firearm->Fire();
+    }
     m_transform.rotate(sf::radians(atan2f(-pos.x,pos.y)+ang.asRadians()));
     (void)deltaT;
 

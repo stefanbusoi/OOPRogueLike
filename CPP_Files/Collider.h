@@ -1,6 +1,8 @@
 #ifndef ICOLIDERABLE_H
 #define ICOLIDERABLE_H
 
+#include <functional>
+
 #include "GameObject.hpp"
 #include "SFML/Graphics/Transform.hpp"
 
@@ -11,9 +13,11 @@ enum class CollisionType{
 };
 enum class ColliderMask {
     Player=0,
-    Map=1,
-    Enemy=2,
+    Bullets=1,
+    Map=2,
+    Enemy=3,
 };
+
 enum class GeometryShape{
     Square=0,
     Circle=1,
@@ -29,11 +33,14 @@ class Collider:public GameObject{
         CollisionType m_collisionType;
         ColliderMask m_colliderMask;
         GeometryShape m_shape;
+        static int ColliderMatrix[4][4];
+        std::function<void(Collider&,Collider&)> OnCollide;
 
     public:
         void AddGameObjectToGame() override;
         void RemoveGameObjectFromGame() override;
         void update(float  deltaT) override;
+        std::function<void(Collider&,Collider&)>& getOnCollide(){return OnCollide;}
         GameObject& Clone() const override;
         collisionData ColCircleCircle(const sf::Transform & Tr1, const sf::Transform & Tr2);
 

@@ -19,7 +19,7 @@ class Game :public GameObject{
     sf::RenderTexture m_renderTexture;
     static Game* s_instance;
     Player* player_;
-
+    std::vector<GameObject*> m_ToDelete;
     std::set<Collider*,ColliderComp> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;
@@ -39,6 +39,7 @@ public:
     float getTotalTime(){return m_totalTime;}
     float getPrecedentFrameTime(){return m_precedentFrameTime;}
     bool IsInHirarchy(GameObject *p_gameObject);
+    void MarkForDeletion(GameObject *p_gameObject);
     void exit();
     void processGameFrame();
     std::set<GameObject*,gameObjectComp>& getGameObjects(){return m_gameObjects;}

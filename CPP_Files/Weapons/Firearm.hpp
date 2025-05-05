@@ -9,11 +9,18 @@
 
 class Firearm:public GameObject {
 
-  GameObject* bullet;
-  public:
-  void Fire() {
+  GameObject* bulletPrefab;
+  float m_speed;
+  float m_ang;
+  float m_timer;
+  float lastShot=0.0f;
+  float CurrentTimer=0.0f;
 
-  }
+  public:
+  void Fire();
+
+  void update(float deltaTime) override;
+
   Firearm(const std::string& name,sf::Transform transform);
 };
 
