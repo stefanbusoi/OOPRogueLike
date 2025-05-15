@@ -56,13 +56,13 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     sf::Transform transform=sf::Transform::Identity;
     transform.translate({100.0f,100.0f});
     transform.scale({40.0f,40.0f});
-    GameObject* game_object=new GameObject("GameObject",transform);
-    game_object->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Enemy,GeometryShape::Circle,sf::Transform::Identity);
-    game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
-    game_object->EmplaceGameObject<PhysicObject>(40.0f,1.6f,1.0f);
+    GameObject game_object("GameObject",transform);
+    game_object.EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Enemy,GeometryShape::Circle,sf::Transform::Identity);
+    game_object.EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
+    game_object.EmplaceGameObject<PhysicObject>(40.0f,1.6f,1.0f);
     for (auto i=1;i<=4;i++) {
         for (auto j=1;j<=4;j++) {
-            auto* x=EmplaceClone(*game_object);
+            auto* x=EmplaceClone(game_object);
             x->GlobalMoveTransform({i*100.0f,j*100.0f});
          }
     }

@@ -4,12 +4,14 @@
 
 #ifndef FIREARM_HPP
 #define FIREARM_HPP
+#include <memory>
+
 #include "../GameObject.hpp"
 
 
 class Firearm:public GameObject {
 
-  GameObject* bulletPrefab;
+  std::unique_ptr<GameObject> bulletPrefab;
   float m_speed;
   float m_ang;
   float m_timer;

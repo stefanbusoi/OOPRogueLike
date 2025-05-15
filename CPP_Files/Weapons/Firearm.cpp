@@ -38,7 +38,7 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
     sf::Transform BulletTransform;
     BulletTransform.translate({0.0f,-2.f});
     BulletTransform.scale({10.f,10.f});
-    bulletPrefab=new GameObject("Bullet",BulletTransform);
+    bulletPrefab=std::make_unique<GameObject>("Bullet",BulletTransform);
     sf::Transform BulletTransformHitbox;
     BulletTransformHitbox.scale({0.3f,0.3f});
     auto col=bulletPrefab->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Bullets,GeometryShape::Circle,BulletTransformHitbox);
