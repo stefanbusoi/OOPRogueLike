@@ -1,8 +1,4 @@
-//NU AM ADAUGAT OPERATOR DE AFISARE DEOARECE ACEASTA CLASA NU E IMPLEMENTATA COMPLET SI NU DORESC SA FIE LUATA IN CALCUL PT MILESTONE 1,
-//NU E INCLUS IN CMAKE
-
-#ifndef POSTPROCESSINGSHADER_H
-#define POSTPROCESSINGSHADER_H
+#pragma once
 #include "../GameObject.hpp"
 #include "IRenderable.hpp"
 #include "SFML/Graphics/Shader.hpp"
@@ -23,7 +19,3 @@ public:
 
     void RemoveGameObjectFromGame() override;
 };
-
-
-
-#endif //POSTPROCESSINGSHADER_H

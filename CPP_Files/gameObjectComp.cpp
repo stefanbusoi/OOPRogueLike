@@ -1,6 +1,6 @@
 #include "gameObjectComp.hpp"
 
-#include "Collider.h"
+#include "Collisions/Collider.h"
 #include "Render/IRenderable.hpp"
 #include "GameObject.hpp"
 
@@ -15,9 +15,7 @@ bool ColliderComp::operator()(const Collider *lhs, const Collider *rhs) const {
     return lhs->GetId()<rhs->GetId();
 }
 
-IRenderable::IRenderable() {
-    m_renderOrder = RenderOrder::Default;
-}
+
 
 bool iRendableComp::operator()( IRenderable *lhs,  IRenderable *rhs) const {
     if (lhs->getRenderOrder()==rhs->getRenderOrder()) {

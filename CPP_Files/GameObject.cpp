@@ -4,24 +4,19 @@
 
 #include "GameObject.hpp"
 #include "gameObjectComp.hpp"
-#include <iostream>
 #include <utility>
 
 #include "Game.hpp"
-#include "Collider.h"
-#include "Exceptions/GameLogicException.hpp"
+#include "Collisions/Collider.h"
 int GameObject::s_globalId = 0;
 
-GameObject::GameObject(std::string name,sf::Transform transform,GameObject *parent): m_localId(getGlobalId()),
+GameObject::GameObject(std::string name,sf::Transform transform): m_localId(getGlobalId()),
     m_transform(transform),
-    m_name(std::move(name)),
-    m_parent(parent),
-    m_updateOrder(UpdateOrder::Default) {
-}
+    m_name(std::move(name))
+{}
 
 
 GameObject::~GameObject() {
-
     if (m_parent!=nullptr) {
         Game::getInstance()->getGameObjects().erase(this);
     }for ( GameObject* x:m_children) {
@@ -30,13 +25,13 @@ GameObject::~GameObject() {
 }
 void GameObject::SetParent(GameObject *p_parent) {
     Game* instance=Game::getInstance();
-    if (instance->IsInHirarchy(m_parent)&&instance->IsInHirarchy(p_parent)) {
+    if (instance->IsInHirarchy(this)&&instance->IsInHirarchy(p_parent)) {
         m_transform=p_parent->getGlobalTransform().getInverse()*getGlobalTransform();
     }
-    if (!instance->IsInHirarchy(m_parent)&&instance->IsInHirarchy(p_parent)) {
+    if (!instance->IsInHirarchy(this)&&instance->IsInHirarchy(p_parent)) {
         AddGameObjectToGame();
     }
-    if (instance->IsInHirarchy(m_parent)&&!instance->IsInHirarchy(p_parent)) {
+    if (instance->IsInHirarchy(this)&&!instance->IsInHirarchy(p_parent)) {
         RemoveGameObjectFromGame();
     }
     if (m_parent!=nullptr) {
@@ -50,13 +45,26 @@ void GameObject::SetParent(GameObject *p_parent) {
 }
 
 
+void GameObject::setActive(bool isActive) {
+    if (m_isActive==isActive) return;
+    if (isActive) {
+        if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
+            Game::getInstance()->AddGameObjectToGame();
+        }
+    }else {
+        if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
+            Game::getInstance()->MarkForUnactive(this);
+        }
+    }
+    m_isActive=isActive;
+}
 
 
 void GameObject::update(float deltaT) {
     (void)deltaT;
-}
+    }
 
-GameObject & GameObject::Clone() const {
+GameObject & GameObject::clone() const {
     GameObject* clone =new GameObject();
     for (auto i:m_children) {
         clone->EmplaceClone(*i);
@@ -69,7 +77,7 @@ GameObject & GameObject::Clone() const {
 }
 
 GameObject::GameObject(const GameObject &other){
-    *this=other.Clone();
+    *this=other.clone();
 }
 
 GameObject & GameObject::operator=(const GameObject &other) {

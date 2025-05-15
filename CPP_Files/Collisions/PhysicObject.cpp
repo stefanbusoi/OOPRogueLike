@@ -4,15 +4,16 @@
 #include <cmath>
 #include "PhysicObject.hpp"
 
-PhysicObject::PhysicObject(float mass, float friction) {
+PhysicObject::PhysicObject(float mass, float friction,float elasticity) {
     m_name="PhysicObject";
     m_mass = mass;
     m_friction = friction;
     m_updateOrder = UpdateOrder::PhisicsUpdate;
+    m_elasticity=elasticity;
 }
 
-GameObject & PhysicObject::Clone() const {
-    PhysicObject* clone=new PhysicObject(m_mass,m_friction);
+GameObject & PhysicObject::clone() const {
+    PhysicObject* clone=new PhysicObject(m_mass,m_friction,m_elasticity);
     clone->m_Acceleration=m_Acceleration;
     clone->m_Speed=m_Speed;
     for (auto i:m_children) {

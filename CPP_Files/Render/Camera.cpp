@@ -14,15 +14,9 @@ void Camera::print(std::ostream &os) const {
         GameObject::print(os);
 }
 
-Camera::~Camera() {
-}
 
-Camera::Camera( const std::string &name, const sf::Transform &transform,GameObject* parent):GameObject(name,transform,parent),m_window(&Game::getInstance()->getWindow()) {
-        for (const auto& player:Game::getInstance()->getChildrens()) {
-                m_player=dynamic_cast<Player*>(player);
-                if (m_player!=nullptr)
-                        break;
-        }
+Camera::Camera( const std::string &name, const sf::Transform &transform):GameObject(name,transform),m_window(&Game::getInstance()->getWindow()){
+        m_player=Game::getInstance()->GetGameObjectOfType<Player>();
         if (m_player==nullptr)
                 throw GameLogicException("Player does not exist");
         m_updateOrder=UpdateOrder::Camera;
@@ -36,7 +30,6 @@ void Camera::update([[maybe_unused]]float deltaT) {
         m_transform=transform.translate(Utils::getPosition(m_player->getGlobalTransform()));
 }
 
-[[maybe_unused]] float Camera::getViewRadius() const {return sf::Vector2f({m_window->getSize().x/-2.0f,m_window->getSize().y/-2.0f}).length()/2.0f;}
 
 void Camera::draw(const sf::Drawable& drawable, const sf::Transform &transform) const {
         sf::Transform viewTransform=m_transform;
@@ -47,7 +40,7 @@ void Camera::draw(const sf::Drawable& drawable, const sf::Transform &transform) 
 }
 
 std::ostream & operator<<(std::ostream &os, const Camera &obj) {
-        os<<"test";
+
          os<< "CLASS Camera " << static_cast<const GameObject &>(obj);
         return os;
 }

@@ -5,15 +5,14 @@
 #include <math.h>
 
 #include "Game.hpp"
-#include "PhysicObject.hpp"
+#include "Collisions/PhysicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Render/ShapeRenderer.hpp"
 #include "Weapons/Firearm.hpp"
 
-Player::~Player() = default;
 
 void Player::update(float deltaT)  {
-    float SpeedConst=500;
+    float SpeedConst=5000;
     sf::Vector2i pos=sf::Mouse::getPosition();
     sf::Vector2f speed;
     if (isKeyPressed(sf::Keyboard::Scancode::A)) {
@@ -34,9 +33,15 @@ void Player::update(float deltaT)  {
     }
     pos-={960,540};
     sf::Angle ang=Utils::getAngle(m_transform);
-    m_phisicsObject->SetAcceleration(speed);
+    m_phisicsObject->setAcceleration(speed);
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
         m_firearm->Fire();
+    }
+    if (isKeyPressed(sf::Keyboard::Scancode::G)) {
+        m_firearm->setActive(false);
+    }
+    if (isKeyPressed(sf::Keyboard::Scancode::F)) {
+        m_firearm->setActive(true);
     }
     m_transform.rotate(sf::radians(atan2f(-pos.x,pos.y)+ang.asRadians()));
     (void)deltaT;
@@ -56,15 +61,17 @@ void Player::RemoveGameObjectFromGame() {
     GameObject::RemoveGameObjectFromGame();
  }
 
-Player::Player( const std::string &name, const sf::Transform &transform,GameObject* parent): GameObject(name, transform,parent) {
+Player::Player( const std::string &name, const sf::Transform &transform): GameObject(name, transform) {
     m_updateOrder=UpdateOrder::Default;
     sf::Transform tr=sf::Transform::Identity;
     tr.scale(sf::Vector2f(40.0f,40.0f));
     EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
+
     sf::Transform tr2=sf::Transform::Identity;
     tr2.scale(sf::Vector2f(40.0f,40.0f));
     EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,tr2);
-    m_phisicsObject=EmplaceGameObject<PhysicObject>(100.0f,1.f);
+
+    m_phisicsObject=EmplaceGameObject<PhysicObject>(100.0f,10.f,0.0f);
     m_firearm=EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }
 

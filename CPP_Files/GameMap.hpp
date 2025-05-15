@@ -18,8 +18,7 @@ protected:
 
 public:
     void Render() override;
-    explicit GameMap( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
-    ~GameMap() override;
+    explicit GameMap( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity);
     void update(float deltaT) override;
 
     void AddGameObjectToGame() override;

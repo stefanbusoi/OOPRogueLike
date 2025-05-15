@@ -1,12 +1,13 @@
 //
 // Created by stefa on 4/28/2025.
-//
+#pragma once
 
-#ifndef RESOURCES_HPP
-#define RESOURCES_HPP
 #include "SFML/Graphics/Font.hpp"
 
 
+/**
+ * This class is used to store assets and to avalable for the program
+ */
 class Resources {
 private:
     static sf::Font font;
@@ -15,5 +16,3 @@ public:
         return font;
     }
 };
-
-#endif //RESOURCES_HPP

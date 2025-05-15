@@ -9,7 +9,7 @@
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
-#include "PhysicObject.hpp"
+#include "Collisions/PhysicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Render/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
@@ -26,12 +26,16 @@ void Game::renderAll() {
     m_renderTexture.display();
     sf::Sprite sprite(m_renderTexture.getTexture());
     m_window.draw(sprite);
-
 }
 
 
 Game *Game::getInstance() {return s_instance;}
 
+/**
+ * Create a window and it initiate the first window
+ * @param video_mode The video mode of the window
+ * @param Title Title of the window
+ */
 Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject(Title) {
     m_totalTime=0.0f;
     if (s_instance==nullptr) {
@@ -45,6 +49,7 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
      player_=EmplaceGameObject<Player>("Player");
     m_camera=EmplaceGameObject<Camera>("Camera");
     EmplaceGameObject<GameMap>("GameMap");
+    EmplaceGameObject<PostProcessingShader>("Pixelate",std::filesystem::path("Shaders/Pixelate.frag"));
     EmplaceGameObject<PostProcessingShader>("PostProcessingShader",std::filesystem::path("Shaders/PostProcessingShader.frag"));
     auto debugMenu=EmplaceGameObject<DebugMenu>("DebugMenu");
 
@@ -54,7 +59,7 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     GameObject* game_object=new GameObject("GameObject",transform);
     game_object->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Enemy,GeometryShape::Circle,sf::Transform::Identity);
     game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
-    game_object->EmplaceGameObject<PhysicObject>(40.0f,0.6f);
+    game_object->EmplaceGameObject<PhysicObject>(40.0f,1.6f,1.0f);
     for (auto i=1;i<=4;i++) {
         for (auto j=1;j<=4;j++) {
             auto* x=EmplaceClone(*game_object);
@@ -74,18 +79,36 @@ bool Game::isRunning() const {
 
 }
 
-bool Game::IsInHirarchy(GameObject *p_gameObject) {
+
+bool Game::IsActiveInHirarchy(GameObject *p_gameObject) {
     if (p_gameObject==nullptr) return false;
+
+    while (p_gameObject->getParent() != nullptr) {
+        if (!p_gameObject->IsActive()) return false;
+        p_gameObject=p_gameObject->getParent();
+    }
+    if (p_gameObject==getInstance()) return true;
+    return false;
+}
+bool Game::IsInHirarchy(GameObject *p_gameObject) {
+
+    if (p_gameObject==nullptr) return false;
+
     while (p_gameObject->getParent() != nullptr) {
         p_gameObject=p_gameObject->getParent();
     }
-    if (p_gameObject==static_cast<GameObject *>(getInstance())) return true;
+    if (p_gameObject==getInstance()) return true;
     return false;
 }
 
 void Game::MarkForDeletion(GameObject *p_gameObject) {
     if (p_gameObject==nullptr) return;
     m_ToDelete.push_back(p_gameObject);
+}
+
+void Game::MarkForUnactive(GameObject *p_gameObject) {
+    if (p_gameObject==nullptr) return;
+    m_ToInactive.push_back(p_gameObject);
 }
 
 void Game::exit() {
@@ -136,6 +159,10 @@ void Game::processGameFrame() {
             delete gameObject;
         }
         m_ToDelete.clear();
+        for (auto* gameObject:m_ToInactive) {
+            gameObject->RemoveGameObjectFromGame();
+        }
+        m_ToInactive.clear();
     }
 
 }

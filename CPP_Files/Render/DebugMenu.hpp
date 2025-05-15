@@ -26,7 +26,7 @@ struct PrintList {
 class DebugMenu : public GameObject ,public IRenderable{
   std::vector<PrintList> m_printList;
 public:
-  DebugMenu(  const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
+  DebugMenu(  const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity);
   void Render() override;
   void AddPrintList(PrintList p) {
     m_printList.push_back(p);

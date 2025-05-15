@@ -20,6 +20,7 @@ class Game :public GameObject{
     static Game* s_instance;
     Player* player_;
     std::vector<GameObject*> m_ToDelete;
+    std::vector<GameObject*> m_ToInactive;
     std::set<Collider*,ColliderComp> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;
@@ -33,6 +34,9 @@ public:
     Game(sf::VideoMode video_mode, const std::string &Title);
     ~Game() override;
     bool isRunning() const;
+
+    bool IsActiveInHirarchy(GameObject *p_gameObject);
+
     sf::RenderWindow &getWindow() {return m_window;}
     sf::RenderTexture &getRenderTexture() {return m_renderTexture;}
     Camera& getCamera() const {return *m_camera;}
@@ -40,6 +44,7 @@ public:
     float getPrecedentFrameTime(){return m_precedentFrameTime;}
     bool IsInHirarchy(GameObject *p_gameObject);
     void MarkForDeletion(GameObject *p_gameObject);
+    void MarkForUnactive(GameObject *p_gameObject);
     void exit();
     void processGameFrame();
     std::set<GameObject*,gameObjectComp>& getGameObjects(){return m_gameObjects;}

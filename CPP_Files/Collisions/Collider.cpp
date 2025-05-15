@@ -1,10 +1,10 @@
 #include "Collider.h"
 
-#include "Game.hpp"
-#include "GameObject.hpp"
+#include "../Game.hpp"
+#include "../GameObject.hpp"
 #include "PhysicObject.hpp"
-#include "UtilityiesFunctions.hpp"
-#include "Exceptions/GameLogicException.hpp"
+#include "../UtilityiesFunctions.hpp"
+#include "../Exceptions/GameLogicException.hpp"
 int Collider::ColliderMatrix[4][4] = {
   {1,0,1,1},
   {0,0,1,1},
@@ -20,7 +20,7 @@ int Collider::ColliderMatrix[4][4] = {
  Collider::Collider( CollisionType collisionType,
                           ColliderMask mask,GeometryShape shape , const sf::Transform &transform)
     :
-      GameObject("COLLIDER",transform,nullptr),
+      GameObject("COLLIDER",transform),
       m_collisionType(collisionType),
       m_colliderMask(mask),
       m_shape(shape)
@@ -53,32 +53,53 @@ void Collider::update(float deltaTime) {
         auto Obj1=this->m_parent;
         auto Obj2=collider->m_parent;
 
-        float mass1=0.0f;
-        float mass2=0.0f;
         auto p1=this->m_parent;
         auto p2=collider->m_parent;
 
-        for (auto i:p1->getChildrens()) {
-          PhysicObject* x=dynamic_cast<PhysicObject*>(i);
-          if (x!=nullptr) {
-            mass1=x->GetMass();
-            break;
-          }
-        }
-        for (auto i:p2->getChildrens()) {
-          PhysicObject* x=dynamic_cast<PhysicObject*>(i);
-          if (x!=nullptr) {
-            mass2=x->GetMass();
-            break;
-          }
-       }
+        PhysicObject* Physics1=p1->GetGameObjectOfType<PhysicObject>();
+        PhysicObject* Physics2=p2->GetGameObjectOfType<PhysicObject>();
+/*
+      *
+            sf::Vector2f relativeVelocity = Physics2->getSpeed() - Physics1->getSpeed();
 
+            float velocityAlongNormal = relativeVelocity.dot( collisionData.normal);
 
-        float totalWeight = mass1+mass2;
-        if (totalWeight==0) totalWeight = 1;//3star: consider an exception
+            float e = std::min(Physics1->getElasticity(), Physics2->getElasticity()); // Coefficient of restitution
 
-        float move1=mass2/totalWeight;
-        float move2=mass1/totalWeight;
+            float invMass1 = 1.0f / Physics1->getMass();
+            float invMass2 = 1.0f / Physics2->getMass();
+
+            float j = -(1 + e) * velocityAlongNormal;
+            j /= invMass1 + invMass2;
+
+            sf::Vector2f impulse = j * collisionData.normal;
+            Physics1->setSpeed(Physics1->getSpeed() - invMass1 * impulse);
+            Physics2->setSpeed(Physics2->getSpeed() + invMass2 * impulse);
+
+ */
+      float totalWeight =Physics1->getMass()+Physics2->getMass();
+      if (totalWeight==0) totalWeight = 1;//3star: consider an exception
+
+      float move1=Physics2->getMass()/totalWeight;
+      float move2=Physics1->getMass()/totalWeight;
+
+      sf::Vector2f speed1=Physics1->getSpeed();
+      sf::Vector2f speed2=Physics2->getSpeed();
+      sf::Vector2f relativeVelocity = speed2 - speed1;
+
+      float velocityAlongNormal = relativeVelocity.dot( collisionData.normal);
+
+      float e = std::min(Physics1->getElasticity(), Physics2->getElasticity());
+
+      float invMass1 = 1.0f / Physics1->getMass();
+      float invMass2 = 1.0f / Physics2->getMass();
+
+      float j = -(1 + e) * velocityAlongNormal;
+      j /= invMass1 + invMass2;
+
+      sf::Vector2f impulse = j * collisionData.normal;
+      Physics1->setSpeed(Physics1->getSpeed() - invMass1 * impulse);
+      Physics2->setSpeed(Physics2->getSpeed() + invMass2 * impulse);
 
         Obj1->GlobalMoveTransform(-collisionData.normal*collisionData.penetration*move1);
         Obj2->GlobalMoveTransform(collisionData.normal*collisionData.penetration*move2);
@@ -88,11 +109,10 @@ void Collider::update(float deltaTime) {
           collider->getOnCollide()(*collider,*this);
     }
   }
-
 }
 
 
-GameObject & Collider::Clone() const {
+GameObject & Collider::clone() const {
     Collider* clone= new Collider(m_collisionType,m_colliderMask,m_shape,m_transform);
    for (auto i:m_children) {
      clone->EmplaceClone(*i);
@@ -100,7 +120,7 @@ GameObject & Collider::Clone() const {
    clone->m_name =m_name;
    clone->m_parent = nullptr;
    clone->m_updateOrder = m_updateOrder;
-   clone->OnCollide=OnCollide;
+   clone->m_onCollide=m_onCollide;
    return *clone;
  }
 

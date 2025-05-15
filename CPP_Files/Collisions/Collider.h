@@ -1,9 +1,7 @@
-#ifndef ICOLIDERABLE_H
-#define ICOLIDERABLE_H
-
+#pragma once
 #include <functional>
 
-#include "GameObject.hpp"
+#include "../GameObject.hpp"
 #include "SFML/Graphics/Transform.hpp"
 
 
@@ -33,15 +31,15 @@ class Collider:public GameObject{
         CollisionType m_collisionType;
         ColliderMask m_colliderMask;
         GeometryShape m_shape;
+        std::function<void(Collider&,Collider&)> m_onCollide;
         static int ColliderMatrix[4][4];
-        std::function<void(Collider&,Collider&)> OnCollide;
 
     public:
         void AddGameObjectToGame() override;
         void RemoveGameObjectFromGame() override;
         void update(float  deltaT) override;
-        std::function<void(Collider&,Collider&)>& getOnCollide(){return OnCollide;}
-        GameObject& Clone() const override;
+        std::function<void(Collider&,Collider&)>& getOnCollide(){return m_onCollide;}
+        GameObject& clone() const override;
         collisionData ColCircleCircle(const sf::Transform & Tr1, const sf::Transform & Tr2);
 
         collisionData ColCircleSquare(const sf::Transform & Tr1, const sf::Transform & Tr2);
@@ -51,4 +49,3 @@ class Collider:public GameObject{
         collisionData CheckCollision(const Collider& col1,const Collider& col2);
         Collider( CollisionType collisionType,ColliderMask mask,GeometryShape shape, const sf::Transform &transform=sf::Transform::Identity);
 };
-#endif //ICOLIDERABLE_H

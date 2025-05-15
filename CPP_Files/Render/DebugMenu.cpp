@@ -9,12 +9,10 @@
 #include "../Resources.hpp"
 #include "../Exceptions/GameLogicException.hpp"
 
-DebugMenu::DebugMenu( const std::string &name, const sf::Transform &transform,GameObject* parent):
-GameObject(name, transform,parent)
-{
+DebugMenu::DebugMenu( const std::string &name, const sf::Transform &transform):
+GameObject(name, transform){
   m_renderOrder=RenderOrder::UIPostProcessing;
   m_updateOrder=UpdateOrder::UI;
-
 }
 void DebugMenu::update( float deltaT) {
   (void)deltaT;

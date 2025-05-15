@@ -71,8 +71,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/gameObjectComp.hpp
         CPP_Files/gameObjectComp.cpp
         CPP_Files/Render/IRenderable.cpp
-        CPP_Files/Collider.h
-        CPP_Files/Collider.cpp
+        CPP_Files/Collisions/Collider.h
+        CPP_Files/Collisions/Collider.cpp
         CPP_Files/Render/PostProcessingShader.cpp
         CPP_Files/Render/PostProcessingShader.h
         CPP_Files/UtilityiesFunctions.hpp
@@ -90,8 +90,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Render/ShapeRenderer.hpp
         CPP_Files/Weapons/Firearm.cpp
         CPP_Files/Weapons/Firearm.hpp
-        CPP_Files/PhysicObject.cpp
-        CPP_Files/PhysicObject.hpp
+        CPP_Files/Collisions/PhysicObject.cpp
+        CPP_Files/Collisions/PhysicObject.hpp
+        CPP_Files/EntityHealth.cpp
+        CPP_Files/EntityHealth.hpp
 )
 
 

@@ -7,7 +7,7 @@
 #include "SFML/Graphics/CircleShape.hpp"
 #include "../Game.hpp"
 #include "Camera.hpp"
-  GameObject & ShapeRenderer::Clone() const{
+  GameObject & ShapeRenderer::clone() const{
     ShapeRenderer* clone;
     if (texture) {
       clone=new ShapeRenderer(m_name,m_transform,m_circleColor,m_renderOrder,m_shape);

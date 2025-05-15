@@ -9,6 +9,7 @@
 #include "Render/IRenderable.hpp"
 
 #include "UpdateOrder.hpp"
+#include "Exceptions/GameLogicException.hpp"
 #include "SFML/Graphics/Transform.hpp"
 class Collider;
 class GameObject {
@@ -23,9 +24,9 @@ protected:
     sf::Transform m_transform;
     std::set<GameObject*> m_children;
     std::string m_name;
-    GameObject* m_parent;
-    UpdateOrder m_updateOrder;
-
+    GameObject* m_parent{nullptr};
+    UpdateOrder m_updateOrder=UpdateOrder::Default;
+    bool m_isActive{true};
 public:
     virtual void AddGameObjectToGame();
     virtual void RemoveGameObjectFromGame();
@@ -34,12 +35,12 @@ public:
 
 
     /*Used for Game class only*/
-    explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity,GameObject* parent=nullptr);
+    explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity);
     virtual ~GameObject();
     virtual void SetParent(GameObject* p_parent);
     bool IsInGame();
     virtual void update(float deltaT);
-    virtual GameObject& Clone() const;
+    virtual GameObject& clone() const;
 
     GameObject(const GameObject &other);
 
@@ -56,15 +57,23 @@ public:
     void AddGameObjectToRenderObjects(IRenderable* game_object);
     void addCollider(Collider& collider);
     friend std::ostream & operator<<(std::ostream &os, const GameObject &obj);
+    void setActive(bool isActive);
 
-
+    bool IsActive() const {return m_isActive;}
     template <class T=GameObject,class ...ARGS>
     T* EmplaceGameObject(ARGS&&...);
+
+    template <class T=GameObject>
+    T* GetGameObjectOfType();
+
+    template <class T=GameObject>
+    std::vector<T*> GetGameObjectsOfType();
     GameObject* EmplaceClone(const GameObject& obj);
 };
 
+
 inline GameObject * GameObject::EmplaceClone(const GameObject &obj){
-    auto* x=&obj.Clone();
+    auto* x=&obj.clone();
     x->SetParent(this);
     m_children.insert(x);
     return x;
@@ -77,4 +86,27 @@ T* GameObject::EmplaceGameObject(ARGS&&... args) {
     newGameObject->SetParent(this);
     m_children.insert(newGameObject);
     return newGameObject;
+}
+
+template<class T>
+std::vector<T*> GameObject::GetGameObjectsOfType() {
+    std::vector<T*> ret;
+    for (GameObject* x:m_children) {
+        T* gameObject = dynamic_cast<T*>(x);
+        if (gameObject) {
+            ret.push_back(gameObject);
+        }
+    }
+    return ret;
+}
+
+template<class T>
+T * GameObject::GetGameObjectOfType() {
+    for (GameObject* x:m_children) {
+        T* gameObject = dynamic_cast<T*>(x);
+        if (gameObject) {
+            return gameObject;
+        }
+    }
+    return nullptr;
 }

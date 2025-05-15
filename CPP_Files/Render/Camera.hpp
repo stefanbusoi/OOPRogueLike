@@ -12,8 +12,7 @@ protected:
 
 public:
     friend std::ostream & operator<<(std::ostream &os, const Camera &obj);
-    ~Camera() override;
-    explicit Camera( const std::string &name="Camera", const sf::Transform &transform=sf::Transform::Identity,GameObject* parent=nullptr);
+    explicit Camera( const std::string &name="Camera", const sf::Transform &transform=sf::Transform::Identity);
 
     sf::Transform& getTransform() ;
     void draw(const sf::Drawable &drawable, const sf::Transform &transform) const;

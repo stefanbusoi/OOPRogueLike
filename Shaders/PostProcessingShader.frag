@@ -7,16 +7,13 @@ uniform sampler2D  tex;
 void main()
 {
 
-    vec2 uv = (gl_FragCoord.xy) / resolution;
-    float pixelSize=max(2,-60+100/time);
-    vec4 Data = texture(tex, (uv*resolution-mod(uv*resolution,pixelSize)+pixelSize/2)/resolution);
-    // float modTime = sin(time * 2) + cos(time * 1.3193);
-    // modTime *= 40.0;
-    // vec4 DataR = texture(tex, uv);
-    // vec4 DataG = texture(tex, uv+vec2(0,0.001) * modTime);
-    //vec4 DataB = texture(tex, uv-vec2(0,0.001) * modTime);
+    vec2 uv = (gl_FragCoord.xy)/resolution ;
+    vec4 Data = texture(tex, uv);
+    uv=uv*resolution;
 
+    vec2 center=resolution/2;
+    float d=distance(vec2(uv.x,uv.y),center)/250;
+    d=d*d;
+    gl_FragColor = vec4(Data.rgb*(clamp(1-d/5,0.3,1)),1);
 
-
-    gl_FragColor = vec4(Data.rgb,1);
 }

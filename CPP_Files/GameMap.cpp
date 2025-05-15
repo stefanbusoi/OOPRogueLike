@@ -30,7 +30,7 @@ void GameMap::Render() {
 
 }
 
-GameMap::GameMap( const std::string &name, const sf::Transform &transform,GameObject* parent):GameObject(name,transform,parent) {
+GameMap::GameMap( const std::string &name, const sf::Transform &transform):GameObject(name,transform) {
     m_renderOrder=RenderOrder::Terrain;
     m_updateOrder=UpdateOrder::Default;
     if (! m_shader.loadFromFile("Shaders/fragment.frag", sf::Shader::Type::Fragment)) {
@@ -39,8 +39,6 @@ GameMap::GameMap( const std::string &name, const sf::Transform &transform,GameOb
 
 }
 
-GameMap::~GameMap() {
-}
 
 void GameMap::update(float deltaT) {
     (void)deltaT;
