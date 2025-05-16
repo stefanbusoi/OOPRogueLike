@@ -4,7 +4,6 @@
 
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
-#include <ostream>
 
 #include "GameObject.hpp"
 #include "Render/IRenderable.hpp"

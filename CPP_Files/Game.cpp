@@ -9,6 +9,7 @@
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
+#include "EntityHealth.hpp"
 #include "Collisions/PhysicObject.hpp"
 #include "UtilityiesFunctions.hpp"
 #include "Render/DebugMenu.hpp"
@@ -60,8 +61,12 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     game_object.EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Enemy,GeometryShape::Circle,sf::Transform::Identity);
     game_object.EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
     game_object.EmplaceGameObject<PhysicObject>(40.0f,1.6f,1.0f);
-    for (auto i=1;i<=4;i++) {
-        for (auto j=1;j<=4;j++) {
+    EntityHealth* entityHealth=game_object.EmplaceGameObject<EntityHealth>(100.0f,100.0f);
+    entityHealth->setOnDeath([](EntityHealth* entityHealth) {
+        Game::getInstance()->MarkForDeletion(entityHealth->getParent());
+    });
+    for (auto i=1;i<=1;i++) {
+        for (auto j=1;j<=1;j++) {
             auto* x=EmplaceClone(game_object);
             x->GlobalMoveTransform({i*100.0f,j*100.0f});
          }
@@ -112,7 +117,8 @@ void Game::MarkForUnactive(GameObject *p_gameObject) {
 }
 
 void Game::exit() {
-    for (const auto& gameObject:m_children) {
+    std::vector<GameObject*> elements=std::vector<GameObject*>(m_children.begin(),m_children.end());
+    for (const auto& gameObject:elements) {
         delete gameObject;
     }
     m_children.clear();
@@ -136,7 +142,7 @@ void Game::handleEvents() {
             }
         }else if (event->is<sf::Event::MouseButtonPressed>()) {
             const auto* keyPressed = event->getIf<sf::Event::MouseButtonPressed>();
-            std::cout << "X: " << (keyPressed->position.x)<<",Y: "<<keyPressed->position.y ;
+            std::cout << "X: " << keyPressed->position.x<<",Y: "<<keyPressed->position.y ;
         }
     }
 }
@@ -147,6 +153,7 @@ void Game::processGameFrame() {
     m_clock.restart();
     handleEvents();
     if (isRunning()) {
+        frameIsRunning=true;
         for (const auto& gameObject:m_gameObjects) {
             gameObject->update(deltaTime.asSeconds());
         }
@@ -155,8 +162,7 @@ void Game::processGameFrame() {
         fps=1.0f/deltaTime.asSeconds();
         std::set<GameObject*> m_ToDeleteSet(m_ToDelete.begin(), m_ToDelete.end());
         for (auto* gameObject:m_ToDeleteSet) {
-            gameObject->SetParent(nullptr);
-            delete gameObject;
+             delete gameObject;
         }
         m_ToDelete.clear();
         for (auto* gameObject:m_ToInactive) {
@@ -164,7 +170,6 @@ void Game::processGameFrame() {
         }
         m_ToInactive.clear();
     }
-
 }
 
 

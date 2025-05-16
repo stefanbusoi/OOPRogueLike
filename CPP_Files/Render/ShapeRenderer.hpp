@@ -5,11 +5,10 @@
 #include <SFML/Graphics/Texture.hpp>
 
 #include "../Collisions/Collider.h"
-
 class ShapeRenderer: public IRenderable,public GameObject{
   sf::Color m_circleColor;
   GeometryShape m_shape;
-  sf::Texture m_texture;
+  sf::Texture* m_texture;
   bool texture;
 public:
   GameObject & clone() const override;

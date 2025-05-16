@@ -10,16 +10,18 @@
 #include "Collisions/Collider.h"
 int GameObject::s_globalId = 0;
 
-GameObject::GameObject(std::string name,sf::Transform transform): m_localId(getGlobalId()),
+GameObject::GameObject(std::string name,sf::Transform transform):
     m_transform(transform),
-    m_name(std::move(name))
-{}
+    m_name(std::move(name)) {
+
+}
 
 
 GameObject::~GameObject() {
-    if (m_parent!=nullptr) {
-        Game::getInstance()->getGameObjects().erase(this);
-    }for ( GameObject* x:m_children) {
+    GameObject::RemoveGameObjectFromGame();
+    GameObject::SetParent(nullptr);
+    std::vector<GameObject* >childrenVector=std::vector<GameObject*>(m_children.begin(),m_children.end());
+    for ( GameObject* x:childrenVector) {
         delete x;
     }
 }
@@ -76,23 +78,6 @@ GameObject & GameObject::clone() const {
     return *clone;
 }
 
-GameObject::GameObject(const GameObject &other){
-    *this=other.clone();
-}
-
-GameObject & GameObject::operator=(const GameObject &other) {
-
-    if (this == &other)
-        return *this;
-    m_localId = other.m_localId;
-    m_transform = other.m_transform;
-    m_children = other.m_children;
-    m_name = other.m_name;
-    m_parent = other.m_parent;
-    m_updateOrder = other.m_updateOrder;
-    return *this;
-}
-
 
 sf::Transform & GameObject::getLocalTransform() {
     return m_transform;
@@ -116,6 +101,7 @@ void GameObject::AddGameObjectToGame() {
 }
 
 void GameObject::RemoveGameObjectFromGame() {
+
     Game::getInstance()->getGameObjects().erase(this);
     for (auto i:getChildrens()) {
         i->RemoveGameObjectFromGame();

@@ -1,8 +1,5 @@
-#include "Render/Camera.hpp"
 #include "Player.hpp"
 
-#include <cmath>
-#include <math.h>
 
 #include "Game.hpp"
 #include "Collisions/PhysicObject.hpp"
@@ -65,11 +62,9 @@ Player::Player( const std::string &name, const sf::Transform &transform): GameOb
     m_updateOrder=UpdateOrder::Default;
     sf::Transform tr=sf::Transform::Identity;
     tr.scale(sf::Vector2f(40.0f,40.0f));
-    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
 
-    sf::Transform tr2=sf::Transform::Identity;
-    tr2.scale(sf::Vector2f(40.0f,40.0f));
-    EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,tr2);
+    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
+    EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,tr);
 
     m_phisicsObject=EmplaceGameObject<PhysicObject>(100.0f,10.f,0.0f);
     m_firearm=EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);

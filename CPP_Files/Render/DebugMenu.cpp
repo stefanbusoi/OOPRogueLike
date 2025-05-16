@@ -14,9 +14,7 @@ GameObject(name, transform){
   m_renderOrder=RenderOrder::UIPostProcessing;
   m_updateOrder=UpdateOrder::UI;
 }
-void DebugMenu::update( float deltaT) {
-  (void)deltaT;
-}
+
 void DebugMenu::Render() {
     sf::Text text(Resources::getFont());
     text.setFillColor(sf::Color::White);

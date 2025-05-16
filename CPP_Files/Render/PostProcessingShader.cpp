@@ -39,10 +39,6 @@ void PostProcessingShader::Render() {
     renderTexture.draw(fullscreenQuad,&m_shader);
 }
 
-void PostProcessingShader::update([[maybe_unused]]float deltaT) {
-
-}
-
 void PostProcessingShader::AddGameObjectToGame() {
     GameObject::AddGameObjectToGame();
     IRenderable::AddToRenderObjects();

@@ -19,8 +19,8 @@ bool ColliderComp::operator()(const Collider *lhs, const Collider *rhs) const {
 
 bool iRendableComp::operator()( IRenderable *lhs,  IRenderable *rhs) const {
     if (lhs->getRenderOrder()==rhs->getRenderOrder()) {
-        return (dynamic_cast<GameObject*>(lhs)->GetId()) <
-               (dynamic_cast<GameObject*>(rhs)->GetId());
+        return dynamic_cast<GameObject*>(lhs)->GetId() <
+               dynamic_cast<GameObject*>(rhs)->GetId();
     }
     return lhs->getRenderOrder()<rhs->getRenderOrder();
 }

@@ -3,7 +3,7 @@
 //
 
 #include "ShapeRenderer.hpp"
-
+#include "../Resources.hpp"
 #include "SFML/Graphics/CircleShape.hpp"
 #include "../Game.hpp"
 #include "Camera.hpp"
@@ -41,7 +41,7 @@ ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &trans
   m_renderOrder=render_order;
   m_shape=geometry_shape;
   texture=true;
-  m_texture=sf::Texture(path.string());
+  m_texture=Resources::getTexture(path);
 }
 
 void ShapeRenderer::update(float deltaTime) {
@@ -56,7 +56,7 @@ void ShapeRenderer::Render() {
     sf::CircleShape shape(1.0f);
     shape.setOrigin({1, 1});
   if (texture) {
-    shape.setTexture(&m_texture);
+    shape.setTexture(m_texture);
   }else {
     shape.setFillColor(m_circleColor);
   }
@@ -67,12 +67,11 @@ void ShapeRenderer::Render() {
     sf::RectangleShape shape({1.0f,1.0f});
     shape.setOrigin({0.5, 0.5});
     if (texture) {
-      shape.setTexture(&m_texture);
+      shape.setTexture(m_texture);
     }else {
       shape.setFillColor(m_circleColor);
     }
     camera.draw(shape,transform);
-    return;
   }
 }
 

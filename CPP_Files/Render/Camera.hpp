@@ -16,7 +16,6 @@ public:
 
     sf::Transform& getTransform() ;
     void draw(const sf::Drawable &drawable, const sf::Transform &transform) const;
-    [[maybe_unused]]void setTransform(const sf::Transform &transform){m_transform=transform;}
     void update(float deltaT) override;
     float getViewRadius() const;
 };

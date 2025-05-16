@@ -4,6 +4,7 @@
 
 #include "Firearm.hpp"
 
+#include "../EntityHealth.hpp"
 #include "../Game.hpp"
 #include "../Render/ShapeRenderer.hpp"
 #include "../UtilityiesFunctions.hpp"
@@ -46,18 +47,24 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
         auto parent=ths.getParent();
 
         PhysicObject* ph = ths.getParent()->GetGameObjectOfType<PhysicObject>();
-        Collider* cl = ths.getParent()->GetGameObjectOfType<Collider>();
-
-        Game::getInstance()->MarkForDeletion(cl);
         Game::getInstance()->MarkForDeletion(ph);
+
+        Collider* cl = ths.getParent()->GetGameObjectOfType<Collider>();
+        Game::getInstance()->MarkForDeletion(cl);
 
         parent->SetParent(col.getParent());
 
+        EntityHealth* health=col.getParent()->GetGameObjectOfType<EntityHealth>();
+        if (health!=nullptr) {
+            health->dealDamage(10);
+        }
     };
     bulletPrefab->EmplaceGameObject<ShapeRenderer>("CircleRenderer",BulletTransform, "Assets/arrow.png", RenderOrder::Player,GeometryShape::Square);
     bulletPrefab->EmplaceGameObject<PhysicObject>(40.0f,0.0f,0.0f);
     sf::Transform tr=sf::Transform::Identity;
-    tr.translate(sf::Vector2f(0.0f,40.0f)).scale(sf::Vector2f(100.f, -130.0f));
+
+    tr.translate({0.0f,40.0f})
+      .scale({100.f, -130.0f});
     EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PostProcessing,GeometryShape::Square);
 }
 

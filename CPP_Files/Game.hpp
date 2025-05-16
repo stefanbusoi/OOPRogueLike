@@ -24,8 +24,9 @@ class Game :public GameObject{
     std::set<Collider*,ColliderComp> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;
-    void renderAll();
 
+    bool frameIsRunning=false;
+    void renderAll();
     void handleEvents();
 
 public:

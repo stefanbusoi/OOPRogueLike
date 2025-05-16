@@ -13,7 +13,6 @@ protected:
 public:
     PostProcessingShader(std::string name, std::filesystem::path ShaderPath);
     void Render() override;
-    void update(float deltaT) override;
 
     void AddGameObjectToGame() override;
 

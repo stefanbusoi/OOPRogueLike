@@ -4,7 +4,6 @@
 #include "../GameObject.hpp"
 #include "PhysicObject.hpp"
 #include "../UtilityiesFunctions.hpp"
-#include "../Exceptions/GameLogicException.hpp"
 int Collider::ColliderMatrix[4][4] = {
   {1,0,1,1},
   {0,0,1,1},
@@ -17,18 +16,21 @@ int Collider::ColliderMatrix[4][4] = {
  * Map=2,
  * Enemy=3,
  */
+
  Collider::Collider( CollisionType collisionType,
-                          ColliderMask mask,GeometryShape shape , const sf::Transform &transform)
-    :
+                          ColliderMask mask,GeometryShape shape , const sf::Transform &transform):
       GameObject("COLLIDER",transform),
       m_collisionType(collisionType),
       m_colliderMask(mask),
       m_shape(shape)
-
     {
-
     m_updateOrder=UpdateOrder::Collisions;
 }
+
+Collider::~Collider() {
+   Game::getInstance()->getColliders().erase(this);
+}
+
 void Collider::AddGameObjectToGame(){
   GameObject::AddGameObjectToGame();
   Game::getInstance()->getColliders().insert(this);
@@ -171,7 +173,7 @@ collisionData Collider::ColCircleSquare(const sf::Transform &tr1, const sf::Tran
    return collisionData{};
 }
 
-collisionData Collider::ColSqueareSquare(const sf::Transform &tr1, const sf::Transform &tr2) {
+collisionData Collider::ColSquareSquare(const sf::Transform &tr1, const sf::Transform &tr2) {
    /*
    sf::Vector2f pos1=Utils::getPosition(tr1);
    sf::Vector2f pos2=Utils::getPosition(tr2);
@@ -199,7 +201,7 @@ collisionData Collider::CheckCollision(const Collider& col1,const Collider& col2
         return ColCircleSquare(col2.getGlobalTransform(),col1.getGlobalTransform());
     }
     if (col1.m_shape==GeometryShape::Square && col2.m_shape==GeometryShape::Square) {
-      return ColSqueareSquare(col1.getGlobalTransform(),col2.getGlobalTransform());
+      return ColSquareSquare(col1.getGlobalTransform(),col2.getGlobalTransform());
     }
    return collisionData();
 }

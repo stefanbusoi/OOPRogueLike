@@ -1,10 +1,4 @@
-//
-// Created by stefa on 4/28/2025.
-//
-
-#ifndef DEBUGMENU_HPP
-#define DEBUGMENU_HPP
-
+#pragma once
 #include <ostream>
 
 #include "../GameObject.hpp"
@@ -38,10 +32,5 @@ protected:
 
 public:
   void AddGameObjectToGame() override;
-  void update(float deltaT) override;
   void RemoveGameObjectFromGame() override;
 };
-
-
-
-#endif //DEBUGMENU_HPP
