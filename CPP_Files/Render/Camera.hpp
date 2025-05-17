@@ -6,7 +6,7 @@
 
 class Camera:public GameObject{
     sf::RenderWindow* m_window;
-    Player* m_player=nullptr;
+    std::weak_ptr<Player> m_player;
 protected:
     void print(std::ostream &os) const override;
 

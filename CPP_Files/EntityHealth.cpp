@@ -10,8 +10,8 @@ EntityHealth::EntityHealth(float maxHealt, float currentHealt):
   m_currentHealth(currentHealt) {
 }
 
-GameObject & EntityHealth::clone() const {
-  EntityHealth* clone=new EntityHealth(m_maxhealth,m_currentHealth);
+std::shared_ptr<GameObject> EntityHealth::clone() const {
+  std::shared_ptr<EntityHealth>  clone= std::make_shared<EntityHealth>(m_maxhealth,m_currentHealth);
   clone->m_isDead=m_isDead;
   clone->m_onDeath=m_onDeath;
   for (auto i:m_children) {
@@ -19,9 +19,9 @@ GameObject & EntityHealth::clone() const {
   }
   clone->m_transform = m_transform;
   clone->m_name =m_name;
-  clone->m_parent = nullptr;
+  clone->m_parent.reset();
   clone->m_updateOrder = m_updateOrder;
-  return *clone;
+  return clone;
 }
 
 void EntityHealth::dealDamage(float damageValue) {

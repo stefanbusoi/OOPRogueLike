@@ -7,23 +7,23 @@
 #include "SFML/Graphics/CircleShape.hpp"
 #include "../Game.hpp"
 #include "Camera.hpp"
-  GameObject & ShapeRenderer::clone() const{
-    ShapeRenderer* clone;
+  std::shared_ptr<GameObject> ShapeRenderer::clone() const{
+    std::shared_ptr<ShapeRenderer> clone;
     if (texture) {
-      clone=new ShapeRenderer(m_name,m_transform,m_circleColor,m_renderOrder,m_shape);
+      clone=std::make_shared <ShapeRenderer>(m_name,m_transform,m_circleColor,m_renderOrder,m_shape);
       clone->m_texture=m_texture;
-     clone->texture=texture;
+      clone->texture=texture;
     }else {
-      clone=new ShapeRenderer(m_name,m_transform,m_circleColor,m_renderOrder,m_shape);
+      clone=std::make_shared <ShapeRenderer>(m_name,m_transform,m_circleColor,m_renderOrder,m_shape);
       clone->texture=texture;
     }
     for (auto i:m_children) {
       clone->EmplaceClone(*i);
     }
     clone->m_name =m_name;
-    clone->m_parent = nullptr;
+    clone->m_parent.reset();
     clone->m_updateOrder = m_updateOrder;
-    return *clone;
+    return clone;
   }
 
 ShapeRenderer::ShapeRenderer(const std::string &name,const sf::Transform& transform,const sf::Color& color,const RenderOrder& render_order,GeometryShape geometry_shape) {
@@ -49,7 +49,7 @@ void ShapeRenderer::update(float deltaTime) {
 }
 
 void ShapeRenderer::Render() {
-  const Camera& camera=Game::getInstance()->getCamera();
+  std::weak_ptr<Camera> camera = Game::getInstance()->getCamera();
   sf::Transform transform=getGlobalTransform();
 
   if (m_shape==GeometryShape::Circle) {
@@ -60,7 +60,7 @@ void ShapeRenderer::Render() {
   }else {
     shape.setFillColor(m_circleColor);
   }
-    camera.draw(shape,transform);
+    camera.lock()->draw(shape,transform);
     return;
   }
   if (m_shape==GeometryShape::Square) {
@@ -71,7 +71,7 @@ void ShapeRenderer::Render() {
     }else {
       shape.setFillColor(m_circleColor);
     }
-    camera.draw(shape,transform);
+    camera.lock()->draw(shape,transform);
   }
 }
 

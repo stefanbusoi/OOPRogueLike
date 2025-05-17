@@ -16,7 +16,7 @@
 #include "Render/ShapeRenderer.hpp"
 
 
-Game* Game::s_instance = nullptr;
+std::shared_ptr<Game> Game::s_instance = nullptr;
 
 void Game::renderAll() {
     m_window.display();
@@ -30,7 +30,7 @@ void Game::renderAll() {
 }
 
 
-Game *Game::getInstance() {return s_instance;}
+std::shared_ptr<Game> Game::getInstance() {return s_instance;}
 
 /**
  * Create a window and it initiate the first window
@@ -40,7 +40,7 @@ Game *Game::getInstance() {return s_instance;}
 Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject(Title) {
     m_totalTime=0.0f;
     if (s_instance==nullptr) {
-        s_instance=this;
+        s_instance=dynamic_pointer_cast<Game>(shared_from_this());
     }
     m_window.create(video_mode, Title, sf::State::Fullscreen);
     if (!m_renderTexture.resize(m_window.getSize())) {
@@ -61,13 +61,14 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     game_object.EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Enemy,GeometryShape::Circle,sf::Transform::Identity);
     game_object.EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
     game_object.EmplaceGameObject<PhysicObject>(40.0f,1.6f,1.0f);
-    EntityHealth* entityHealth=game_object.EmplaceGameObject<EntityHealth>(100.0f,100.0f);
+    std::shared_ptr<EntityHealth> entityHealth=game_object.EmplaceGameObject<EntityHealth>(100.0f,100.0f);
     entityHealth->setOnDeath([](EntityHealth* entityHealth) {
-        Game::getInstance()->MarkForDeletion(entityHealth->getParent());
+        //todo: modify this
+        // Game::getInstance()->MarkForDeletion(entityHealth->getParent());
     });
     for (auto i=1;i<=1;i++) {
         for (auto j=1;j<=1;j++) {
-            auto* x=EmplaceClone(game_object);
+            auto x=EmplaceClone(game_object);
             x->GlobalMoveTransform({i*100.0f,j*100.0f});
          }
     }
@@ -85,42 +86,39 @@ bool Game::isRunning() const {
 }
 
 
-bool Game::IsActiveInHirarchy(GameObject *p_gameObject) {
-    if (p_gameObject==nullptr) return false;
+bool Game::IsActiveInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
+    if (p_gameObject.expired()) return false;
 
-    while (p_gameObject->getParent() != nullptr) {
-        if (!p_gameObject->IsActive()) return false;
-        p_gameObject=p_gameObject->getParent();
+    while (!p_gameObject.expired()) {
+        if (!p_gameObject.lock()->IsActive()) return false;
+        p_gameObject=p_gameObject.lock()->getParent();
     }
-    if (p_gameObject==getInstance()) return true;
+    //todo: check this
+    if (p_gameObject.lock()==getInstance()) return true;
     return false;
 }
-bool Game::IsInHirarchy(GameObject *p_gameObject) {
+bool Game::IsInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
 
-    if (p_gameObject==nullptr) return false;
+    if (p_gameObject.expired()) return false;
 
-    while (p_gameObject->getParent() != nullptr) {
-        p_gameObject=p_gameObject->getParent();
+    while (!p_gameObject.expired()) {
+        p_gameObject=p_gameObject.lock()->getParent();
     }
-    if (p_gameObject==getInstance()) return true;
+    if (p_gameObject.lock()==getInstance()) return true;
     return false;
 }
 
-void Game::MarkForDeletion(GameObject *p_gameObject) {
+void Game::MarkForDeletion(std::shared_ptr<GameObject> p_gameObject) {
     if (p_gameObject==nullptr) return;
     m_ToDelete.push_back(p_gameObject);
 }
 
-void Game::MarkForUnactive(GameObject *p_gameObject) {
+void Game::MarkForUnactive(std::shared_ptr<GameObject> p_gameObject) {
     if (p_gameObject==nullptr) return;
     m_ToInactive.push_back(p_gameObject);
 }
 
 void Game::exit() {
-    std::vector<GameObject*> elements=std::vector<GameObject*>(m_children.begin(),m_children.end());
-    for (const auto& gameObject:elements) {
-        delete gameObject;
-    }
     m_children.clear();
     m_window.close();
     std::cout << "Fereastra a fost inchisa\n";
@@ -160,12 +158,10 @@ void Game::processGameFrame() {
         renderAll();
         m_precedentFrameTime=deltaTime.asSeconds();
         fps=1.0f/deltaTime.asSeconds();
-        std::set<GameObject*> m_ToDeleteSet(m_ToDelete.begin(), m_ToDelete.end());
-        for (auto* gameObject:m_ToDeleteSet) {
-             delete gameObject;
-        }
+        std::set<std::shared_ptr<GameObject>> m_ToDeleteSet(m_ToDelete.begin(), m_ToDelete.end());
+        //todo:Check what to do
         m_ToDelete.clear();
-        for (auto* gameObject:m_ToInactive) {
+        for (auto gameObject:m_ToInactive) {
             gameObject->RemoveGameObjectFromGame();
         }
         m_ToInactive.clear();

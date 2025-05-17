@@ -58,8 +58,8 @@ void Collider::update(float deltaTime) {
         auto p1=this->m_parent;
         auto p2=collider->m_parent;
 
-        PhysicObject* Physics1=p1->GetGameObjectOfType<PhysicObject>();
-        PhysicObject* Physics2=p2->GetGameObjectOfType<PhysicObject>();
+        std::shared_ptr<PhysicObject> Physics1=p1.lock()->GetGameObjectOfType<PhysicObject>();
+        std::shared_ptr<PhysicObject> Physics2=p2.lock()->GetGameObjectOfType<PhysicObject>();
 /*
       *
             sf::Vector2f relativeVelocity = Physics2->getSpeed() - Physics1->getSpeed();
@@ -103,8 +103,8 @@ void Collider::update(float deltaTime) {
       Physics1->setSpeed(Physics1->getSpeed() - invMass1 * impulse);
       Physics2->setSpeed(Physics2->getSpeed() + invMass2 * impulse);
 
-        Obj1->GlobalMoveTransform(-collisionData.normal*collisionData.penetration*move1);
-        Obj2->GlobalMoveTransform(collisionData.normal*collisionData.penetration*move2);
+        Obj1.lock()->GlobalMoveTransform(-collisionData.normal*collisionData.penetration*move1);
+        Obj2.lock()->GlobalMoveTransform(collisionData.normal*collisionData.penetration*move2);
         if (this->getOnCollide())
           this->getOnCollide()(*this,*collider);
         if (collider->getOnCollide())
@@ -114,16 +114,16 @@ void Collider::update(float deltaTime) {
 }
 
 
-GameObject & Collider::clone() const {
-    Collider* clone= new Collider(m_collisionType,m_colliderMask,m_shape,m_transform);
+std::shared_ptr<GameObject> Collider::clone() const {
+    std::shared_ptr<Collider> clone= std::make_shared<Collider>(m_collisionType,m_colliderMask,m_shape,m_transform);
    for (auto i:m_children) {
      clone->EmplaceClone(*i);
    }
    clone->m_name =m_name;
-   clone->m_parent = nullptr;
+   clone->m_parent.reset();
    clone->m_updateOrder = m_updateOrder;
    clone->m_onCollide=m_onCollide;
-   return *clone;
+   return clone;
  }
 
 collisionData Collider::ColCircleCircle(const sf::Transform &tr1, const sf::Transform &tr2) {

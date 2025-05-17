@@ -17,7 +17,7 @@ void Camera::print(std::ostream &os) const {
 
 Camera::Camera( const std::string &name, const sf::Transform &transform):GameObject(name,transform),m_window(&Game::getInstance()->getWindow()){
         m_player=Game::getInstance()->GetGameObjectOfType<Player>();
-        if (m_player==nullptr)
+        if (m_player.expired())
                 throw GameLogicException("Player does not exist");
         m_updateOrder=UpdateOrder::Camera;
 }
@@ -27,7 +27,7 @@ sf::Transform& Camera::getTransform(){
 }
 void Camera::update([[maybe_unused]]float deltaT) {
         sf::Transform transform=sf::Transform::Identity;
-        m_transform=transform.translate(Utils::getPosition(m_player->getGlobalTransform()));
+        m_transform=transform.translate(Utils::getPosition(m_player.lock()->getGlobalTransform()));
 }
 
 

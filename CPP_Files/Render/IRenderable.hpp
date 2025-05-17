@@ -1,9 +1,9 @@
 #pragma once
 
 #include <ostream>
-
+#include <memory>
 #include "RenderOrder.hpp"
-class IRenderable {
+class IRenderable:public std::enable_shared_from_this<IRenderable> {
     protected:
         RenderOrder m_renderOrder=RenderOrder::Default;
     public:

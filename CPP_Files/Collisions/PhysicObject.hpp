@@ -17,7 +17,7 @@ class PhysicObject:public GameObject {
 public:
   PhysicObject(float mass, float friction,float elasticity);
 
-  GameObject& clone() const override;
+  std::shared_ptr<GameObject> clone() const override;
   void update(float deltaT) override;
   float getMass() {return m_mass;}
   float getFriction() {return m_friction;}

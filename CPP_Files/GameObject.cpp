@@ -19,28 +19,25 @@ GameObject::GameObject(std::string name,sf::Transform transform):
 
 GameObject::~GameObject() {
     GameObject::RemoveGameObjectFromGame();
-    GameObject::SetParent(nullptr);
-    std::vector<GameObject* >childrenVector=std::vector<GameObject*>(m_children.begin(),m_children.end());
-    for ( GameObject* x:childrenVector) {
-        delete x;
-    }
+    GameObject::SetParent(std::weak_ptr<GameObject>());
+    m_children.clear();
 }
-void GameObject::SetParent(GameObject *p_parent) {
-    Game* instance=Game::getInstance();
-    if (instance->IsInHirarchy(this)&&instance->IsInHirarchy(p_parent)) {
-        m_transform=p_parent->getGlobalTransform().getInverse()*getGlobalTransform();
+void GameObject::SetParent(std::weak_ptr<GameObject> p_parent) {
+    std::shared_ptr<Game> instance=Game::getInstance();
+    if (instance->IsInHirarchy(shared_from_this())&&instance->IsInHirarchy(p_parent)) {
+        m_transform=p_parent.lock()->getGlobalTransform().getInverse()*getGlobalTransform();
     }
-    if (!instance->IsInHirarchy(this)&&instance->IsInHirarchy(p_parent)) {
+    if (!instance->IsInHirarchy(shared_from_this())&&instance->IsInHirarchy(p_parent)) {
         AddGameObjectToGame();
     }
-    if (instance->IsInHirarchy(this)&&!instance->IsInHirarchy(p_parent)) {
+    if (instance->IsInHirarchy(shared_from_this())&&!instance->IsInHirarchy(p_parent)) {
         RemoveGameObjectFromGame();
     }
-    if (m_parent!=nullptr) {
-        m_parent->m_children.erase(this);
+    if (!m_parent.expired()) {
+        m_parent.lock()->m_children.erase(shared_from_this());
     }
-    if (p_parent!=nullptr) {
-        p_parent->m_children.insert(this);
+    if (!p_parent.expired()) {
+        p_parent.lock()->m_children.insert(shared_from_this());
     }
     m_parent=p_parent;
 
@@ -55,7 +52,7 @@ void GameObject::setActive(bool isActive) {
         }
     }else {
         if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
-            Game::getInstance()->MarkForUnactive(this);
+            Game::getInstance()->MarkForUnactive(shared_from_this());
         }
     }
     m_isActive=isActive;
@@ -66,16 +63,16 @@ void GameObject::update(float deltaT) {
     (void)deltaT;
     }
 
-GameObject & GameObject::clone() const {
-    GameObject* clone =new GameObject();
-    for (auto i:m_children) {
+  std::shared_ptr<GameObject>  GameObject::clone() const {
+    std::shared_ptr<GameObject> clone = std::make_shared<GameObject>();
+    for (const std::shared_ptr<GameObject>& i:m_children) {
         clone->EmplaceClone(*i);
     }
     clone->m_transform = m_transform;
     clone->m_name =m_name;
-    clone->m_parent = nullptr;
+    clone->m_parent.reset();
     clone->m_updateOrder = m_updateOrder;
-    return *clone;
+    return clone;
 }
 
 
@@ -90,7 +87,7 @@ void GameObject::MoveTransform(sf::Vector2f movement) {
 void GameObject::GlobalMoveTransform(sf::Vector2f movement) {
     sf::Transform transform=sf::Transform::Identity;
     transform.translate(movement);
-    m_transform=m_parent->getGlobalTransform().getInverse()*transform*getGlobalTransform();
+    m_transform=m_parent.lock()->getGlobalTransform().getInverse()*transform*getGlobalTransform();
 }
 
 void GameObject::AddGameObjectToGame() {
@@ -109,8 +106,8 @@ void GameObject::RemoveGameObjectFromGame() {
 }
 
 sf::Transform GameObject::getGlobalTransform() const {
-    if (m_parent) {
-        return m_parent->getGlobalTransform() * m_transform;
+    if (!m_parent.expired()) {
+        return m_parent.lock()->getGlobalTransform() * m_transform;
     }
     return m_transform;
 }

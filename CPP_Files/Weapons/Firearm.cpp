@@ -11,13 +11,13 @@
 
 void Firearm::Fire() {
     if (lastShot+m_timer<=CurrentTimer) {
-        auto* bullet=Game::getInstance()->EmplaceClone(*bulletPrefab);
+        std::shared_ptr<GameObject> bullet = Game::getInstance()->EmplaceClone(*bulletPrefab);
         bullet->GlobalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform())+Utils::getPosition(getGlobalTransform()));
         lastShot=CurrentTimer;
         bullet->getLocalTransform().rotate(-Utils::getAngle(getGlobalTransform())+sf::degrees(180.0f));
         for (auto i:bullet->getChildrens()) {
-            PhysicObject* x=dynamic_cast<PhysicObject*>(i);
-            if (x!=nullptr) {
+            std::shared_ptr<PhysicObject> x = dynamic_pointer_cast<PhysicObject>(i);
+            if (x.get()!=nullptr) {
                 sf::Vector2f bulletSpeed;
                 bulletSpeed={1000.0f,0.0f};
                 bulletSpeed=bulletSpeed.rotatedBy(-Utils::getAngle(getGlobalTransform())+sf::degrees(90.0f));
@@ -42,19 +42,20 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
     bulletPrefab=std::make_unique<GameObject>("Bullet",BulletTransform);
     sf::Transform BulletTransformHitbox;
     BulletTransformHitbox.scale({0.3f,0.3f});
-    auto col=bulletPrefab->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Bullets,GeometryShape::Circle,BulletTransformHitbox);
+    std::shared_ptr<Collider> col = bulletPrefab->EmplaceGameObject<Collider>(
+        CollisionType::Dynamic, ColliderMask::Bullets, GeometryShape::Circle, BulletTransformHitbox);
     col->getOnCollide()=[](Collider& ths,Collider& col) {
         auto parent=ths.getParent();
 
-        PhysicObject* ph = ths.getParent()->GetGameObjectOfType<PhysicObject>();
+        std::shared_ptr<PhysicObject> ph = ths.getParent().lock()->GetGameObjectOfType<PhysicObject>();
         Game::getInstance()->MarkForDeletion(ph);
 
-        Collider* cl = ths.getParent()->GetGameObjectOfType<Collider>();
+        std::shared_ptr<Collider> cl = ths.getParent().lock()->GetGameObjectOfType<Collider>();
         Game::getInstance()->MarkForDeletion(cl);
 
-        parent->SetParent(col.getParent());
+        parent.lock()->SetParent(col.getParent());
 
-        EntityHealth* health=col.getParent()->GetGameObjectOfType<EntityHealth>();
+       std::shared_ptr<EntityHealth>health=col.getParent().lock()->GetGameObjectOfType<EntityHealth>();
         if (health!=nullptr) {
             health->dealDamage(10);
         }

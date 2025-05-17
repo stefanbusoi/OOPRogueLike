@@ -12,7 +12,7 @@
 #include "UpdateOrder.hpp"
 #include "SFML/Graphics/Transform.hpp"
 class Collider;
-class GameObject {
+class GameObject : public std::enable_shared_from_this<GameObject> {
 private:
 
     static int s_globalId;
@@ -23,9 +23,9 @@ protected:
 
     sf::Transform m_transform;
     std::string m_name;
-    std::set<GameObject*> m_children;
+    std::set<std::shared_ptr<GameObject>> m_children;
 
-    GameObject* m_parent{nullptr};
+    std::weak_ptr<GameObject> m_parent;
     UpdateOrder m_updateOrder=UpdateOrder::Default;
     bool m_isActive{true};
     virtual void print(std::ostream& os)const;
@@ -39,15 +39,14 @@ public:
 
     explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity);
     virtual ~GameObject();
-    virtual void SetParent(GameObject* p_parent);
+    virtual void SetParent(std::weak_ptr<GameObject>  p_parent);
     virtual void update(float deltaT);
-    virtual GameObject& clone() const;
-
+    virtual std::shared_ptr<GameObject>  clone() const;
     GameObject(const GameObject &other)=delete;
     GameObject & operator=(const GameObject &other)=delete;
 
-    const std::set<GameObject*>& getChildrens() {return m_children;}
-    GameObject* getParent() {return m_parent;}
+    const std::set<std::shared_ptr<GameObject>>& getChildrens() {return m_children;}
+    std::weak_ptr<GameObject> getParent() {return m_parent;}
     int GetId() const {return m_localId;}
     sf::Transform getGlobalTransform() const;
     sf::Transform& getLocalTransform();
@@ -61,29 +60,29 @@ public:
 
     bool IsActive() const {return m_isActive;}
     template <class T=GameObject,class ...ARGS>
-    T* EmplaceGameObject(ARGS&&...);
+    std::shared_ptr<T> EmplaceGameObject(ARGS&&...);
 
     template <class T=GameObject>
-    T* GetGameObjectOfType();
+    std::shared_ptr<T> GetGameObjectOfType();
 
     template <class T=GameObject>
     std::vector<T*> GetGameObjectsOfType();
-    GameObject* EmplaceClone(const GameObject& obj);
+    std::shared_ptr<GameObject> EmplaceClone(const GameObject& obj);
 };
 
 
-inline GameObject * GameObject::EmplaceClone(const GameObject &obj){
-    GameObject* x=&obj.clone();
-    x->SetParent(this);
+inline std::shared_ptr<GameObject>  GameObject::EmplaceClone(const GameObject &obj){
+    std::shared_ptr<GameObject> x=obj.clone();
+    x->SetParent(shared_from_this());
     m_children.insert(x);
     return x;
 }
 
 
 template <class T, class... ARGS>
-T* GameObject::EmplaceGameObject(ARGS&&... args) {
-    T* newGameObject = new T(std::forward<ARGS>(args)...);
-    newGameObject->SetParent(this);
+std::shared_ptr<T>  GameObject::EmplaceGameObject(ARGS&&... args) {
+    std::shared_ptr<T>  newGameObject=std::make_shared<T>(std::forward<ARGS>(args)...);
+    newGameObject->SetParent(shared_from_this());
     m_children.insert(newGameObject);
     return newGameObject;
 }
@@ -91,8 +90,8 @@ T* GameObject::EmplaceGameObject(ARGS&&... args) {
 template<class T>
 std::vector<T*> GameObject::GetGameObjectsOfType() {
     std::vector<T*> ret;
-    for (GameObject* x:m_children) {
-        if (T* gameObject = dynamic_cast<T*>(x)) {
+    for (std::shared_ptr<GameObject> x:m_children) {
+        if (auto gameObject = std::dynamic_pointer_cast<T*>(x)) {
             ret.push_back(gameObject);
         }
     }
@@ -100,9 +99,9 @@ std::vector<T*> GameObject::GetGameObjectsOfType() {
 }
 
 template<class T>
-T * GameObject::GetGameObjectOfType() {
-    for (GameObject* x:m_children) {
-        if (T* gameObject = dynamic_cast<T*>(x)) {
+std::shared_ptr<T> GameObject::GetGameObjectOfType() {
+    for (const std::shared_ptr<GameObject>& x:m_children) {
+        if (auto gameObject = std::dynamic_pointer_cast<T>(x)) {
             return gameObject;
         }
     }

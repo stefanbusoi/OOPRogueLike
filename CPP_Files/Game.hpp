@@ -15,12 +15,12 @@ class Game :public GameObject{
     float m_totalTime;
     float m_precedentFrameTime;
     float fps;
-    Camera* m_camera;
+    std::weak_ptr<Camera> m_camera;
     sf::RenderTexture m_renderTexture;
-    static Game* s_instance;
-    Player* player_;
-    std::vector<GameObject*> m_ToDelete;
-    std::vector<GameObject*> m_ToInactive;
+    static std::shared_ptr<Game> s_instance;
+    std::weak_ptr<Player> player_;
+    std::vector<std::shared_ptr<GameObject>> m_ToDelete;
+    std::vector<std::shared_ptr<GameObject>> m_ToInactive;
     std::set<Collider*,ColliderComp> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;
@@ -30,22 +30,22 @@ class Game :public GameObject{
     void handleEvents();
 
 public:
-    static Game *getInstance();
+    static std::shared_ptr<Game> getInstance();
 
     Game(sf::VideoMode video_mode, const std::string &Title);
     ~Game() override;
     bool isRunning() const;
 
-    bool IsActiveInHirarchy(GameObject *p_gameObject);
+    bool IsActiveInHirarchy(std::weak_ptr<GameObject> p_gameObject);
 
     sf::RenderWindow &getWindow() {return m_window;}
     sf::RenderTexture &getRenderTexture() {return m_renderTexture;}
-    Camera& getCamera() const {return *m_camera;}
+    std::weak_ptr<Camera> getCamera() const {return m_camera;}
     float getTotalTime(){return m_totalTime;}
     float getPrecedentFrameTime(){return m_precedentFrameTime;}
-    bool IsInHirarchy(GameObject *p_gameObject);
-    void MarkForDeletion(GameObject *p_gameObject);
-    void MarkForUnactive(GameObject *p_gameObject);
+    bool IsInHirarchy(std::weak_ptr<GameObject> p_gameObject);
+    void MarkForDeletion(std::shared_ptr<GameObject> p_gameObject);
+    void MarkForUnactive(std::shared_ptr<GameObject> p_gameObject);
     void exit();
     void processGameFrame();
     std::set<GameObject*,gameObjectComp>& getGameObjects(){return m_gameObjects;}

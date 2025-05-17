@@ -41,7 +41,7 @@ class Collider:public GameObject{
         void AddGameObjectToGame() override;
         void RemoveGameObjectFromGame() override;
         void update(float  deltaT) override;
-        GameObject& clone() const override;
+        std::shared_ptr<GameObject> clone() const override;
 
         std::function<void(Collider&,Collider&)>& getOnCollide(){return m_onCollide;}
 

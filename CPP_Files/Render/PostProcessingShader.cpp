@@ -21,7 +21,7 @@ PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::pa
 void PostProcessingShader::Render() {
     sf::RenderWindow& window=Game::getInstance()->getWindow();
     sf::RenderTexture& renderTexture=Game::getInstance()->getRenderTexture();
-    Camera& camera=Game::getInstance()->getCamera();
+    std::weak_ptr<Camera> camera = Game::getInstance()->getCamera();
     static sf::RenderTexture renderTextureB(window.getSize());
 
     sf::RectangleShape fullscreenQuad(sf::Vector2f(window.getSize().x, window.getSize().y));
@@ -32,7 +32,7 @@ void PostProcessingShader::Render() {
     m_shader.setUniform("tex", renderTexture.getTexture());
     m_shader.setUniform("time", time);
     m_shader.setUniform("resolution",sf::Vector2f(window.getSize().x,window.getSize().y));
-    m_shader.setUniform("position",camera.getTransform().transformPoint({0,0}));
+    m_shader.setUniform("position",camera.lock()->getTransform().transformPoint({0,0}));
     renderTextureB.draw(fullscreenQuad,&m_shader);
     renderTextureB.display();
     m_shader.setUniform("tex", renderTextureB.getTexture());

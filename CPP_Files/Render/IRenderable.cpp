@@ -1,7 +1,7 @@
 
 #include "../Game.hpp"
 IRenderable::~IRenderable() {
-    if (Game::getInstance()->IsActiveInHirarchy(dynamic_cast<GameObject *>(this))) {
+    if (Game::getInstance()->IsActiveInHirarchy(dynamic_pointer_cast<GameObject>(shared_from_this()))) {
         RemoveFromRenderObjects();
     }
 }

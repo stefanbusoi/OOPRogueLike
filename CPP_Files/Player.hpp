@@ -10,8 +10,8 @@
 
 class Player :public GameObject{
     void update(float deltaT) override;
-    Firearm* m_firearm;
-    PhysicObject * m_phisicsObject;
+    std::shared_ptr<Firearm> m_firearm;
+    std::shared_ptr<PhysicObject> m_phisicsObject;
 
 protected:
     void print(std::ostream &os) const override;
