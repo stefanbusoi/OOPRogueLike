@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Texture.hpp>
 
 #include "../Collisions/Collider.h"
-class ShapeRenderer: public IRenderable,public GameObject{
+class ShapeRenderer:public IRenderable, public GameObject{
   sf::Color m_circleColor;
   GeometryShape m_shape;
   sf::Texture* m_texture;

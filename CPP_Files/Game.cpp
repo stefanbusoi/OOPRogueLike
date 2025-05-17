@@ -68,8 +68,8 @@ void Game::Init() {
     entityHealth->setOnDeath([](EntityHealth* entityHealth) {
         entityHealth->getParent().lock()->SetParent(nullptr);
     });
-    for (auto i=1;i<=1;i++) {
-        for (auto j=1;j<=1;j++) {
+    for (auto i=1;i<=4;i++) {
+        for (auto j=1;j<=4;j++) {
             const auto& x=EmplaceClone(game_object);
             x->GlobalMoveTransform({i*100.0f,j*100.0f});
         }
