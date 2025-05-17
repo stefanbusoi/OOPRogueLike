@@ -11,7 +11,7 @@
 
 void Firearm::Fire() {
     if (lastShot+m_timer<=CurrentTimer) {
-        std::shared_ptr<GameObject> bullet = Game::getInstance()->EmplaceClone(*bulletPrefab);
+        std::shared_ptr<GameObject> bullet = Game::getInstance()->EmplaceClone(bulletPrefab);
         bullet->GlobalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform())+Utils::getPosition(getGlobalTransform()));
         lastShot=CurrentTimer;
         bullet->getLocalTransform().rotate(-Utils::getAngle(getGlobalTransform())+sf::degrees(180.0f));
@@ -39,7 +39,7 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
     sf::Transform BulletTransform;
     BulletTransform.translate({0.0f,-2.f});
     BulletTransform.scale({10.f,10.f});
-    bulletPrefab=std::make_unique<GameObject>("Bullet",BulletTransform);
+    bulletPrefab=std::make_shared<GameObject>("Bullet",BulletTransform);
     sf::Transform BulletTransformHitbox;
     BulletTransformHitbox.scale({0.3f,0.3f});
     std::shared_ptr<Collider> col = bulletPrefab->EmplaceGameObject<Collider>(
@@ -48,12 +48,12 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
         auto parent=ths.getParent();
 
         std::shared_ptr<PhysicObject> ph = ths.getParent().lock()->GetGameObjectOfType<PhysicObject>();
-        Game::getInstance()->MarkForDeletion(ph);
+        ph->SetParent(nullptr);
 
         std::shared_ptr<Collider> cl = ths.getParent().lock()->GetGameObjectOfType<Collider>();
-        Game::getInstance()->MarkForDeletion(cl);
+        cl->SetParent(nullptr);
 
-        parent.lock()->SetParent(col.getParent());
+        parent.lock()->SetParent(col.getParent().lock());
 
        std::shared_ptr<EntityHealth>health=col.getParent().lock()->GetGameObjectOfType<EntityHealth>();
         if (health!=nullptr) {
@@ -62,10 +62,13 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
     };
     bulletPrefab->EmplaceGameObject<ShapeRenderer>("CircleRenderer",BulletTransform, "Assets/arrow.png", RenderOrder::Player,GeometryShape::Square);
     bulletPrefab->EmplaceGameObject<PhysicObject>(40.0f,0.0f,0.0f);
+   }
+
+void Firearm::Init() {
     sf::Transform tr=sf::Transform::Identity;
 
     tr.translate({0.0f,40.0f})
       .scale({100.f, -130.0f});
     EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PostProcessing,GeometryShape::Square);
-}
 
+}

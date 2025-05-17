@@ -9,7 +9,7 @@
 #include "Render/IRenderable.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
-class GameMap:public GameObject,public IRenderable{
+class GameMap:public GameObject,public IRenderable {
     sf::Shader m_shader;
 
 protected:

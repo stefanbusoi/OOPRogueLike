@@ -44,6 +44,19 @@ void Player::update(float deltaT)  {
     (void)deltaT;
 
 }
+
+void Player::Init() {
+    GameObject::Init();
+    sf::Transform tr=sf::Transform::Identity;
+    tr.scale(sf::Vector2f(40.0f,40.0f));
+
+    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
+    EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,tr);
+
+    m_phisicsObject=EmplaceGameObject<PhysicObject>(100.0f,10.f,0.0f);
+    m_firearm=EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
+}
+
 void Player::print(std::ostream &os) const {
     os<<"CLASS Player:";
     GameObject::print(os);
@@ -60,13 +73,6 @@ void Player::RemoveGameObjectFromGame() {
 
 Player::Player( const std::string &name, const sf::Transform &transform): GameObject(name, transform) {
     m_updateOrder=UpdateOrder::Default;
-    sf::Transform tr=sf::Transform::Identity;
-    tr.scale(sf::Vector2f(40.0f,40.0f));
 
-    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
-    EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,tr);
-
-    m_phisicsObject=EmplaceGameObject<PhysicObject>(100.0f,10.f,0.0f);
-    m_firearm=EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }
 

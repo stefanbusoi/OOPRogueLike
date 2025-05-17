@@ -16,28 +16,29 @@ GameObject::GameObject(std::string name,sf::Transform transform):
 
 }
 
+void GameObject::Init() {
+}
+
 
 GameObject::~GameObject() {
     GameObject::RemoveGameObjectFromGame();
-    GameObject::SetParent(std::weak_ptr<GameObject>());
+    GameObject::SetParent(std::shared_ptr<GameObject>());
     m_children.clear();
 }
-void GameObject::SetParent(std::weak_ptr<GameObject> p_parent) {
-    std::shared_ptr<Game> instance=Game::getInstance();
-    if (instance->IsInHirarchy(shared_from_this())&&instance->IsInHirarchy(p_parent)) {
-        m_transform=p_parent.lock()->getGlobalTransform().getInverse()*getGlobalTransform();
-    }
-    if (!instance->IsInHirarchy(shared_from_this())&&instance->IsInHirarchy(p_parent)) {
-        AddGameObjectToGame();
-    }
-    if (instance->IsInHirarchy(shared_from_this())&&!instance->IsInHirarchy(p_parent)) {
-        RemoveGameObjectFromGame();
-    }
-    if (!m_parent.expired()) {
+void GameObject::SetParent(const std::shared_ptr<GameObject>& p_parent) {
+    Game* instance=Game::getInstance();
+    if (instance->IsInHirarchy(weak_from_this())&&instance->IsInHirarchy(p_parent)) {
+        m_transform=p_parent->getGlobalTransform().getInverse()*getGlobalTransform();
+        p_parent->m_children.insert(shared_from_this());
         m_parent.lock()->m_children.erase(shared_from_this());
     }
-    if (!p_parent.expired()) {
-        p_parent.lock()->m_children.insert(shared_from_this());
+    if (!instance->IsInHirarchy(weak_from_this())&&instance->IsInHirarchy(p_parent)) {
+        AddGameObjectToGame();
+        p_parent->m_children.insert(weak_from_this().lock());
+    }
+    if (instance->IsInHirarchy(weak_from_this())&&!instance->IsInHirarchy(p_parent)) {
+        RemoveGameObjectFromGame();
+        m_parent.lock()->m_children.erase(weak_from_this().lock());
     }
     m_parent=p_parent;
 
@@ -66,7 +67,7 @@ void GameObject::update(float deltaT) {
   std::shared_ptr<GameObject>  GameObject::clone() const {
     std::shared_ptr<GameObject> clone = std::make_shared<GameObject>();
     for (const std::shared_ptr<GameObject>& i:m_children) {
-        clone->EmplaceClone(*i);
+        clone->EmplaceClone(i);
     }
     clone->m_transform = m_transform;
     clone->m_name =m_name;

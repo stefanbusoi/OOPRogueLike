@@ -30,7 +30,6 @@ class IRenderable:public std::enable_shared_from_this<IRenderable> {
         }
 
         virtual void Render() = 0;
-        ~IRenderable();
         void AddToRenderObjects();
         void RemoveFromRenderObjects();
         RenderOrder getRenderOrder() const {return m_renderOrder;}

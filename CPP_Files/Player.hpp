@@ -17,6 +17,7 @@ protected:
     void print(std::ostream &os) const override;
 
 public:
+    void Init() override;
     void AddGameObjectToGame() override;
     void RemoveGameObjectFromGame() override;
 

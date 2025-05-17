@@ -11,9 +11,10 @@
 
 int main() {
     try {
-        Game game(sf::VideoMode({1920, 1080}), "RogueLike");
-        while(game.isRunning()) {
-            game.processGameFrame();
+        std::shared_ptr<Game> game=std::make_shared<Game>(sf::VideoMode({1920, 1080}), "RogueLike");
+        game->Init();
+        while(game->isRunning()) {
+            game->processGameFrame();
         }
     }catch (GameLogicException& l) {
         std::cerr<<"GAME LOGIC ERROR:"+std::string(l.what());

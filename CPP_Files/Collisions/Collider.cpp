@@ -42,7 +42,7 @@ void Collider::RemoveGameObjectFromGame(){
 }
 void Collider::update(float deltaTime) {
    (void)deltaTime;
-  std::set<Collider*,ColliderComp>& colliders = Game::getInstance()->getColliders();
+  std::set<Collider*,ColliderComp> colliders = Game::getInstance()->getColliders();
   for (const auto& collider:colliders)
    {
     if (collider->GetId()==this->GetId())
@@ -117,7 +117,7 @@ void Collider::update(float deltaTime) {
 std::shared_ptr<GameObject> Collider::clone() const {
     std::shared_ptr<Collider> clone= std::make_shared<Collider>(m_collisionType,m_colliderMask,m_shape,m_transform);
    for (auto i:m_children) {
-     clone->EmplaceClone(*i);
+     clone->EmplaceClone(i);
    }
    clone->m_name =m_name;
    clone->m_parent.reset();

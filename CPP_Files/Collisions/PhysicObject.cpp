@@ -17,7 +17,7 @@ std::shared_ptr<GameObject> PhysicObject::clone() const {
     clone->m_Acceleration=m_Acceleration;
     clone->m_Speed=m_Speed;
     for (auto i:m_children) {
-        clone->EmplaceClone(*i);
+        clone->EmplaceClone(i);
     }
     clone->m_transform = m_transform;
     clone->m_name =m_name;

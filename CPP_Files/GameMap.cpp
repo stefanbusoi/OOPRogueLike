@@ -15,7 +15,7 @@ void GameMap::print(std::ostream &os) const {
 
 void GameMap::Render() {
     Game& instance=*Game::getInstance();
-   std::weak_ptr<Camera> camera=instance.getCamera();
+    std::weak_ptr<Camera> camera=instance.getCamera();
 
     sf::RenderWindow& window=instance.getWindow();
     sf::RenderTarget& render_texture=instance.getRenderTexture();

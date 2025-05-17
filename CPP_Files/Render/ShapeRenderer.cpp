@@ -18,7 +18,7 @@
       clone->texture=texture;
     }
     for (auto i:m_children) {
-      clone->EmplaceClone(*i);
+      clone->EmplaceClone(i);
     }
     clone->m_name =m_name;
     clone->m_parent.reset();

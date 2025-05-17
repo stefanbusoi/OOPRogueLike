@@ -17,9 +17,8 @@ class Game :public GameObject{
     float fps;
     std::weak_ptr<Camera> m_camera;
     sf::RenderTexture m_renderTexture;
-    static std::shared_ptr<Game> s_instance;
+    static Game* s_instance;
     std::weak_ptr<Player> player_;
-    std::vector<std::shared_ptr<GameObject>> m_ToDelete;
     std::vector<std::shared_ptr<GameObject>> m_ToInactive;
     std::set<Collider*,ColliderComp> m_colliders;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
@@ -30,9 +29,12 @@ class Game :public GameObject{
     void handleEvents();
 
 public:
-    static std::shared_ptr<Game> getInstance();
+    static Game *getInstance();
 
     Game(sf::VideoMode video_mode, const std::string &Title);
+
+    void Init();
+
     ~Game() override;
     bool isRunning() const;
 
@@ -44,7 +46,6 @@ public:
     float getTotalTime(){return m_totalTime;}
     float getPrecedentFrameTime(){return m_precedentFrameTime;}
     bool IsInHirarchy(std::weak_ptr<GameObject> p_gameObject);
-    void MarkForDeletion(std::shared_ptr<GameObject> p_gameObject);
     void MarkForUnactive(std::shared_ptr<GameObject> p_gameObject);
     void exit();
     void processGameFrame();

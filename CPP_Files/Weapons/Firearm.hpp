@@ -11,7 +11,7 @@
 
 class Firearm:public GameObject {
 
-  std::unique_ptr<GameObject> bulletPrefab;
+  std::shared_ptr<GameObject> bulletPrefab;
   float m_speed;
   float m_ang;
   float m_timer;
@@ -24,6 +24,8 @@ class Firearm:public GameObject {
   void update(float deltaTime) override;
 
   Firearm(const std::string& name,sf::Transform transform);
+
+  void Init() override;
 };
 
 

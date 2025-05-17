@@ -15,7 +15,7 @@ std::shared_ptr<GameObject> EntityHealth::clone() const {
   clone->m_isDead=m_isDead;
   clone->m_onDeath=m_onDeath;
   for (auto i:m_children) {
-    clone->EmplaceClone(*i);
+    clone->EmplaceClone(i);
   }
   clone->m_transform = m_transform;
   clone->m_name =m_name;

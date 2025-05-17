@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <iostream>
 #include <memory>
 #include <ostream>
 #include <set>
@@ -23,7 +24,7 @@ protected:
 
     sf::Transform m_transform;
     std::string m_name;
-    std::set<std::shared_ptr<GameObject>> m_children;
+    std::set<std::shared_ptr<GameObject> > m_children;
 
     std::weak_ptr<GameObject> m_parent;
     UpdateOrder m_updateOrder=UpdateOrder::Default;
@@ -38,8 +39,9 @@ public:
 
 
     explicit GameObject(std::string name="NONNAME", sf::Transform transform=sf::Transform::Identity);
+    virtual void Init();
     virtual ~GameObject();
-    virtual void SetParent(std::weak_ptr<GameObject>  p_parent);
+    virtual void SetParent(const std::shared_ptr<GameObject>& p_parent);
     virtual void update(float deltaT);
     virtual std::shared_ptr<GameObject>  clone() const;
     GameObject(const GameObject &other)=delete;
@@ -67,12 +69,12 @@ public:
 
     template <class T=GameObject>
     std::vector<T*> GetGameObjectsOfType();
-    std::shared_ptr<GameObject> EmplaceClone(const GameObject& obj);
+    std::shared_ptr<GameObject> EmplaceClone(std::shared_ptr<GameObject> obj);
 };
 
 
-inline std::shared_ptr<GameObject>  GameObject::EmplaceClone(const GameObject &obj){
-    std::shared_ptr<GameObject> x=obj.clone();
+inline std::shared_ptr<GameObject>  GameObject::EmplaceClone(std::shared_ptr<GameObject> obj){
+    std::shared_ptr<GameObject> x=obj->clone();
     x->SetParent(shared_from_this());
     m_children.insert(x);
     return x;
@@ -82,8 +84,9 @@ inline std::shared_ptr<GameObject>  GameObject::EmplaceClone(const GameObject &o
 template <class T, class... ARGS>
 std::shared_ptr<T>  GameObject::EmplaceGameObject(ARGS&&... args) {
     std::shared_ptr<T>  newGameObject=std::make_shared<T>(std::forward<ARGS>(args)...);
-    newGameObject->SetParent(shared_from_this());
     m_children.insert(newGameObject);
+    newGameObject->Init();
+    newGameObject->SetParent(shared_from_this());
     return newGameObject;
 }
 
