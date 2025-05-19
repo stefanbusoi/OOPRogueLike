@@ -75,7 +75,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Collisions/Collider.cpp
         CPP_Files/Render/PostProcessingShader.cpp
         CPP_Files/Render/PostProcessingShader.h
-        CPP_Files/UtilityiesFunctions.hpp
+        CPP_Files/Utilityies/TransformUtilityies.hpp
         CPP_Files/Render/DebugMenu.cpp
         CPP_Files/Render/DebugMenu.hpp
         CPP_Files/Resources.cpp

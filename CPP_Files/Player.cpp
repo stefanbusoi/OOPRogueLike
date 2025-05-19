@@ -3,7 +3,7 @@
 
 #include "Game.hpp"
 #include "Collisions/PhysicObject.hpp"
-#include "UtilityiesFunctions.hpp"
+#include "Utilityies/TransformUtilityies.hpp"
 #include "Render/ShapeRenderer.hpp"
 #include "Weapons/Firearm.hpp"
 
@@ -51,9 +51,9 @@ void Player::Init() {
     tr.scale(sf::Vector2f(40.0f,40.0f));
 
     EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, sf::Color(0,255,0), RenderOrder::Player,GeometryShape::Circle);
-    EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Player,GeometryShape::Circle,tr);
+    EmplaceGameObject<Collider>(ColliderMask::Player,GeometryShape::Circle,tr);
 
-    m_phisicsObject=EmplaceGameObject<PhysicObject>(100.0f,10.f,0.0f);
+    m_phisicsObject=EmplaceGameObject<PhysicObject>(100.0f,12.f,0.0f);
     m_firearm=EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }
 
@@ -73,6 +73,5 @@ void Player::RemoveGameObjectFromGame() {
 
 Player::Player( const std::string &name, const sf::Transform &transform): GameObject(name, transform) {
     m_updateOrder=UpdateOrder::Default;
-
 }
 

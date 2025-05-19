@@ -19,13 +19,13 @@ class Firearm:public GameObject {
   float CurrentTimer=0.0f;
 
   public:
-  void Fire();
-
-  void update(float deltaTime) override;
 
   Firearm(const std::string& name,sf::Transform transform);
 
+  void Fire();
+  void update(float deltaTime) override;
   void Init() override;
+
 };
 
 

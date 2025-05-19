@@ -7,7 +7,7 @@
 #include "../EntityHealth.hpp"
 #include "../Game.hpp"
 #include "../Render/ShapeRenderer.hpp"
-#include "../UtilityiesFunctions.hpp"
+#include "../Utilityies/TransformUtilityies.hpp"
 
 void Firearm::Fire() {
     if (lastShot+m_timer<=CurrentTimer) {
@@ -41,9 +41,9 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
     BulletTransform.scale({10.f,10.f});
     bulletPrefab=std::make_shared<GameObject>("Bullet",BulletTransform);
     sf::Transform BulletTransformHitbox;
-    BulletTransformHitbox.scale({0.3f,0.3f});
+    BulletTransformHitbox.scale({0.5f,0.5f});
     std::shared_ptr<Collider> col = bulletPrefab->EmplaceGameObject<Collider>(
-        CollisionType::Dynamic, ColliderMask::Bullets, GeometryShape::Circle, BulletTransformHitbox);
+         ColliderMask::Bullets, GeometryShape::Circle, BulletTransformHitbox);
     col->getOnCollide()=[](Collider& ths,Collider& col) {
         auto parent=ths.getParent();
 
@@ -60,7 +60,7 @@ Firearm::Firearm(const std::string &name, sf::Transform transform):GameObject(na
             health->dealDamage(10);
         }
     };
-    bulletPrefab->EmplaceGameObject<ShapeRenderer>("CircleRenderer",BulletTransform, "Assets/arrow.png", RenderOrder::Player,GeometryShape::Square);
+    bulletPrefab->EmplaceGameObject<ShapeRenderer>("CircleRenderer",BulletTransform, "Assets/arrow.png", RenderOrder::Player,GeometryShape::Rectangle);
     bulletPrefab->EmplaceGameObject<PhysicObject>(40.0f,0.0f,0.0f);
    }
 
@@ -69,6 +69,6 @@ void Firearm::Init() {
 
     tr.translate({0.0f,40.0f})
       .scale({100.f, -130.0f});
-    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PostProcessing,GeometryShape::Square);
+    EmplaceGameObject<ShapeRenderer>("CircleRenderer",tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PostProcessing,GeometryShape::Rectangle);
 
 }

@@ -15,22 +15,32 @@ struct PrintList {
   std::string formatString;
   void* pt;
   Type type;
+  union {
+    int m_int;
+    float m_float;
+    double m_double;
+    sf::Vector2i m_int2;
+    sf::Vector2f m_float2;
+  };
 
 };
 class DebugMenu : public GameObject ,public IRenderable{
   std::vector<PrintList> m_printList;
-public:
-  DebugMenu(  const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity);
-  void Render() override;
-  void AddPrintList(PrintList p) {
-    m_printList.push_back(p);
-  }
+  float timer=0;
 
 protected:
-  friend std::ostream & operator<<(std::ostream &os, const DebugMenu &obj) ;
   void print(std::ostream &os) const override;
 
 public:
+
+  DebugMenu(  const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity);
+  void Render() override;
+  void update(float deltaT) override;
+  void AddPrintList(const std::string& formatString,void* pointer,Type type);
+
   void AddGameObjectToGame() override;
   void RemoveGameObjectFromGame() override;
+
+  friend std::ostream & operator<<(std::ostream &os, const DebugMenu &obj) ;
+
 };

@@ -12,9 +12,9 @@ protected:
 
 public:
     PostProcessingShader(std::string name, std::filesystem::path ShaderPath);
+
     void Render() override;
 
     void AddGameObjectToGame() override;
-
     void RemoveGameObjectFromGame() override;
 };

@@ -16,12 +16,12 @@ protected:
     void print(std::ostream &os) const override;
 
 public:
-    void Render() override;
     explicit GameMap( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity);
+
+    void Render() override;
     void update(float deltaT) override;
 
     void AddGameObjectToGame() override;
-
     void RemoveGameObjectFromGame() override;
 };
 

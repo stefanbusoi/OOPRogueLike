@@ -22,7 +22,7 @@ void GameObject::Init() {
 
 GameObject::~GameObject() {
     GameObject::RemoveGameObjectFromGame();
-    GameObject::SetParent(std::shared_ptr<GameObject>());
+    GameObject::SetParent(nullptr);
     m_children.clear();
 }
 void GameObject::SetParent(const std::shared_ptr<GameObject>& p_parent) {
@@ -49,11 +49,11 @@ void GameObject::setActive(bool isActive) {
     if (m_isActive==isActive) return;
     if (isActive) {
         if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
-            Game::getInstance()->AddGameObjectToGame();
+            this->AddGameObjectToGame();
         }
     }else {
         if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
-            Game::getInstance()->MarkForUnactive(shared_from_this());
+            this->RemoveGameObjectFromGame();
         }
     }
     m_isActive=isActive;
@@ -118,7 +118,7 @@ void GameObject::print(std::ostream& os) const{
     os<<"Name: "<< m_name
             <<" Id:"<< m_localId
             << " GameObjects:{ ";
-    for (const auto x:m_children) {
+    for (const auto& x:m_children) {
         os<<x->m_name<<" ";
     }
     os<<"}";

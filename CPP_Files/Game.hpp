@@ -20,8 +20,11 @@ class Game :public GameObject{
     static Game* s_instance;
     std::weak_ptr<Player> player_;
     std::vector<std::shared_ptr<GameObject>> m_ToInactive;
+    int m_nrColliders=0;
     std::set<Collider*,ColliderComp> m_colliders;
+    int m_nrGameObjects=0;
     std::set<GameObject*,gameObjectComp> m_gameObjects;
+    int m_nrIrenderable=0;
     std::set<IRenderable*,iRendableComp> m_renderableObjects;
 
     bool frameIsRunning=false;
@@ -32,8 +35,7 @@ public:
     static Game *getInstance();
 
     Game(sf::VideoMode video_mode, const std::string &Title);
-
-    void Init();
+    void Init() override;
 
     ~Game() override;
     bool isRunning() const;
@@ -48,6 +50,9 @@ public:
     bool IsInHirarchy(std::weak_ptr<GameObject> p_gameObject);
     void MarkForUnactive(std::shared_ptr<GameObject> p_gameObject);
     void exit();
+
+    sf::Time CalculateDeltaTime();
+
     void processGameFrame();
     std::set<GameObject*,gameObjectComp>& getGameObjects(){return m_gameObjects;}
     std::set<IRenderable*,iRendableComp>& getRenderObjects(){return m_renderableObjects;};

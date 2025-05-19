@@ -5,11 +5,7 @@
 #include "SFML/Graphics/Transform.hpp"
 
 
-enum class CollisionType{
-    Dynamic=0,
-    Trigger=1,
-    Static=2,
-};
+
 enum class ColliderMask {
     Player=0,
     Bullets=1,
@@ -18,25 +14,28 @@ enum class ColliderMask {
 };
 
 enum class GeometryShape{
-    Square=0,
+    Rectangle=0,
     Circle=1,
+    Line=2,
   };
 
 struct collisionData {
-    bool collided;
-    sf::Vector2f normal;
-    sf::Vector2f contactPoint;
-    float penetration;
+    bool collided{false};
+    sf::Vector2f normal{1.0f,0.0f};
+    sf::Vector2f contactPoint{0.0f,0.0f};
+    float penetration{0.0f};
+    operator bool() const {
+        return collided;
+    }
 };
 class Collider:public GameObject{
-        CollisionType m_collisionType;
         ColliderMask m_colliderMask;
         GeometryShape m_shape;
         std::function<void(Collider&,Collider&)> m_onCollide;
         static int ColliderMatrix[4][4];
 
     public:
-        Collider( CollisionType collisionType,ColliderMask mask,GeometryShape shape, const sf::Transform &transform=sf::Transform::Identity);
+        Collider( ColliderMask mask,GeometryShape shape, const sf::Transform &transform=sf::Transform::Identity);
         ~Collider();
         void AddGameObjectToGame() override;
         void RemoveGameObjectFromGame() override;
@@ -47,6 +46,7 @@ class Collider:public GameObject{
 
         collisionData CheckCollision(const Collider& col1,const Collider& col2);
         collisionData ColCircleCircle(const sf::Transform & tr1, const sf::Transform & tr2);
-        collisionData ColCircleSquare(const sf::Transform & tr1, const sf::Transform & tr2);
-        collisionData ColSquareSquare(const sf::Transform & tr1, const sf::Transform & tr2);
+        collisionData ColCircleLine(const sf::Transform & tr1, const sf::Transform & tr2);
+        collisionData ColCircleSquare(const sf::Transform &tr1, const sf::Transform &tr2);
+
 };

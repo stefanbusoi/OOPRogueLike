@@ -6,7 +6,7 @@
 
 
 #include "../Game.hpp"
-#include "../UtilityiesFunctions.hpp"
+#include "../Utilityies/TransformUtilityies.hpp"
 #include "../Exceptions/GameLogicException.hpp"
 
 void Camera::print(std::ostream &os) const {

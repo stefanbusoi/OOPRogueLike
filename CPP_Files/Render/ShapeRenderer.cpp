@@ -63,7 +63,7 @@ void ShapeRenderer::Render() {
     camera.lock()->draw(shape,transform);
     return;
   }
-  if (m_shape==GeometryShape::Square) {
+  if (m_shape==GeometryShape::Rectangle) {
     sf::RectangleShape shape({1.0f,1.0f});
     shape.setOrigin({0.5, 0.5});
     if (texture) {

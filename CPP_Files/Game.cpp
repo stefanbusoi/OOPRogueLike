@@ -11,7 +11,7 @@
 
 #include "EntityHealth.hpp"
 #include "Collisions/PhysicObject.hpp"
-#include "UtilityiesFunctions.hpp"
+#include "Utilityies/TransformUtilityies.hpp"
 #include "Render/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
 
@@ -46,7 +46,7 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
     if (!m_renderTexture.resize(m_window.getSize())) {
         throw std::runtime_error("Failed to resize render texture");
     }
-    // m_window.setFramerateLimit(144);
+//   m_window.setFramerateLimit(144);
 }
 void Game::Init() {
 
@@ -55,27 +55,33 @@ void Game::Init() {
     EmplaceGameObject<GameMap>("GameMap");
     EmplaceGameObject<PostProcessingShader>("Pixelate",std::filesystem::path("Shaders/Pixelate.frag"));
     EmplaceGameObject<PostProcessingShader>("PostProcessingShader",std::filesystem::path("Shaders/PostProcessingShader.frag"));
-    auto debugMenu=EmplaceGameObject<DebugMenu>("DebugMenu");
 
     sf::Transform transform=sf::Transform::Identity;
-    transform.translate({100.0f,100.0f});
-    transform.scale({40.0f,40.0f});
-    std::shared_ptr<GameObject> game_object=std::make_shared<GameObject>("GameObject",transform);
-    game_object->EmplaceGameObject<Collider>(CollisionType::Dynamic,ColliderMask::Enemy,GeometryShape::Circle,sf::Transform::Identity);
-    game_object->EmplaceGameObject<PhysicObject>(40.0f,1.6f,1.0f);
-    game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Circle);
+    transform.translate({100.0f,100.0f}).scale({400.0f,400.0f});
+
+    auto game_object=std::make_shared<GameObject>("GameObject",transform);
+    game_object->EmplaceGameObject<Collider>(ColliderMask::Enemy,GeometryShape::Rectangle,sf::Transform::Identity);
+    //game_object->EmplaceGameObject<PhysicObject>(40.0f,1.6f,1.0f);
+    game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer",sf::Transform::Identity, sf::Color(0,255,255), RenderOrder::Player,GeometryShape::Rectangle);
+
     std::shared_ptr<EntityHealth> entityHealth=game_object->EmplaceGameObject<EntityHealth>(100.0f,100.0f);
     entityHealth->setOnDeath([](EntityHealth* entityHealth) {
         entityHealth->getParent().lock()->SetParent(nullptr);
     });
-    for (auto i=1;i<=4;i++) {
-        for (auto j=1;j<=4;j++) {
+    for (auto i=1;i<=1;i++) {
+        for (auto j=1;j<=1;j++) {
             const auto& x=EmplaceClone(game_object);
             x->GlobalMoveTransform({i*100.0f,j*100.0f});
         }
     }
-    debugMenu->AddPrintList({"ms:{}",&m_precedentFrameTime,Type::FLOAT});
-    debugMenu->AddPrintList({"FPS:{}",&fps,Type::FLOAT});
+
+
+    auto debugMenu = EmplaceGameObject<DebugMenu>("DebugMenu");
+    debugMenu->AddPrintList("ms:{}",&m_precedentFrameTime,Type::FLOAT);
+    debugMenu->AddPrintList("FPS:{}",&fps,Type::FLOAT);
+    debugMenu->AddPrintList("NrGameObj:{}",&m_nrGameObjects,Type::INT);
+    debugMenu->AddPrintList("NrRenderObj:{}",&m_nrIrenderable,Type::INT);
+    debugMenu->AddPrintList("NrColliders:{}",&m_nrColliders,Type::INT);
 }
 Game::~Game() {
     if (isRunning()) exit();
@@ -88,13 +94,16 @@ bool Game::isRunning() const {
 
 
 bool Game::IsActiveInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
-    if (p_gameObject.expired()) return false;
+    if (p_gameObject.expired())
+        return false;
 
-    while (!p_gameObject.expired()) {
-        if (!p_gameObject.lock()->IsActive()) return false;
+    while (!p_gameObject.lock()->getParent().expired()) {
+        if (!p_gameObject.lock()->IsActive())
+            return false;
         p_gameObject=p_gameObject.lock()->getParent();
     }
-    if (p_gameObject.lock().get()==getInstance()) return true;
+    if (p_gameObject.lock().get()==getInstance())
+        return true;
     return false;
 }
 bool Game::IsInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
@@ -109,15 +118,21 @@ bool Game::IsInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
 }
 
 
-void Game::MarkForUnactive(std::shared_ptr<GameObject> p_gameObject) {
-    if (p_gameObject==nullptr) return;
-    m_ToInactive.push_back(p_gameObject);
-}
 
 void Game::exit() {
     m_children.clear();
     m_window.close();
     std::cout << "Fereastra a fost inchisa\n";
+}
+
+sf::Time Game::CalculateDeltaTime() {
+    sf::Time deltaTime=m_clock.getElapsedTime();
+    m_clock.restart();
+
+    m_totalTime+=deltaTime.asSeconds();
+    m_precedentFrameTime=deltaTime.asSeconds();
+    fps=1.0f/deltaTime.asSeconds();
+    return deltaTime;
 }
 
 void Game::handleEvents() {
@@ -142,9 +157,12 @@ void Game::handleEvents() {
 }
 
 void Game::processGameFrame() {
-    sf::Time deltaTime = m_clock.getElapsedTime();
-    m_totalTime+=deltaTime.asSeconds();
-    m_clock.restart();
+
+    sf::Time deltaTime = CalculateDeltaTime();
+
+    m_nrColliders=m_colliders.size();
+    m_nrIrenderable=m_renderableObjects.size();
+    m_nrGameObjects=m_gameObjects.size();
     handleEvents();
     if (isRunning()) {
         frameIsRunning=true;
@@ -158,8 +176,6 @@ void Game::processGameFrame() {
             }
         }
         renderAll();
-        m_precedentFrameTime=deltaTime.asSeconds();
-        fps=1.0f/deltaTime.asSeconds();
         for (auto gameObject:m_ToInactive) {
             gameObject->RemoveGameObjectFromGame();
         }
