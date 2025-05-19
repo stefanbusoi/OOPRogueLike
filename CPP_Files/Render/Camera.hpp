@@ -4,19 +4,23 @@
 #include "../GameObject.hpp"
 #include "../Player.hpp"
 
-class Camera:public GameObject{
-    sf::RenderWindow* m_window;
-    std::weak_ptr<Player> m_player;
+class Camera : public GameObject {
+  sf::RenderWindow *m_window;
+  std::weak_ptr<Player> m_player;
+
 protected:
-    void print(std::ostream &os) const override;
+  void print(std::ostream &os) const override;
 
 public:
-    friend std::ostream & operator<<(std::ostream &os, const Camera &obj);
-    explicit Camera( const std::string &name="Camera", const sf::Transform &transform=sf::Transform::Identity);
+  friend std::ostream &operator<<(std::ostream &os, const Camera &obj);
 
-    sf::Transform& getTransform() ;
-    void draw(const sf::Drawable &drawable, const sf::Transform &transform) const;
-    void update(float deltaT) override;
-    float getViewRadius() const;
+  explicit Camera(const std::string &name = "Camera", const sf::Transform &transform = sf::Transform::Identity);
+
+  sf::Transform &getTransform();
+
+  void draw(const sf::Drawable &drawable, const sf::Transform &transform) const;
+
+  void update(float deltaT) override;
+
+  float getViewRadius() const;
 };
-

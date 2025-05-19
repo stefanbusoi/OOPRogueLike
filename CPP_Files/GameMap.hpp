@@ -9,22 +9,23 @@
 #include "Render/IRenderable.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
-class GameMap:public GameObject,public IRenderable {
-    sf::Shader m_shader;
+class GameMap : public GameObject, public IRenderable {
+  sf::Shader m_shader;
 
 protected:
-    void print(std::ostream &os) const override;
+  void print(std::ostream &os) const override;
 
 public:
-    explicit GameMap( const std::string &name="NONNAME", const sf::Transform &transform=sf::Transform::Identity);
+  explicit GameMap(const std::string &name = "NONNAME", const sf::Transform &transform = sf::Transform::Identity);
 
-    void Render() override;
-    void update(float deltaT) override;
+  void Render() override;
 
-    void AddGameObjectToGame() override;
-    void RemoveGameObjectFromGame() override;
+  void update(float deltaT) override;
+
+  void AddGameObjectToGame() override;
+
+  void RemoveGameObjectFromGame() override;
 };
-
 
 
 #endif //GAMEMAP_H

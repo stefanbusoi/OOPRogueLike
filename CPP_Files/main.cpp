@@ -10,21 +10,21 @@
 #include "Exceptions/ShaderExceptions.hpp"
 
 int main() {
-    try {
-        std::shared_ptr<Game> game=std::make_shared<Game>(sf::VideoMode({1920, 1080}), "RogueLike");
-        game->Init();
-        while(game->isRunning()) {
-            game->processGameFrame();
-        }
-    }catch (GameLogicException& l) {
-        std::cerr<<"GAME LOGIC ERROR:"+std::string(l.what());
-        return EXIT_FAILURE;
-    }catch (FileException& l) {
-        std::cerr<<"FILES LOGIC ERROR:"+std::string(l.what());
-        return EXIT_FAILURE;
-    }catch (ShaderExceptions& l) {
-        std::cerr<<"SHADER ERROR:"+std::string(l.what());
-        return EXIT_FAILURE;
+  try {
+    std::shared_ptr<Game> game = std::make_shared<Game>(sf::VideoMode({1920, 1080}), "RogueLike");
+    game->Init();
+    while (game->isRunning()) {
+      game->processGameFrame();
     }
-    return 0;
+  } catch (GameLogicException &l) {
+    std::cerr << "GAME LOGIC ERROR:" + std::string(l.what());
+    return EXIT_FAILURE;
+  }catch (FileException &l) {
+    std::cerr << "FILES LOGIC ERROR:" + std::string(l.what());
+    return EXIT_FAILURE;
+  }catch (ShaderExceptions &l) {
+    std::cerr << "SHADER ERROR:" + std::string(l.what());
+    return EXIT_FAILURE;
+  }
+  return 0;
 }

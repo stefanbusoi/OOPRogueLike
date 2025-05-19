@@ -5,18 +5,16 @@
 
 class iRendableComp {
 public:
-    bool operator()( IRenderable *lhs,  IRenderable *rhs) const;
+  bool operator()(IRenderable *lhs, IRenderable *rhs) const;
 };
 
 
 class gameObjectComp {
-    public:
-    bool operator()(const GameObject *lhs, const GameObject *rhs) const;
-
+public:
+  bool operator()(const GameObject *lhs, const GameObject *rhs) const;
 };
+
 class ColliderComp {
-    public:
-    bool operator()(const Collider *lhs, const Collider *rhs) const;
+public:
+  bool operator()(const Collider *lhs, const Collider *rhs) const;
 };
-
-

@@ -94,6 +94,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Collisions/PhysicObject.hpp
         CPP_Files/EntityHealth.cpp
         CPP_Files/EntityHealth.hpp
+        CPP_Files/Entityies/BasicEnemy.cpp
+        CPP_Files/Entityies/BasicEnemy.hpp
 )
 
 
