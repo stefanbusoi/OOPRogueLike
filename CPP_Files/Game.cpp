@@ -11,6 +11,7 @@
 
 #include "EntityHealth.hpp"
 #include "Collisions/PhysicObject.hpp"
+#include "Entityies/BasicEnemy.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
 #include "Render/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
@@ -74,6 +75,14 @@ void Game::Init() {
       x->GlobalMoveTransform({i * 100.0f, j * 100.0f});
     }
   }
+  for (auto i = 1; i <= 2; i++) {
+    for (auto j = 1; j <= 2; j++) {
+      sf::Transform tr;
+      tr.translate({-i * 100.0f, -j * 100.0f});
+      EmplaceGameObject<BasicEnemy>("Enemy",tr);
+    }
+  }
+
 
 
   auto debugMenu = EmplaceGameObject<DebugMenu>("DebugMenu");
