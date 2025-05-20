@@ -18,8 +18,8 @@ class GameObject : public std::enable_shared_from_this<GameObject> {
   static int generateId() { return s_globalId++; }
 
 protected:
-  std::string m_name;
   sf::Transform m_transform;
+  std::string m_name;
 
   std::set<std::shared_ptr<GameObject> > m_children;
   std::weak_ptr<GameObject> m_parent;
