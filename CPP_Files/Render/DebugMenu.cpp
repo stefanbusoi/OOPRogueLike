@@ -4,7 +4,6 @@
 
 #include "DebugMenu.hpp"
 
-
 #include "../Game.hpp"
 #include "../Resources.hpp"
 #include "../Exceptions/GameLogicException.hpp"

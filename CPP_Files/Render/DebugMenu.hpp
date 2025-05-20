@@ -1,7 +1,7 @@
 #pragma once
-#include <ostream>
 
 #include "../GameObject.hpp"
+#include <format>
 
 enum class Type {
   none = 0,
