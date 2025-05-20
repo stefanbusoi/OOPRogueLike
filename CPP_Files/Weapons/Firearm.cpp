@@ -33,9 +33,9 @@ void Firearm::update(float deltaTime) {
 }
 
 Firearm::Firearm(const std::string &name, sf::Transform transform): GameObject(name, transform) {
-  lastShot = 0;
-  m_timer = 0.4;
-  CurrentTimer = 0;
+  lastShot = 0.0f;
+  m_timer = 0.4f;
+  CurrentTimer = 0.0f;
   sf::Transform BulletTransform;
   BulletTransform.translate({0.0f, -2.f});
   BulletTransform.scale({10.f, 10.f});
