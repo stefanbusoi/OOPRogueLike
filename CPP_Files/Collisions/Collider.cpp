@@ -210,13 +210,15 @@ collisionData CircleInLine(sf::Vector2f pos1, sf::Vector2f pos2, sf::Vector2f Ci
 }
 
 collisionData Collider::ColCircleLine(const sf::Transform &tr1, const sf::Transform &tr2) {
-  sf::Vector2f pos1 = Utils::getPosition(tr1);
-  float radius1 = Utils::getSize(tr1).x;
+  (void)tr1;
+  (void)tr2;
+  //sf::Vector2f pos1 = Utils::getPosition(tr1);
+ // float radius1 = Utils::getSize(tr1).x;
 
-  sf::Vector2f RelPoint2_1 = tr2.transformPoint({0.0f, 0.0f}) - pos1;
-  sf::Vector2f RelPoint2_2 = tr2.transformPoint({1.0f, 0.0f}) - pos1;
-  sf::Vector2f RelPoint2_3 = tr2.transformPoint({1.0f, 1.0f}) - pos1;
-  sf::Vector2f RelPoint2_4 = tr2.transformPoint({1.0f, 1.0f}) - pos1;
+  //sf::Vector2f RelPoint2_1 = tr2.transformPoint({0.0f, 0.0f}) - pos1;
+  //sf::Vector2f RelPoint2_2 = tr2.transformPoint({1.0f, 0.0f}) - pos1;
+  //sf::Vector2f RelPoint2_3 = tr2.transformPoint({1.0f, 1.0f}) - pos1;
+  //sf::Vector2f RelPoint2_4 = tr2.transformPoint({1.0f, 1.0f}) - pos1;
   collisionData data;
 
 

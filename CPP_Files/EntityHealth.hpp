@@ -11,7 +11,7 @@ class EntityHealth : public GameObject {
   float m_maxhealth;
   float m_currentHealth;
   bool m_isDead{false};
-  std::function<void(EntityHealth *)> m_onDeath;
+  std::function<void(EntityHealth*)> m_onDeath;
 
 public:
   EntityHealth(float maxHealt, float currentHealt);

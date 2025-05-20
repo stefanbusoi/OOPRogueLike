@@ -46,7 +46,7 @@ ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &trans
 }
 
 void ShapeRenderer::update(float deltaTime) {
-  GameObject::update(deltaTime);
+  GameObject::update(deltaTime * 0.005f);
 }
 
 void ShapeRenderer::Render() {
@@ -54,7 +54,7 @@ void ShapeRenderer::Render() {
   sf::Transform transform = getGlobalTransform();
 
   if (m_shape == GeometryShape::Circle) {
-    sf::CircleShape shape(1.0f);
+    sf::CircleShape shape(1.f);
     shape.setOrigin({1, 1});
     if (texture) {
       shape.setTexture(m_texture);
