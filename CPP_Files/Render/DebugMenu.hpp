@@ -21,12 +21,13 @@ struct PrintList {
     this->pt = pt;
     this->type = type;
   }
+
   union {
-    int m_int=0;
-    float m_float=0;
-    double m_double=0;
-    sf::Vector2i m_int2={0,0};
-    sf::Vector2f m_float2={0,0};
+    int m_int;
+    float m_float;
+    double m_double;
+    sf::Vector2i m_int2;
+    sf::Vector2f m_float2;
   };
 };
 
