@@ -4,7 +4,7 @@
 #include "../GameObject.hpp"
 #include "SFML/Graphics/Transform.hpp"
 
-
+#include "../GameEvent.hpp"
 enum class ColliderMask {
   Player = 0,
   Bullets = 1,
@@ -33,7 +33,7 @@ struct collisionData {
 class Collider : public GameObject {
   ColliderMask m_colliderMask;
   GeometryShape m_shape;
-  std::function<void(Collider &, Collider &)> m_onCollide;
+  GameEvent<Collider&,Collider&> m_onCollide;
   static int ColliderMatrix[5][5];
 
 public:
@@ -49,7 +49,7 @@ public:
 
   std::shared_ptr<GameObject> clone() const override;
 
-  std::function<void(Collider &, Collider &)> &getOnCollide() { return m_onCollide; }
+  GameEvent<Collider &, Collider &> &getOnCollide() { return m_onCollide; }
 
   collisionData CheckCollision(const Collider &col1, const Collider &col2);
 

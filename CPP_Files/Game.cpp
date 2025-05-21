@@ -9,7 +9,7 @@
 #include "Collisions/PhysicObject.hpp"
 #include "Entityies/BasicEnemy.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
-#include "Render/DebugMenu.hpp"
+#include "Utilityies/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
 Game *Game::s_instance = nullptr;
 
@@ -28,7 +28,9 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
   m_totalTime = 0.0f;
   if (s_instance == nullptr) { s_instance = this; }
   m_window.create(video_mode, Title, sf::State::Fullscreen);
-  if (!m_renderTexture.resize(m_window.getSize())) { throw std::runtime_error("Failed to resize render texture"); }
+  if (!m_renderTexture.resize(m_window.getSize())) {
+    throw std::runtime_error("Failed to resize render texture");
+  }
 }
 
 void Game::Init() {
@@ -37,13 +39,16 @@ void Game::Init() {
   EmplaceGameObject<GameMap>("GameMap");
   EmplaceGameObject<PostProcessingShader>("Pixelate", std::filesystem::path("Shaders/Pixelate.frag"));
   EmplaceGameObject<PostProcessingShader>("PostProcessingShader", std::filesystem::path("Shaders/PostProcessingShader.frag"));
+
   sf::Transform transform = sf::Transform::Identity;
   transform.translate({100.0f, 100.0f}).scale({400.0f, 400.0f});
   auto game_object = std::make_shared<GameObject>("GameObject", transform);
   game_object->EmplaceGameObject<Collider>(ColliderMask::Enemy, GeometryShape::Rectangle, sf::Transform::Identity);
   game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer", sf::Transform::Identity, sf::Color(0, 255, 255), RenderOrder::Player, GeometryShape::Rectangle);
   std::shared_ptr<EntityHealth> entityHealth = game_object->EmplaceGameObject<EntityHealth>(100.0f, 100.0f);
-  entityHealth->setOnDeath([](EntityHealth *entityHealth) { entityHealth->getParent().lock()->SetParent(nullptr); });
+  entityHealth->setOnDeath([](EntityHealth *entityHealth) {
+    entityHealth->getParent().lock()->SetParent(nullptr);
+  });
   for (auto i = 1; i <= 1; i++) {
     for (auto j = 1; j <= 1; j++) {
       const auto x = EmplaceClone(game_object);
@@ -80,7 +85,9 @@ bool Game::IsActiveInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
 
 bool Game::IsInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
   if (p_gameObject.expired()) return false;
-  while (!p_gameObject.lock()->getParent().expired()) { p_gameObject = p_gameObject.lock()->getParent(); }
+  while (!p_gameObject.lock()->getParent().expired()) {
+    p_gameObject = p_gameObject.lock()->getParent();
+  }
   if (p_gameObject.lock().get() == getInstance()) return true;
   return false;
 }
@@ -104,7 +111,9 @@ void Game::handleEvents() {
   while (const std::optional event = getWindow().pollEvent()) {
     if (event->is<sf::Event::Closed>()) { exit(); } else if (event->is<sf::Event::Resized>()) { std::cout << "New width: " << getWindow().getSize().x << '\n' << "New height: " << getWindow().getSize().y << '\n'; } else if (event->is<sf::Event::KeyPressed>()) {
       const auto *keyPressed = event->getIf<sf::Event::KeyPressed>();
-      if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) { exit(); }
+      if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
+        exit();
+      }
     } else if (event->is<sf::Event::MouseButtonPressed>()) {
       const auto *keyPressed = event->getIf<sf::Event::MouseButtonPressed>();
       std::cout << "X: " << keyPressed->position.x << ",Y: " << keyPressed->position.y;

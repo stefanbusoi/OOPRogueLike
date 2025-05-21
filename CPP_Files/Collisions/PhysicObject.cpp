@@ -5,8 +5,9 @@ PhysicObject::PhysicObject(float mass, float friction, float elasticity) {
   m_name = "PhysicObject";
   m_mass = mass;
   m_friction = friction;
-  m_updateOrder = UpdateOrder::PhisicsUpdate;
   m_elasticity = elasticity;
+  m_updateOrder = UpdateOrder::PhisicsUpdate;
+
 }
 
 std::shared_ptr<GameObject> PhysicObject::clone() const {

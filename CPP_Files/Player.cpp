@@ -1,6 +1,7 @@
 #include "Player.hpp"
 
 
+#include "EntityHealth.hpp"
 #include "Game.hpp"
 #include "Collisions/PhysicObject.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
@@ -51,7 +52,9 @@ void Player::Init() {
 
   EmplaceGameObject<ShapeRenderer>("CircleRenderer", tr, sf::Color(0, 255, 0), RenderOrder::Player, GeometryShape::Circle);
   EmplaceGameObject<Collider>(ColliderMask::Player, GeometryShape::Circle, tr);
-
+  EmplaceGameObject<EntityHealth>(100.0f,100.0f)->setOnDeath([](EntityHealth* e) {
+      e->getParent().lock()->SetParent(nullptr);
+    });
   m_phisicsObject = EmplaceGameObject<PhysicObject>(100.0f, 12.f, 0.0f);
   m_firearm = EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }

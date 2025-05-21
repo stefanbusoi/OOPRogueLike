@@ -21,12 +21,14 @@ class Game : public GameObject {
   static Game *s_instance;
   std::weak_ptr<Player> player_;
   std::vector<std::shared_ptr<GameObject> > m_ToInactive;
-  int m_nrColliders = 0;
+
   std::set<Collider *, ColliderComp> m_colliders;
-  int m_nrGameObjects = 0;
   std::set<GameObject *, gameObjectComp> m_gameObjects;
-  int m_nrIrenderable = 0;
   std::set<IRenderable *, iRendableComp> m_renderableObjects;
+
+  int m_nrColliders = 0;
+  int m_nrGameObjects = 0;
+  int m_nrIrenderable = 0;
 
   bool frameIsRunning = false;
 

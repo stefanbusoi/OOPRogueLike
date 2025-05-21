@@ -4,6 +4,7 @@
 #pragma once
 #include <functional>
 
+#include "GameEvent.hpp"
 #include "GameObject.hpp"
 
 
@@ -11,8 +12,7 @@ class EntityHealth : public GameObject {
   float m_maxhealth;
   float m_currentHealth;
   bool m_isDead{false};
-  std::function<void(EntityHealth*)> m_onDeath;
-
+  GameEvent<EntityHealth*> m_onDeath;
 public:
   EntityHealth(float maxHealt, float currentHealt);
 
@@ -27,5 +27,5 @@ public:
 
   bool isDead() const { return m_isDead; }
 
-  void setOnDeath(const std::function<void(EntityHealth *)> &onDeath);
+  size_t setOnDeath(const std::function<void(EntityHealth *)> &onDeath);
 };

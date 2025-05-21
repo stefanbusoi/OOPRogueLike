@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ostream>
-#include <memory>
 #include "RenderOrder.hpp"
 
 class IRenderable {

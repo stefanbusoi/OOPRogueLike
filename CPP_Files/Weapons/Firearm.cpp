@@ -15,15 +15,12 @@ void Firearm::Fire() {
     bullet->GlobalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform()) + Utils::getPosition(getGlobalTransform()));
     lastShot = CurrentTimer;
     bullet->getLocalTransform().rotate(-Utils::getAngle(getGlobalTransform()) + sf::degrees(180.0f));
-    for (auto i: bullet->getChildrens()) {
-      std::shared_ptr<PhysicObject> x = dynamic_pointer_cast<PhysicObject>(i);
-      if (x.get() != nullptr) {
-        sf::Vector2f bulletSpeed;
-        bulletSpeed = {1000.0f, 0.0f};
-        bulletSpeed = bulletSpeed.rotatedBy(-Utils::getAngle(getGlobalTransform()) + sf::degrees(90.0f));
-        x->setSpeed(bulletSpeed);
-        break;
-      }
+    std::weak_ptr<PhysicObject> x=bullet->GetGameObjectOfType<PhysicObject>();
+    if (!x.expired()) {
+      sf::Vector2f bulletSpeed;
+      bulletSpeed = {1000.0f, 0.0f};
+      bulletSpeed = bulletSpeed.rotatedBy(-Utils::getAngle(getGlobalTransform()) + sf::degrees(90.0f));
+      x.lock()->setSpeed(bulletSpeed);
     }
   }
 }
@@ -44,7 +41,7 @@ Firearm::Firearm(const std::string &name, sf::Transform transform): GameObject(n
   BulletTransformHitbox.scale({0.5f, 0.5f});
   std::shared_ptr<Collider> col = bulletPrefab->EmplaceGameObject<Collider>(
     ColliderMask::Bullets, GeometryShape::Circle, BulletTransformHitbox);
-  col->getOnCollide() = [](Collider &ths, Collider &col) {
+  col->getOnCollide().subscribe ([](Collider &ths, Collider &col) {
     auto parent = ths.getParent();
 
     std::shared_ptr<PhysicObject> ph = ths.getParent().lock()->GetGameObjectOfType<PhysicObject>();
@@ -59,7 +56,7 @@ Firearm::Firearm(const std::string &name, sf::Transform transform): GameObject(n
     if (health != nullptr) {
       health->dealDamage(10);
     }
-  };
+  });
   bulletPrefab->EmplaceGameObject<ShapeRenderer>("CircleRenderer", BulletTransform, "Assets/arrow.png", RenderOrder::Player, GeometryShape::Rectangle);
   bulletPrefab->EmplaceGameObject<PhysicObject>(40.0f, 0.0f, 0.0f);
 }

@@ -76,8 +76,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Render/PostProcessingShader.cpp
         CPP_Files/Render/PostProcessingShader.h
         CPP_Files/Utilityies/TransformUtilityies.hpp
-        CPP_Files/Render/DebugMenu.cpp
-        CPP_Files/Render/DebugMenu.hpp
+        CPP_Files/Utilityies/DebugMenu.cpp
+        CPP_Files/Utilityies/DebugMenu.hpp
         CPP_Files/Resources.cpp
         CPP_Files/Resources.hpp
         CPP_Files/Exceptions/GameLogicException.cpp
@@ -96,8 +96,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/EntityHealth.hpp
         CPP_Files/Entityies/BasicEnemy.cpp
         CPP_Files/Entityies/BasicEnemy.hpp
-        CPP_Files/Event.cpp
-        CPP_Files/Event.hpp
+        CPP_Files/GameEvent.cpp
+        CPP_Files/GameEvent.hpp
 )
 
 

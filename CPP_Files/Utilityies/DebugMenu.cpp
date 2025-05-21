@@ -2,7 +2,7 @@
 // Created by stefa on 4/28/2025.
 //
 
-#include "DebugMenu.hpp"
+#include "../Utilityies/DebugMenu.hpp"
 
 #include "../Game.hpp"
 #include "../Resources.hpp"

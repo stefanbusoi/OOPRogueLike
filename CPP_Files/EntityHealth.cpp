@@ -26,15 +26,13 @@ void EntityHealth::dealDamage(float damageValue) {
   m_currentHealth -= damageValue;
   if (m_currentHealth <= 0) {
     m_isDead = true;
-    if (m_onDeath)
-      m_onDeath(this);
+    m_onDeath.CallFunction(this);
   }
 }
 
 void EntityHealth::heal(float healValue) {
   m_currentHealth = std::min(m_currentHealth + healValue, m_maxhealth);
 }
-
-void EntityHealth::setOnDeath(const std::function<void(EntityHealth *)> &onDeath) {
-  m_onDeath = onDeath;
+size_t EntityHealth::setOnDeath(const std::function<void(EntityHealth *)> &onDeath) {
+  return m_onDeath.subscribe(onDeath);
 }

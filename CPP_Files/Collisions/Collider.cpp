@@ -119,10 +119,8 @@ void Collider::update(float deltaTime) {
         parent1->GlobalMoveTransform(-collisionData.normal * collisionData.penetration * move1);
         parent2->GlobalMoveTransform(collisionData.normal * collisionData.penetration * move2);
       }
-      if (this->getOnCollide())
-        this->getOnCollide()(*this, *collider);
-      if (collider->getOnCollide())
-        collider->getOnCollide()(*collider, *this);
+        this->getOnCollide().CallFunction(*this, *collider);
+        collider->getOnCollide().CallFunction(*collider, *this);
     } //If collided==true;
   } //For each Game Object
 }

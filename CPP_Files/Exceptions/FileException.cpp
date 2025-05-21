@@ -5,9 +5,7 @@
 #include "FileException.hpp"
 
 FileException::FileException(const std::string &message):m_message(message ) {
-#ifndef NDEBUG
-  // __debugbreak();
-#endif
+
 }
 
 const char * FileException::what()  const noexcept{
