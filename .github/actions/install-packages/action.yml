@@ -24,6 +24,9 @@ runs:
         sudo apt update
         sudo apt install libfmt-dev
         
+        sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+        sudo apt update
+        sudo apt install -y gcc-13 g++-13
 
     # Also see https://github.com/actions/runner-images/discussions/9446#discussioncomment-8668538
     # - name: Install Clang ${{ matrix.clang_ver }}

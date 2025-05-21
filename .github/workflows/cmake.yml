@@ -115,9 +115,9 @@ jobs:
           #   runs_msan: true
 
           - os: ubuntu-22.04
-            c: gcc-12
-            cxx: g++-12
-            name: "ASan: Ubuntu 22.04 GCC 12"
+            c: gcc-13
+            cxx: g++-13
+            name: "ASan: Ubuntu 22.04 GCC 13"
             cmake_flags: "-DUSE_ASAN=ON -DBUILD_SHARED_LIBS=FALSE"
             cmake_generator: Ninja
             # This env runs address sanitizers
