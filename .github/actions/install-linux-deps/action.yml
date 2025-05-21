@@ -18,5 +18,6 @@ runs:
           libgbm-dev \
           libfreetype6-dev \
           libxi-dev \
+          libfmt-dev \
           xorg
       shell: bash
