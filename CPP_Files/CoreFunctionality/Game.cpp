@@ -7,11 +7,12 @@
 
 #include "Entityies/EntityHealth.hpp"
 #include "Entityies/BasicEnemy.hpp"
+#include "Exceptions/GameLogicException.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
 #include "UI/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
-
-Game *Game::s_instance = nullptr;
+#include "Collisions/ColliderManager.hpp"
+std::weak_ptr<Game> Game::s_instance = std::weak_ptr<Game>();
 
 void Game::renderAll() {
   m_window.display();
@@ -21,15 +22,25 @@ void Game::renderAll() {
   sf::Sprite sprite(m_renderTexture.getTexture());
   m_window.draw(sprite);
 }
+std::shared_ptr<Game> Game::getInstance(const sf::VideoMode video_mode, const std::string &Title) {
+  if (!s_instance.expired())  {
+    throw GameLogicException("paramaterised getInstance should be called only once");
+  }
+  auto instance = std::shared_ptr<Game>(new Game(video_mode, Title));
+  s_instance=instance;
+  return instance;
+}
 
-Game *Game::getInstance() { return s_instance; }
+std::shared_ptr<Game> Game::getInstance() {
+  if (s_instance.expired()) {
+    throw GameLogicException("paramaterised get instance is not called, please call Game::getInstance(sf::VideoMode video_mode,std::string Title)");
+  }
+  return s_instance.lock();
+}
 
 Game::Game(const sf::VideoMode video_mode, const std::string &Title): BaseGameObject(Title) {
   m_totalTime = 0.0f;
-  if (s_instance == nullptr) {
-    s_instance = this;
-  }
-  m_window.create(video_mode, Title, sf::State::Fullscreen);
+  m_window.create(video_mode, Title, sf::State::Windowed);
   if (!m_renderTexture.resize(m_window.getSize())) {
     throw std::runtime_error("Failed to resize render texture");
   }
@@ -38,7 +49,7 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): BaseGameOb
 void Game::Init() {
   sf::Transform playerPos=sf::Transform::Identity;
   playerPos.translate({-200,800});
-
+  EmplaceGameObject<ColliderManager>();
   EmplaceGameObject<GameMapRenderer>("GameMap");
   EmplaceGameObject<PostProcessingShader>("Pixelate", std::filesystem::path("Shaders/Pixelate.frag"));
   EmplaceGameObject<PostProcessingShader>("PostProcessingShader", std::filesystem::path("Shaders/PostProcessingShader.frag"));
@@ -86,7 +97,7 @@ bool Game::IsActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject) {
     if (!p_gameObject.lock()->IsActive()) return false;
     p_gameObject = p_gameObject.lock()->getParent();
   }
-  if (p_gameObject.lock().get() == getInstance()) return true;
+  if (p_gameObject.lock() == getInstance()) return true;
   return false;
 }
 
@@ -95,7 +106,7 @@ bool Game::IsInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject) {
   while (!p_gameObject.lock()->getParent().expired()) {
     p_gameObject = p_gameObject.lock()->getParent();
   }
-  if (p_gameObject.lock().get() == getInstance()) return true;
+  if (p_gameObject.lock() == getInstance()) return true;
   return false;
 }
 
@@ -115,6 +126,7 @@ sf::Time Game::CalculateDeltaTime() {
 }
 
 void Game::handleEvents() {
+  //TODO: fix this shit
   while (const std::optional event = getWindow().pollEvent()) {
     if (event->is<sf::Event::Closed>()) {
       exit();
@@ -129,6 +141,8 @@ void Game::handleEvents() {
     }
   }
 }
+
+
 
 void Game::processGameFrame() {
   sf::Time deltaTime = CalculateDeltaTime();

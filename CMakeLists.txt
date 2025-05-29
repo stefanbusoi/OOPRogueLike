@@ -100,6 +100,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Events/GameEvent.hpp
         CPP_Files/Weapons/Arrow.cpp
         CPP_Files/Weapons/Arrow.hpp
+        CPP_Files/Collisions/ColliderManager.cpp
+        CPP_Files/Collisions/ColliderManager.hpp
 )
 
 

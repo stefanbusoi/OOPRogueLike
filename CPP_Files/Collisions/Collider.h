@@ -30,12 +30,13 @@ struct collisionData {
 };
 
 class Collider : public BaseGameObject {
+
+
+public:
   ColliderMask m_colliderMask;
   GeometryShape m_shape;
   GameEvent<Collider&,Collider&> m_onCollide;
   static int ColliderMatrix[5][5];
-
-public:
   Collider(ColliderMask mask, GeometryShape shape, const sf::Transform &transform = sf::Transform::Identity);
 
   ~Collider();
@@ -50,11 +51,11 @@ public:
 
   GameEvent<Collider &, Collider &> &getOnCollide() { return m_onCollide; }
 
-  collisionData CheckCollision(const Collider &col1, const Collider &col2);
+  static collisionData CheckCollision(const Collider &col1, const Collider &col2);
 
-  collisionData ColCircleCircle(const sf::Transform &tr1, const sf::Transform &tr2);
+  static collisionData ColCircleCircle(const sf::Transform &tr1, const sf::Transform &tr2);
 
-  collisionData ColCircleLine(const sf::Transform &tr1, const sf::Transform &tr2);
+  static collisionData ColCircleLine(const sf::Transform &tr1, const sf::Transform &tr2);
 
-  collisionData ColCircleSquare(const sf::Transform &tr1, const sf::Transform &tr2);
+  static collisionData ColCircleSquare(const sf::Transform &tr1, const sf::Transform &tr2);
 };

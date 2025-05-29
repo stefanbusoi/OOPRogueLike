@@ -18,7 +18,7 @@ class Game : public BaseGameObject {
   float fps;
   std::weak_ptr<Camera> m_camera;
   sf::RenderTexture m_renderTexture;
-  static Game *s_instance;
+  static std::weak_ptr<Game> s_instance;
   std::weak_ptr<Player> player_;
   std::vector<std::shared_ptr<BaseGameObject> > m_ToInactive;
 
@@ -32,19 +32,16 @@ class Game : public BaseGameObject {
 
   bool frameIsRunning = false;
 
-  void renderAll();
-
-  void handleEvents();
-
-public:
-  static Game *getInstance();
-
   Game(sf::VideoMode video_mode, const std::string &Title);
 
+  void renderAll();
+  void handleEvents();
+public:
+  static std::shared_ptr<Game> getInstance();
+  static std::shared_ptr<Game> getInstance(sf::VideoMode video_mode, const std::string &Title);
+
   void Init() override;
-
   ~Game() override;
-
   bool isRunning() const;
 
   bool IsActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
@@ -57,7 +54,6 @@ public:
 
   bool IsInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
 
-  void MarkForUnactive(std::shared_ptr<BaseGameObject> p_gameObject);
 
   void exit();
 

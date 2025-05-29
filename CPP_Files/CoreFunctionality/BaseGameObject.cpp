@@ -18,14 +18,10 @@ void BaseGameObject::Init() {
 }
 
 
-BaseGameObject::~BaseGameObject() {
-  BaseGameObject::RemoveGameObjectFromGame();
-  BaseGameObject::SetParent(nullptr);
-  m_children.clear();
-}
+BaseGameObject::~BaseGameObject() = default;
 
 void BaseGameObject::SetParent(const std::shared_ptr<BaseGameObject> &p_parent) {
-  Game *instance = Game::getInstance();
+  std::shared_ptr<Game>instance = Game::getInstance();
   if (instance->IsInHirarchy(weak_from_this()) && instance->IsInHirarchy(p_parent)) {
     m_transform = p_parent->getGlobalTransform().getInverse() * getGlobalTransform();
     p_parent->m_children.insert(shared_from_this());

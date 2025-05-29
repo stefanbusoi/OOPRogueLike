@@ -11,7 +11,7 @@
 
 void Player::update(float deltaT) {
   float SpeedConst = 5000;
-  sf::Vector2i pos = sf::Mouse::getPosition();
+  sf::Vector2i pos = sf::Mouse::getPosition(Game::getInstance()->getWindow());
   sf::Vector2f speed;
   if (isKeyPressed(sf::Keyboard::Scancode::A)) {
     speed += sf::Vector2f({-1.0f, 0.0f});

@@ -11,7 +11,7 @@
 
 int main() {
   try {
-    std::shared_ptr<Game> game = std::make_shared<Game>(sf::VideoMode({1920, 1080}), "RogueLike");
+    std::shared_ptr<Game> game = Game::getInstance(sf::VideoMode({1920, 1200}), "RogueLike");
     game->Init();
     while (game->isRunning()) {
       game->processGameFrame();
@@ -26,5 +26,6 @@ int main() {
     std::cerr << "SHADER ERROR:" + std::string(l.what());
     return EXIT_FAILURE;
   }
+
   return 0;
 }

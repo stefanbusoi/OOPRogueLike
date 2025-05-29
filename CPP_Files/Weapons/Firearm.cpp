@@ -45,5 +45,5 @@ void Firearm::Init() {
 
   tr.translate({0.0f, 40.0f})
       .scale({100.f, -130.0f});
-  EmplaceGameObject<ShapeRenderer>("CircleRenderer", tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PostProcessing, GeometryShape::Rectangle);
+  EmplaceGameObject<ShapeRenderer>("CircleRenderer", tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PlayerWeapons, GeometryShape::Rectangle);
 }
