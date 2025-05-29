@@ -1,4 +1,4 @@
-#include "../Game.hpp"
+#include "CoreFunctionality/Game.hpp"
 
 void IRenderable::AddToRenderObjects() {
   Game::getInstance()->getRenderObjects().insert(this);

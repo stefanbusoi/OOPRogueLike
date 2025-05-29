@@ -2,18 +2,18 @@
 // Created by stefa on 3/16/2025.
 //
 
-#include "GameMap.hpp"
+#include "GameMapRenderer.hpp"
 
 #include <iostream>
 
-#include "Game.hpp"
+#include "CoreFunctionality/Game.hpp"
 
-void GameMap::print(std::ostream &os) const {
+void GameMapRenderer::print(std::ostream &os) const {
   os << "CLASS GameMap:";
-  GameObject::print(os);
+  BaseGameObject::print(os);
 }
 
-void GameMap::Render() {
+void GameMapRenderer::Render() {
   Game &instance = *Game::getInstance();
   std::weak_ptr<Camera> camera = instance.getCamera();
 
@@ -28,7 +28,7 @@ void GameMap::Render() {
   render_texture.draw(fullscreenQuad, &m_shader);
 }
 
-GameMap::GameMap(const std::string &name, const sf::Transform &transform): GameObject(name, transform) {
+GameMapRenderer::GameMapRenderer(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform) {
   m_renderOrder = RenderOrder::Terrain;
   m_updateOrder = UpdateOrder::Default;
   if (!m_shader.loadFromFile("Shaders/fragment.frag", sf::Shader::Type::Fragment)) {
@@ -37,16 +37,16 @@ GameMap::GameMap(const std::string &name, const sf::Transform &transform): GameO
 }
 
 
-void GameMap::update(float deltaT) {
+void GameMapRenderer::update(float deltaT) {
   (void) deltaT;
 }
 
-void GameMap::AddGameObjectToGame() {
-  GameObject::AddGameObjectToGame();
+void GameMapRenderer::AddGameObjectToGame() {
+  BaseGameObject::AddGameObjectToGame();
   IRenderable::AddToRenderObjects();
 }
 
-void GameMap::RemoveGameObjectFromGame() {
-  GameObject::RemoveGameObjectFromGame();
+void GameMapRenderer::RemoveGameObjectFromGame() {
+  BaseGameObject::RemoveGameObjectFromGame();
   IRenderable::RemoveFromRenderObjects();
 }

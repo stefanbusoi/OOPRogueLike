@@ -1,10 +1,9 @@
 #pragma once
-#include <functional>
 
-#include "../GameObject.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
 #include "SFML/Graphics/Transform.hpp"
 
-#include "../GameEvent.hpp"
+#include "Events/GameEvent.hpp"
 enum class ColliderMask {
   Player = 0,
   Bullets = 1,
@@ -30,7 +29,7 @@ struct collisionData {
   }
 };
 
-class Collider : public GameObject {
+class Collider : public BaseGameObject {
   ColliderMask m_colliderMask;
   GeometryShape m_shape;
   GameEvent<Collider&,Collider&> m_onCollide;
@@ -47,7 +46,7 @@ public:
 
   void update(float deltaT) override;
 
-  std::shared_ptr<GameObject> clone() const override;
+  std::shared_ptr<BaseGameObject> clone() const override;
 
   GameEvent<Collider &, Collider &> &getOnCollide() { return m_onCollide; }
 

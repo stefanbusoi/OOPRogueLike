@@ -4,14 +4,14 @@
 
 #include "Firearm.hpp"
 
-#include "../EntityHealth.hpp"
-#include "../Game.hpp"
-#include "../Render/ShapeRenderer.hpp"
-#include "../Utilityies/TransformUtilityies.hpp"
+#include "Arrow.hpp"
+#include "CoreFunctionality/Game.hpp"
+#include "Render/ShapeRenderer.hpp"
+#include "Utilityies/TransformUtilityies.hpp"
 
 void Firearm::Fire() {
   if (lastShot + m_timer <= CurrentTimer) {
-    std::shared_ptr<GameObject> bullet = Game::getInstance()->EmplaceClone(bulletPrefab);
+    std::shared_ptr<BaseGameObject> bullet = Game::getInstance()->EmplaceClone(bulletPrefab);
     bullet->GlobalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform()) + Utils::getPosition(getGlobalTransform()));
     lastShot = CurrentTimer;
     bullet->getLocalTransform().rotate(-Utils::getAngle(getGlobalTransform()) + sf::degrees(180.0f));
@@ -29,36 +29,15 @@ void Firearm::update(float deltaTime) {
   CurrentTimer += deltaTime;
 }
 
-Firearm::Firearm(const std::string &name, sf::Transform transform): GameObject(name, transform) {
+Firearm::Firearm(const std::string &name, sf::Transform transform): BaseGameObject(name, transform) {
   lastShot = 0.0f;
-  m_timer = 0.4f;
+  m_timer = 1.0f;
   CurrentTimer = 0.0f;
   sf::Transform BulletTransform;
-  BulletTransform.translate({0.0f, -2.f});
-  BulletTransform.scale({10.f, 10.f});
-  bulletPrefab = std::make_shared<GameObject>("Bullet", BulletTransform);
-  sf::Transform BulletTransformHitbox;
-  BulletTransformHitbox.scale({0.5f, 0.5f});
-  std::shared_ptr<Collider> col = bulletPrefab->EmplaceGameObject<Collider>(
-    ColliderMask::Bullets, GeometryShape::Circle, BulletTransformHitbox);
-  col->getOnCollide().subscribe ([](Collider &ths, Collider &col) {
-    auto parent = ths.getParent();
-
-    std::shared_ptr<PhysicObject> ph = ths.getParent().lock()->GetGameObjectOfType<PhysicObject>();
-    ph->SetParent(nullptr);
-
-    std::shared_ptr<Collider> cl = ths.getParent().lock()->GetGameObjectOfType<Collider>();
-    cl->SetParent(nullptr);
-
-    parent.lock()->SetParent(col.getParent().lock());
-
-    std::shared_ptr<EntityHealth> health = col.getParent().lock()->GetGameObjectOfType<EntityHealth>();
-    if (health != nullptr) {
-      health->dealDamage(10);
-    }
-  });
-  bulletPrefab->EmplaceGameObject<ShapeRenderer>("CircleRenderer", BulletTransform, "Assets/arrow.png", RenderOrder::Player, GeometryShape::Rectangle);
-  bulletPrefab->EmplaceGameObject<PhysicObject>(40.0f, 0.0f, 0.0f);
+  BulletTransform.translate({0.0f, 4.f});
+  BulletTransform.scale({100.f, 100.f});
+  bulletPrefab = std::make_shared<Arrow>(sf::Transform::Identity);
+  bulletPrefab->Init();
 }
 
 void Firearm::Init() {

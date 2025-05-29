@@ -10,7 +10,7 @@ PhysicObject::PhysicObject(float mass, float friction, float elasticity) {
 
 }
 
-std::shared_ptr<GameObject> PhysicObject::clone() const {
+std::shared_ptr<BaseGameObject> PhysicObject::clone() const {
   std::shared_ptr<PhysicObject> clone = std::make_shared<PhysicObject>(m_mass, m_friction, m_elasticity);
 
   clone->m_Acceleration = m_Acceleration;

@@ -3,11 +3,11 @@
 // Created by stefa on 5/19/2025.
 //
 
-#include "../GameObject.hpp"
-#include "../Player.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
+#include "Player.hpp"
 
 
-class BasicEnemy :public GameObject{
+class BasicEnemy :public BaseGameObject{
 
   std::weak_ptr<Player> player;
   std::weak_ptr<PhysicObject> physicObject;

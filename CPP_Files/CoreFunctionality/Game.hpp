@@ -5,12 +5,12 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "GameObject.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
 #include "Render/Camera.hpp"
-#include "gameObjectComp.hpp"
+#include "CoreFunctionality/gameObjectComp.hpp"
 class Collider;
 
-class Game : public GameObject {
+class Game : public BaseGameObject {
   sf::RenderWindow m_window;
   sf::Clock m_clock;
   float m_totalTime;
@@ -20,10 +20,10 @@ class Game : public GameObject {
   sf::RenderTexture m_renderTexture;
   static Game *s_instance;
   std::weak_ptr<Player> player_;
-  std::vector<std::shared_ptr<GameObject> > m_ToInactive;
+  std::vector<std::shared_ptr<BaseGameObject> > m_ToInactive;
 
   std::set<Collider *, ColliderComp> m_colliders;
-  std::set<GameObject *, gameObjectComp> m_gameObjects;
+  std::set<BaseGameObject *, gameObjectComp> m_gameObjects;
   std::set<IRenderable *, iRendableComp> m_renderableObjects;
 
   int m_nrColliders = 0;
@@ -47,7 +47,7 @@ public:
 
   bool isRunning() const;
 
-  bool IsActiveInHirarchy(std::weak_ptr<GameObject> p_gameObject);
+  bool IsActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
 
   sf::RenderWindow &getWindow() { return m_window; }
   sf::RenderTexture &getRenderTexture() { return m_renderTexture; }
@@ -55,9 +55,9 @@ public:
   float getTotalTime() { return m_totalTime; }
   float getPrecedentFrameTime() { return m_precedentFrameTime; }
 
-  bool IsInHirarchy(std::weak_ptr<GameObject> p_gameObject);
+  bool IsInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
 
-  void MarkForUnactive(std::shared_ptr<GameObject> p_gameObject);
+  void MarkForUnactive(std::shared_ptr<BaseGameObject> p_gameObject);
 
   void exit();
 
@@ -65,7 +65,7 @@ public:
 
   void processGameFrame();
 
-  std::set<GameObject *, gameObjectComp> &getGameObjects() { return m_gameObjects; }
+  std::set<BaseGameObject *, gameObjectComp> &getGameObjects() { return m_gameObjects; }
   std::set<IRenderable *, iRendableComp> &getRenderObjects() { return m_renderableObjects; };
   std::set<Collider *, ColliderComp> &getColliders() { return m_colliders; }
 

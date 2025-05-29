@@ -1,15 +1,15 @@
 #include "PostProcessingShader.h"
 
-#include "../Game.hpp"
-#include "../Exceptions/FileException.hpp"
+#include "CoreFunctionality/Game.hpp"
+#include "Exceptions/FileException.hpp"
 
 
 void PostProcessingShader::print(std::ostream &os) const {
   os << "Class PPShader: Shader:" << m_path.filename() << ",";
-  GameObject::print(os);
+  BaseGameObject::print(os);
 }
 
-PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::path ShaderPath): GameObject(name, sf::Transform::Identity) {
+PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::path ShaderPath): BaseGameObject(name, sf::Transform::Identity) {
   m_renderOrder = RenderOrder::PostProcessing;
   m_path = ShaderPath;
   if (!m_shader.loadFromFile(ShaderPath, sf::Shader::Type::Fragment)) {
@@ -39,11 +39,11 @@ void PostProcessingShader::Render() {
 }
 
 void PostProcessingShader::AddGameObjectToGame() {
-  GameObject::AddGameObjectToGame();
+  BaseGameObject::AddGameObjectToGame();
   IRenderable::AddToRenderObjects();
 }
 
 void PostProcessingShader::RemoveGameObjectFromGame() {
-  GameObject::RemoveGameObjectFromGame();
+  BaseGameObject::RemoveGameObjectFromGame();
   IRenderable::RemoveFromRenderObjects();
 }

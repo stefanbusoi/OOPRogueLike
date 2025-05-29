@@ -4,12 +4,13 @@
 
 #include "EntityHealth.hpp"
 
-EntityHealth::EntityHealth(float maxHealt, float currentHealt): m_maxhealth(maxHealt),
-                                                                m_currentHealth(currentHealt) {
+EntityHealth::EntityHealth(float maxHealt): m_maxhealth(maxHealt),
+                                                                m_currentHealth(maxHealt) {
 }
 
-std::shared_ptr<GameObject> EntityHealth::clone() const {
-  std::shared_ptr<EntityHealth> clone = std::make_shared<EntityHealth>(m_maxhealth, m_currentHealth);
+std::shared_ptr<BaseGameObject> EntityHealth::clone() const {
+  std::shared_ptr<EntityHealth> clone = std::make_shared<EntityHealth>(m_maxhealth);
+  clone->m_currentHealth = m_currentHealth;
   clone->m_isDead = m_isDead;
   clone->m_onDeath = m_onDeath;
   for (auto i: m_children) {

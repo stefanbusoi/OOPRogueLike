@@ -1,8 +1,8 @@
 #pragma once
-#include "../gameObjectComp.hpp"
+#include "CoreFunctionality/gameObjectComp.hpp"
 
 
-class PhysicObject : public GameObject {
+class PhysicObject : public BaseGameObject {
   sf::Vector2f m_Acceleration;
   sf::Vector2f m_Speed;
   float m_mass{0.0f};
@@ -12,7 +12,7 @@ class PhysicObject : public GameObject {
 public:
   PhysicObject(float mass, float friction, float elasticity);
 
-  std::shared_ptr<GameObject> clone() const override;
+  std::shared_ptr<BaseGameObject> clone() const override;
 
   void update(float deltaT) override;
 

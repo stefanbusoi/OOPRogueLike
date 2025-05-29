@@ -2,29 +2,29 @@
 // Created by stefa on 3/11/2025.
 //
 
-#include "GameObject.hpp"
+#include "BaseGameObject.hpp"
 #include "gameObjectComp.hpp"
 #include <utility>
 
 #include "Game.hpp"
 #include "Collisions/Collider.h"
-int GameObject::s_globalId = 0;
+int BaseGameObject::s_globalId = 0;
 
-GameObject::GameObject(std::string name, sf::Transform transform): m_transform(transform),
+BaseGameObject::BaseGameObject(std::string name, sf::Transform transform): m_transform(transform),
                                                                    m_name(std::move(name)) {
 }
 
-void GameObject::Init() {
+void BaseGameObject::Init() {
 }
 
 
-GameObject::~GameObject() {
-  GameObject::RemoveGameObjectFromGame();
-  GameObject::SetParent(nullptr);
+BaseGameObject::~BaseGameObject() {
+  BaseGameObject::RemoveGameObjectFromGame();
+  BaseGameObject::SetParent(nullptr);
   m_children.clear();
 }
 
-void GameObject::SetParent(const std::shared_ptr<GameObject> &p_parent) {
+void BaseGameObject::SetParent(const std::shared_ptr<BaseGameObject> &p_parent) {
   Game *instance = Game::getInstance();
   if (instance->IsInHirarchy(weak_from_this()) && instance->IsInHirarchy(p_parent)) {
     m_transform = p_parent->getGlobalTransform().getInverse() * getGlobalTransform();
@@ -43,7 +43,7 @@ void GameObject::SetParent(const std::shared_ptr<GameObject> &p_parent) {
 }
 
 
-void GameObject::setActive(bool isActive) {
+void BaseGameObject::setActive(bool isActive) {
   if (m_isActive == isActive) return;
   if (isActive) {
     if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
@@ -58,13 +58,13 @@ void GameObject::setActive(bool isActive) {
 }
 
 
-void GameObject::update(float deltaT) {
+void BaseGameObject::update(float deltaT) {
   (void) deltaT;
 }
 
-std::shared_ptr<GameObject> GameObject::clone() const {
-  std::shared_ptr<GameObject> clone = std::make_shared<GameObject>();
-  for (const std::shared_ptr<GameObject> &i: m_children) {
+std::shared_ptr<BaseGameObject> BaseGameObject::clone() const {
+  std::shared_ptr<BaseGameObject> clone = std::make_shared<BaseGameObject>();
+  for (const std::shared_ptr<BaseGameObject> &i: m_children) {
     clone->EmplaceClone(i);
   }
   clone->m_transform = m_transform;
@@ -75,35 +75,35 @@ std::shared_ptr<GameObject> GameObject::clone() const {
 }
 
 
-sf::Transform &GameObject::getLocalTransform() {
+sf::Transform &BaseGameObject::getLocalTransform() {
   return m_transform;
 }
 
-void GameObject::MoveTransform(sf::Vector2f movement) {
+void BaseGameObject::MoveTransform(sf::Vector2f movement) {
   m_transform.translate(movement);
 }
 
-void GameObject::GlobalMoveTransform(sf::Vector2f movement) {
+void BaseGameObject::GlobalMoveTransform(sf::Vector2f movement) {
   sf::Transform transform = sf::Transform::Identity;
   transform.translate(movement);
   m_transform = m_parent.lock()->getGlobalTransform().getInverse() * transform * getGlobalTransform();
 }
 
-void GameObject::AddGameObjectToGame() {
+void BaseGameObject::AddGameObjectToGame() {
   Game::getInstance()->getGameObjects().insert(this);
   for (auto i: getChildrens()) {
     i->AddGameObjectToGame();
   }
 }
 
-void GameObject::RemoveGameObjectFromGame() {
+void BaseGameObject::RemoveGameObjectFromGame() {
   Game::getInstance()->getGameObjects().erase(this);
   for (auto i: getChildrens()) {
     i->RemoveGameObjectFromGame();
   }
 }
 
-sf::Transform GameObject::getGlobalTransform() const {
+sf::Transform BaseGameObject::getGlobalTransform() const {
   if (!m_parent.expired()) {
     return m_parent.lock()->getGlobalTransform() * m_transform;
   }
@@ -111,7 +111,7 @@ sf::Transform GameObject::getGlobalTransform() const {
 }
 
 
-void GameObject::print(std::ostream &os) const {
+void BaseGameObject::print(std::ostream &os) const {
   os << "Name: " << m_name
       << " Id:" << m_localId
       << " GameObjects:{ ";
@@ -121,7 +121,7 @@ void GameObject::print(std::ostream &os) const {
   os << "}";
 }
 
-std::ostream &operator<<(std::ostream &os, const GameObject &obj) {
+std::ostream &operator<<(std::ostream &os, const BaseGameObject &obj) {
   obj.print(os);
   return os;
 }

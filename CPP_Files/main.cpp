@@ -3,7 +3,7 @@
 #include <thread>
 
 #include <SFML/Graphics.hpp>
-#include "Game.hpp"
+#include "CoreFunctionality/Game.hpp"
 #include "Resources.hpp"
 #include "Exceptions/FileException.hpp"
 #include "Exceptions/GameLogicException.hpp"

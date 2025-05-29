@@ -1,14 +1,11 @@
-//
-// Created by stefa on 4/28/2025.
-//
 
-#include "../Utilityies/DebugMenu.hpp"
+#include "UI/DebugMenu.hpp"
 
-#include "../Game.hpp"
-#include "../Resources.hpp"
-#include "../Exceptions/GameLogicException.hpp"
+#include "CoreFunctionality/Game.hpp"
+#include "Resources.hpp"
+#include "Exceptions/GameLogicException.hpp"
 
-DebugMenu::DebugMenu(const std::string &name, const sf::Transform &transform): GameObject(name, transform) {
+DebugMenu::DebugMenu(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform) {
   m_renderOrder = RenderOrder::UIPostProcessing;
   m_updateOrder = UpdateOrder::UI;
 }
@@ -75,16 +72,16 @@ void DebugMenu::AddPrintList(const std::string &formatString, void *pointer, Typ
 
 void DebugMenu::print(std::ostream &os) const {
   os << "Class DebugMenu:";
-  GameObject::print(os);
+  BaseGameObject::print(os);
 }
 
 void DebugMenu::AddGameObjectToGame() {
-  GameObject::AddGameObjectToGame();
+  BaseGameObject::AddGameObjectToGame();
   IRenderable::AddToRenderObjects();
 }
 
 void DebugMenu::RemoveGameObjectFromGame() {
-  GameObject::RemoveGameObjectFromGame();
+  BaseGameObject::RemoveGameObjectFromGame();
   IRenderable::RemoveFromRenderObjects();
 }
 

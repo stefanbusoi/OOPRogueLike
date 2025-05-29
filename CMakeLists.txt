@@ -59,25 +59,25 @@ endif()
 add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/main.cpp
         CPP_Files/Render/Camera.cpp
-        CPP_Files/GameObject.cpp
-        CPP_Files/Game.cpp
-        CPP_Files/Player.cpp
-        CPP_Files/Player.hpp
-        CPP_Files/GameMap.cpp
-        CPP_Files/GameMap.hpp
+        CPP_Files/CoreFunctionality/BaseGameObject.cpp
+        CPP_Files/CoreFunctionality/Game.cpp
+        CPP_Files/Entityies/Player.cpp
+        CPP_Files/Entityies/Player.hpp
+        CPP_Files/Render/GameMapRenderer.cpp
+        CPP_Files/Render/GameMapRenderer.hpp
         CPP_Files/Render/RenderOrder.hpp
         CPP_Files/UpdateOrder.hpp
         CPP_Files/Render/IRenderable.hpp
-        CPP_Files/gameObjectComp.hpp
-        CPP_Files/gameObjectComp.cpp
+        CPP_Files/CoreFunctionality/gameObjectComp.hpp
+        CPP_Files/CoreFunctionality/gameObjectComp.cpp
         CPP_Files/Render/IRenderable.cpp
         CPP_Files/Collisions/Collider.h
         CPP_Files/Collisions/Collider.cpp
         CPP_Files/Render/PostProcessingShader.cpp
         CPP_Files/Render/PostProcessingShader.h
         CPP_Files/Utilityies/TransformUtilityies.hpp
-        CPP_Files/Utilityies/DebugMenu.cpp
-        CPP_Files/Utilityies/DebugMenu.hpp
+        CPP_Files/UI/DebugMenu.cpp
+        CPP_Files/UI/DebugMenu.hpp
         CPP_Files/Resources.cpp
         CPP_Files/Resources.hpp
         CPP_Files/Exceptions/GameLogicException.cpp
@@ -92,12 +92,14 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Weapons/Firearm.hpp
         CPP_Files/Collisions/PhysicObject.cpp
         CPP_Files/Collisions/PhysicObject.hpp
-        CPP_Files/EntityHealth.cpp
-        CPP_Files/EntityHealth.hpp
+        CPP_Files/Entityies/EntityHealth.cpp
+        CPP_Files/Entityies/EntityHealth.hpp
         CPP_Files/Entityies/BasicEnemy.cpp
         CPP_Files/Entityies/BasicEnemy.hpp
-        CPP_Files/GameEvent.cpp
-        CPP_Files/GameEvent.hpp
+        CPP_Files/Events/GameEvent.cpp
+        CPP_Files/Events/GameEvent.hpp
+        CPP_Files/Weapons/Arrow.cpp
+        CPP_Files/Weapons/Arrow.hpp
 )
 
 
@@ -112,6 +114,7 @@ set_compiler_flags(RUN_SANITIZERS TRUE TARGET_NAMES ${MAIN_EXECUTABLE_NAME})
 
 # use SYSTEM so cppcheck and clang-tidy do not report warnings from these directories
 target_include_directories(${MAIN_EXECUTABLE_NAME} SYSTEM PRIVATE generated/include)
+target_include_directories(${MAIN_EXECUTABLE_NAME} SYSTEM PRIVATE CPP_Files)
 # target_include_directories(${MAIN_EXECUTABLE_NAME} SYSTEM PRIVATE ext/<SomeHppLib>/include)
 target_include_directories(${MAIN_EXECUTABLE_NAME} SYSTEM PRIVATE ${SFML_SOURCE_DIR}/include)
 target_link_directories(${MAIN_EXECUTABLE_NAME} PRIVATE ${SFML_BINARY_DIR}/lib)

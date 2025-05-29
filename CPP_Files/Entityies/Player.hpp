@@ -2,13 +2,12 @@
 
 #include <ostream>
 
-#include "GameObject.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
 #include "Collisions/PhysicObject.hpp"
-#include "Render/IRenderable.hpp"
 #include "Weapons/Firearm.hpp"
 
 
-class Player : public GameObject {
+class Player : public BaseGameObject {
   void update(float deltaT) override;
 
   std::shared_ptr<Firearm> m_firearm;

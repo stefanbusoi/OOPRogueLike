@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../GameObject.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
 #include <format>
 
 enum class Type {
@@ -31,7 +31,7 @@ struct PrintList {
   };
 };
 
-class DebugMenu : public GameObject, public IRenderable {
+class DebugMenu : public BaseGameObject, public IRenderable {
   std::vector<PrintList> m_printList;
   float timer = 0;
 

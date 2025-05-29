@@ -5,18 +5,18 @@
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
 
-#include "GameObject.hpp"
-#include "Render/IRenderable.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
+#include "IRenderable.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
-class GameMap : public GameObject, public IRenderable {
+class GameMapRenderer : public BaseGameObject, public IRenderable {
   sf::Shader m_shader;
 
 protected:
   void print(std::ostream &os) const override;
 
 public:
-  explicit GameMap(const std::string &name = "NONNAME", const sf::Transform &transform = sf::Transform::Identity);
+  explicit GameMapRenderer(const std::string &name = "NONNAME", const sf::Transform &transform = sf::Transform::Identity);
 
   void Render() override;
 

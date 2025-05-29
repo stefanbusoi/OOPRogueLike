@@ -1,10 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
-#include "../GameObject.hpp"
-#include "../Player.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
+#include "Entityies/Player.hpp"
 
-class Camera : public GameObject {
+class Camera : public BaseGameObject {
   sf::RenderWindow *m_window;
   std::weak_ptr<Player> m_player;
 

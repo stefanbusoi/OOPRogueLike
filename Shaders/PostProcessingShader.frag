@@ -12,8 +12,8 @@ void main()
     uv=uv*resolution;
 
     vec2 center=resolution/2;
-    float d=distance(vec2(uv.x,uv.y),center)/250;
-    d=d*d;
+    float d=distance(vec2(uv.x,uv.y),center)/500;
+
     gl_FragColor = vec4(Data.rgb*(clamp(1-d/5,0.3,1)),1);
 
 }

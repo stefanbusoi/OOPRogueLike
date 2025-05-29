@@ -2,9 +2,9 @@
 
 #include "Collisions/Collider.h"
 #include "Render/IRenderable.hpp"
-#include "GameObject.hpp"
+#include "BaseGameObject.hpp"
 
-bool gameObjectComp::operator()(const GameObject *lhs, const GameObject *rhs) const {
+bool gameObjectComp::operator()(const BaseGameObject *lhs, const BaseGameObject *rhs) const {
   if (lhs->getUpdateOrder() == rhs->getUpdateOrder()) {
     return lhs->GetId() < rhs->GetId();
   }
@@ -18,11 +18,11 @@ bool ColliderComp::operator()(const Collider *lhs, const Collider *rhs) const {
 
 bool iRendableComp::operator()(IRenderable *lhs, IRenderable *rhs) const {
   if (lhs->getRenderOrder() == rhs->getRenderOrder()) {
-    if (dynamic_cast<GameObject *>(lhs) != nullptr && dynamic_cast<GameObject *>(rhs) != nullptr) {
-      return dynamic_cast<GameObject *>(lhs)->GetId() <
-             dynamic_cast<GameObject *>(rhs)->GetId();
+    if (dynamic_cast<BaseGameObject *>(lhs) != nullptr && dynamic_cast<BaseGameObject *>(rhs) != nullptr) {
+      return dynamic_cast<BaseGameObject *>(lhs)->GetId() <
+             dynamic_cast<BaseGameObject *>(rhs)->GetId();
     }
-    if (dynamic_cast<GameObject *>(lhs) != nullptr)
+    if (dynamic_cast<BaseGameObject *>(lhs) != nullptr)
       return true;
     return false;
   }

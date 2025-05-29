@@ -1,17 +1,16 @@
 #include "Camera.hpp"
 
 
-#include "../Game.hpp"
-#include "../Utilityies/TransformUtilityies.hpp"
-#include "../Exceptions/GameLogicException.hpp"
+#include "CoreFunctionality/Game.hpp"
+#include "Utilityies/TransformUtilityies.hpp"
 
 void Camera::print(std::ostream &os) const {
   os << "Class Camera";
-  GameObject::print(os);
+  BaseGameObject::print(os);
 }
 
 
-Camera::Camera(const std::string &name, const sf::Transform &transform): GameObject(name, transform), m_window(&Game::getInstance()->getWindow()) {
+Camera::Camera(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform), m_window(&Game::getInstance()->getWindow()) {
   m_player = Game::getInstance()->GetGameObjectOfType<Player>();
   m_updateOrder = UpdateOrder::Camera;
 }
@@ -39,6 +38,6 @@ void Camera::draw(const sf::Drawable &drawable, const sf::Transform &transform) 
 }
 
 std::ostream &operator<<(std::ostream &os, const Camera &obj) {
-  os << "CLASS Camera " << static_cast<const GameObject &>(obj);
+  os << "CLASS Camera " << static_cast<const BaseGameObject &>(obj);
   return os;
 }

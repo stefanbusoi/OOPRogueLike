@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.hpp"
+#include "BaseGameObject.hpp"
 #include "Render/IRenderable.hpp"
 
 class iRendableComp {
@@ -11,7 +11,7 @@ public:
 
 class gameObjectComp {
 public:
-  bool operator()(const GameObject *lhs, const GameObject *rhs) const;
+  bool operator()(const BaseGameObject *lhs, const BaseGameObject *rhs) const;
 };
 
 class ColliderComp {

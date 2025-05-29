@@ -1,16 +1,11 @@
-//
-// Created by stefa on 5/4/2025.
-//
-
-#ifndef FIREARM_HPP
-#define FIREARM_HPP
+#pragma once
 #include <memory>
 
-#include "../GameObject.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
 
 
-class Firearm : public GameObject {
-  std::shared_ptr<GameObject> bulletPrefab;
+class Firearm : public BaseGameObject {
+  std::shared_ptr<BaseGameObject> bulletPrefab;
   float m_speed;
   float m_ang;
   float m_timer;
@@ -26,6 +21,3 @@ public:
 
   void Init() override;
 };
-
-
-#endif //FIREARM_HPP

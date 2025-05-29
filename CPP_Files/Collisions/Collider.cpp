@@ -1,10 +1,10 @@
 #include "Collider.h"
 
-#include "../Game.hpp"
-#include "../GameObject.hpp"
+#include "CoreFunctionality/Game.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
 #include "PhysicObject.hpp"
-#include "../Utilityies/TransformUtilityies.hpp"
-#include "../Exceptions/GameLogicException.hpp"
+#include "Utilityies/TransformUtilityies.hpp"
+#include "Exceptions/GameLogicException.hpp"
 int Collider::ColliderMatrix[5][5] = {
   {1, 0, 1, 1, 1},
   {0, 0, 1, 1, 0},
@@ -20,7 +20,7 @@ int Collider::ColliderMatrix[5][5] = {
  * EnemyBullets=4,
  */
 
-Collider::Collider(ColliderMask mask, GeometryShape shape, const sf::Transform &transform): GameObject("COLLIDER", transform),
+Collider::Collider(ColliderMask mask, GeometryShape shape, const sf::Transform &transform): BaseGameObject("COLLIDER", transform),
                                                                                             m_colliderMask(mask),
                                                                                             m_shape(shape) {
   m_updateOrder = UpdateOrder::Collisions;
@@ -31,12 +31,12 @@ Collider::~Collider() {
 }
 
 void Collider::AddGameObjectToGame() {
-  GameObject::AddGameObjectToGame();
+  BaseGameObject::AddGameObjectToGame();
   Game::getInstance()->getColliders().insert(this);
 }
 
 void Collider::RemoveGameObjectFromGame() {
-  GameObject::RemoveGameObjectFromGame();
+  BaseGameObject::RemoveGameObjectFromGame();
   Game::getInstance()->getColliders().erase(this);
 }
 
@@ -46,8 +46,8 @@ void Collider::update(float deltaTime) {
   //I want to copy because there is a chance that inside this for are deleted colliders
   std::set<Collider *, ColliderComp> colliders = Game::getInstance()->getColliders();
   for (const auto &collider: colliders) {
-    std::shared_ptr<GameObject> parent1 = this->m_parent.lock();
-    std::shared_ptr<GameObject> parent2 = collider->m_parent.lock();
+    std::shared_ptr<BaseGameObject> parent1 = this->m_parent.lock();
+    std::shared_ptr<BaseGameObject> parent2 = collider->m_parent.lock();
 
     //If is inside colliders
     if (!Game::getInstance()->getColliders().contains(collider)) {
@@ -126,9 +126,9 @@ void Collider::update(float deltaTime) {
 }
 
 
-std::shared_ptr<GameObject> Collider::clone() const {
+std::shared_ptr<BaseGameObject> Collider::clone() const {
   std::shared_ptr<Collider> clone = std::make_shared<Collider>(m_colliderMask, m_shape, m_transform);
-  for (std::shared_ptr<GameObject> i: m_children) {
+  for (std::shared_ptr<BaseGameObject> i: m_children) {
     clone->EmplaceClone(i);
   }
   clone->m_name = m_name;

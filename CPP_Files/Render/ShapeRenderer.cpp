@@ -3,12 +3,12 @@
 //
 
 #include "ShapeRenderer.hpp"
-#include "../Resources.hpp"
+#include "Resources.hpp"
 #include "SFML/Graphics/CircleShape.hpp"
-#include "../Game.hpp"
+#include "CoreFunctionality/Game.hpp"
 #include "Camera.hpp"
 
-std::shared_ptr<GameObject> ShapeRenderer::clone() const {
+std::shared_ptr<BaseGameObject> ShapeRenderer::clone() const {
   std::shared_ptr<ShapeRenderer> clone;
   if (texture) {
     clone = std::make_shared<ShapeRenderer>(m_name, m_transform, m_circleColor, m_renderOrder, m_shape);
@@ -46,7 +46,7 @@ ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &trans
 }
 
 void ShapeRenderer::update(float deltaTime) {
-  GameObject::update(deltaTime * 0.005f);
+  BaseGameObject::update(deltaTime * 0.005f);
 }
 
 void ShapeRenderer::Render() {

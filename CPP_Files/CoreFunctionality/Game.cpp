@@ -1,16 +1,16 @@
 
 #include "Game.hpp"
-#include "GameMap.hpp"
-#include "Player.hpp"
+#include "Render/GameMapRenderer.hpp"
+#include "Entityies/Player.hpp"
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
-#include "EntityHealth.hpp"
-#include "Collisions/PhysicObject.hpp"
+#include "Entityies/EntityHealth.hpp"
 #include "Entityies/BasicEnemy.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
-#include "Utilityies/DebugMenu.hpp"
+#include "UI/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
+
 Game *Game::s_instance = nullptr;
 
 void Game::renderAll() {
@@ -24,9 +24,11 @@ void Game::renderAll() {
 
 Game *Game::getInstance() { return s_instance; }
 
-Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject(Title) {
+Game::Game(const sf::VideoMode video_mode, const std::string &Title): BaseGameObject(Title) {
   m_totalTime = 0.0f;
-  if (s_instance == nullptr) { s_instance = this; }
+  if (s_instance == nullptr) {
+    s_instance = this;
+  }
   m_window.create(video_mode, Title, sf::State::Fullscreen);
   if (!m_renderTexture.resize(m_window.getSize())) {
     throw std::runtime_error("Failed to resize render texture");
@@ -34,31 +36,36 @@ Game::Game(const sf::VideoMode video_mode, const std::string &Title): GameObject
 }
 
 void Game::Init() {
-  player_ = EmplaceGameObject<Player>("Player");
-  m_camera = EmplaceGameObject<Camera>("Camera");
-  EmplaceGameObject<GameMap>("GameMap");
+  sf::Transform playerPos=sf::Transform::Identity;
+  playerPos.translate({-200,800});
+
+  EmplaceGameObject<GameMapRenderer>("GameMap");
   EmplaceGameObject<PostProcessingShader>("Pixelate", std::filesystem::path("Shaders/Pixelate.frag"));
   EmplaceGameObject<PostProcessingShader>("PostProcessingShader", std::filesystem::path("Shaders/PostProcessingShader.frag"));
 
+  player_ = EmplaceGameObject<Player>("Player",playerPos);
+  m_camera = EmplaceGameObject<Camera>("Camera");
+
   sf::Transform transform = sf::Transform::Identity;
-  transform.translate({100.0f, 100.0f}).scale({400.0f, 400.0f});
-  auto game_object = std::make_shared<GameObject>("GameObject", transform);
+  transform.translate({100.0f, 100.0f}).scale({40.0f, 40.0f});
+  auto game_object = std::make_shared<BaseGameObject>("GameObject", transform);
   game_object->EmplaceGameObject<Collider>(ColliderMask::Enemy, GeometryShape::Rectangle, sf::Transform::Identity);
   game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer", sf::Transform::Identity, sf::Color(0, 255, 255), RenderOrder::Player, GeometryShape::Rectangle);
-  std::shared_ptr<EntityHealth> entityHealth = game_object->EmplaceGameObject<EntityHealth>(100.0f, 100.0f);
+  std::shared_ptr<EntityHealth> entityHealth = game_object->EmplaceGameObject<EntityHealth>(100.0f);
   entityHealth->setOnDeath([](EntityHealth *entityHealth) {
     entityHealth->getParent().lock()->SetParent(nullptr);
   });
-  for (auto i = 1; i <= 1; i++) {
-    for (auto j = 1; j <= 1; j++) {
+  for (auto i = -3; i <= 3; i++) {
+    for (auto j = -3; j <= 3; j++) {
       const auto x = EmplaceClone(game_object);
-      x->GlobalMoveTransform({i * 100.0f, j * 100.0f});
+      x->getLocalTransform().scale({7.0f, 7.0f}).rotate(sf::radians(i * 5 + sin(j)));
+      x->GlobalMoveTransform({i * 2000.0f, j * 2000.0f});
     }
   }
-  for (auto i = 1; i <= 10; i++) {
-    for (auto j = 1; j <= 10; j++) {
+  for (auto i =- 2; i <= 2; i++) {
+    for (auto j = -2; j <= 2; j++) {
       sf::Transform tr;
-      tr.translate({-i * 100.0f, -j * 100.0f});
+      tr.translate({-i * 2000.0f, -j * 2000.0f});
       EmplaceGameObject<BasicEnemy>("Enemy", tr);
     }
   }
@@ -73,7 +80,7 @@ void Game::Init() {
 Game::~Game() { if (isRunning()) exit(); }
 bool Game::isRunning() const { return m_window.isOpen(); }
 
-bool Game::IsActiveInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
+bool Game::IsActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject) {
   if (p_gameObject.expired()) return false;
   while (!p_gameObject.lock()->getParent().expired()) {
     if (!p_gameObject.lock()->IsActive()) return false;
@@ -83,7 +90,7 @@ bool Game::IsActiveInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
   return false;
 }
 
-bool Game::IsInHirarchy(std::weak_ptr<GameObject> p_gameObject) {
+bool Game::IsInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject) {
   if (p_gameObject.expired()) return false;
   while (!p_gameObject.lock()->getParent().expired()) {
     p_gameObject = p_gameObject.lock()->getParent();
@@ -109,7 +116,9 @@ sf::Time Game::CalculateDeltaTime() {
 
 void Game::handleEvents() {
   while (const std::optional event = getWindow().pollEvent()) {
-    if (event->is<sf::Event::Closed>()) { exit(); } else if (event->is<sf::Event::Resized>()) { std::cout << "New width: " << getWindow().getSize().x << '\n' << "New height: " << getWindow().getSize().y << '\n'; } else if (event->is<sf::Event::KeyPressed>()) {
+    if (event->is<sf::Event::Closed>()) {
+      exit();
+    } else if (event->is<sf::Event::Resized>()) { std::cout << "New width: " << getWindow().getSize().x << '\n' << "New height: " << getWindow().getSize().y << '\n'; } else if (event->is<sf::Event::KeyPressed>()) {
       const auto *keyPressed = event->getIf<sf::Event::KeyPressed>();
       if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
         exit();
@@ -129,13 +138,19 @@ void Game::processGameFrame() {
   handleEvents();
   if (isRunning()) {
     frameIsRunning = true;
-    std::vector<std::weak_ptr<GameObject> > p_gameObjects;
-    for (auto gameObject: m_gameObjects) { p_gameObjects.push_back(gameObject->weak_from_this()); }
+    std::vector<std::weak_ptr<BaseGameObject> > p_gameObjects;
+    for (auto gameObject: m_gameObjects) {
+      p_gameObjects.push_back(gameObject->weak_from_this());
+    }
     for (const auto &gameObject: p_gameObjects) {
-      if (!gameObject.expired()) { gameObject.lock()->update(deltaTime.asSeconds()); }
+      if (!gameObject.expired()) {
+        gameObject.lock()->update(deltaTime.asSeconds());
+      }
     }
     renderAll();
-    for (auto gameObject: m_ToInactive) { gameObject->RemoveGameObjectFromGame(); }
+    for (auto gameObject: m_ToInactive) {
+      gameObject->RemoveGameObjectFromGame();
+    }
     m_ToInactive.clear();
   }
 }

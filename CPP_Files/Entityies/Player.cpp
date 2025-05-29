@@ -2,7 +2,7 @@
 
 
 #include "EntityHealth.hpp"
-#include "Game.hpp"
+#include "CoreFunctionality/Game.hpp"
 #include "Collisions/PhysicObject.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
 #include "Render/ShapeRenderer.hpp"
@@ -29,6 +29,9 @@ void Player::update(float deltaT) {
     speed = speed.normalized();
     speed = speed * SpeedConst;
   }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) {
+    speed=speed*3.0f;
+  }
   pos -= {960, 540};
   sf::Angle ang = Utils::getAngle(m_transform);
   m_phisicsObject->setAcceleration(speed);
@@ -46,13 +49,13 @@ void Player::update(float deltaT) {
 }
 
 void Player::Init() {
-  GameObject::Init();
+  BaseGameObject::Init();
   sf::Transform tr = sf::Transform::Identity;
   tr.scale(sf::Vector2f(40.0f, 40.0f));
 
   EmplaceGameObject<ShapeRenderer>("CircleRenderer", tr, sf::Color(0, 255, 0), RenderOrder::Player, GeometryShape::Circle);
   EmplaceGameObject<Collider>(ColliderMask::Player, GeometryShape::Circle, tr);
-  EmplaceGameObject<EntityHealth>(100.0f,100.0f)->setOnDeath([](EntityHealth* e) {
+  EmplaceGameObject<EntityHealth>(100.0f)->setOnDeath([](EntityHealth* e) {
       e->getParent().lock()->SetParent(nullptr);
     });
   m_phisicsObject = EmplaceGameObject<PhysicObject>(100.0f, 12.f, 0.0f);
@@ -61,18 +64,18 @@ void Player::Init() {
 
 void Player::print(std::ostream &os) const {
   os << "CLASS Player:";
-  GameObject::print(os);
+  BaseGameObject::print(os);
 }
 
 
 void Player::AddGameObjectToGame() {
-  GameObject::AddGameObjectToGame();
+  BaseGameObject::AddGameObjectToGame();
 }
 
 void Player::RemoveGameObjectFromGame() {
-  GameObject::RemoveGameObjectFromGame();
+  BaseGameObject::RemoveGameObjectFromGame();
 }
 
-Player::Player(const std::string &name, const sf::Transform &transform): GameObject(name, transform) {
+Player::Player(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform) {
   m_updateOrder = UpdateOrder::Default;
 }

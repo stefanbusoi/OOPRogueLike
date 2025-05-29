@@ -1,9 +1,9 @@
 #pragma once
-#include "../GameObject.hpp"
+#include "CoreFunctionality/BaseGameObject.hpp"
 #include "IRenderable.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
-class PostProcessingShader : public GameObject, public IRenderable {
+class PostProcessingShader : public BaseGameObject, public IRenderable {
   sf::Shader m_shader;
   std::filesystem::path m_path;
 
