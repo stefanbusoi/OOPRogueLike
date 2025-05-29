@@ -126,7 +126,6 @@ sf::Time Game::CalculateDeltaTime() {
 }
 
 void Game::handleEvents() {
-  //TODO: fix this shit
   while (const std::optional event = getWindow().pollEvent()) {
     if (event->is<sf::Event::Closed>()) {
       exit();
