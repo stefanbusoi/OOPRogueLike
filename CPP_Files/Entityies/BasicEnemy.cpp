@@ -12,11 +12,15 @@ BasicEnemy::BasicEnemy(std::string name, sf::Transform transform):BaseGameObject
 
 void BasicEnemy::update(float deltaTime) {
   (void)deltaTime;
-  if (!player.expired()) {
-    sf::Vector2f Dir=Utils::getPosition(getGlobalTransform())-Utils::getPosition(player.lock()->getGlobalTransform());
-    physicObject.lock()->setAcceleration(-Dir.normalized()*movementSpeed);
+  if (physicObject.expired()) {
+    physicObject=GetGameObjectOfType<PhysicObject>();
   }else {
-    physicObject.lock()->setAcceleration({0,0});
+    if (!player.expired()) {
+      sf::Vector2f Dir=Utils::getPosition(getGlobalTransform())-Utils::getPosition(player.lock()->getGlobalTransform());
+      physicObject.lock()->setAcceleration(-Dir.normalized()*movementSpeed);
+    }else {
+      physicObject.lock()->setAcceleration({0,0});
+    }
   }
 }
 
@@ -35,12 +39,24 @@ void BasicEnemy::Init() {
       }
       );
     EmplaceGameObject<ShapeRenderer>("ShapeRenderer",transform,sf::Color(230,230,230),RenderOrder::Player,GeometryShape::Circle);
-    EmplaceGameObject<EntityHealth>(30.0f)->setOnDeath([](EntityHealth* e) {
+    EmplaceGameObject<EntityHealth>(10.0f)->setOnDeath([](EntityHealth* e) {
       e->getParent().lock()->SetParent(nullptr);
     });
 
     physicObject= EmplaceGameObject<PhysicObject>(1.0f,2.0f,0.0f);
 
+}
+
+std::shared_ptr<BaseGameObject> BasicEnemy::clone() const {
+  std::shared_ptr<BasicEnemy> clone = std::make_shared<BasicEnemy>(m_name,m_transform);
+  for (const std::shared_ptr<BaseGameObject> &i: m_children) {
+    clone->EmplaceClone(i);
+  }
+  clone->m_parent.reset();
+  clone->m_updateOrder = m_updateOrder;
+  clone->movementSpeed = movementSpeed;
+  clone->physicObject=physicObject;
+  return clone;
 }
 
 

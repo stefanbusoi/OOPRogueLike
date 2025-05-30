@@ -20,7 +20,6 @@ class Game : public BaseGameObject {
   sf::RenderTexture m_renderTexture;
   static std::weak_ptr<Game> s_instance;
   std::weak_ptr<Player> player_;
-  std::vector<std::shared_ptr<BaseGameObject> > m_ToInactive;
 
   std::set<Collider *, ColliderComp> m_colliders;
   std::set<BaseGameObject *, gameObjectComp> m_gameObjects;

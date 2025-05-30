@@ -58,7 +58,7 @@ public:
   int GetId() const { return m_localId; }
   void setName(const std::string &name) { m_name = name; }
   std::string getName() const { return m_name; }
-
+  void setTransform(const sf::Transform &transform) { m_transform = transform; }
 
   sf::Transform getGlobalTransform() const;
 
@@ -87,14 +87,15 @@ public:
   template<class T=BaseGameObject>
   std::vector<T *> GetGameObjectsOfType();
 
-  std::shared_ptr<BaseGameObject> EmplaceClone(std::shared_ptr<BaseGameObject> obj);
+  std::shared_ptr<BaseGameObject> EmplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr=sf::Transform::Identity);
 
   friend std::ostream &operator<<(std::ostream &os, const BaseGameObject &obj);
 };
 
 
-inline std::shared_ptr<BaseGameObject> BaseGameObject::EmplaceClone(std::shared_ptr<BaseGameObject> obj) {
+inline std::shared_ptr<BaseGameObject> BaseGameObject::EmplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr) {
   std::shared_ptr<BaseGameObject> x = obj->clone();
+  x->setTransform(tr*x->getLocalTransform());
   x->SetParent(shared_from_this());
   m_children.insert(x);
   return x;

@@ -17,5 +17,6 @@ class BasicEnemy :public BaseGameObject{
   void update(float deltaTime) override;
   void Init() override;
 
+  std::shared_ptr<BaseGameObject> clone() const override;
 };
 

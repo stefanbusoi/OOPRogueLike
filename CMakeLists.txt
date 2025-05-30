@@ -66,7 +66,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Render/GameMapRenderer.cpp
         CPP_Files/Render/GameMapRenderer.hpp
         CPP_Files/Render/RenderOrder.hpp
-        CPP_Files/UpdateOrder.hpp
+        CPP_Files/CoreFunctionality/UpdateOrder.hpp
         CPP_Files/Render/IRenderable.hpp
         CPP_Files/CoreFunctionality/gameObjectComp.hpp
         CPP_Files/CoreFunctionality/gameObjectComp.cpp
@@ -102,6 +102,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Weapons/Arrow.hpp
         CPP_Files/Collisions/ColliderManager.cpp
         CPP_Files/Collisions/ColliderManager.hpp
+        CPP_Files/Entityies/EntitySpawner.cpp
+        CPP_Files/Entityies/EntitySpawner.hpp
 )
 
 

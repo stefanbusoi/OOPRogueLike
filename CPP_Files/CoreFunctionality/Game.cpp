@@ -5,6 +5,7 @@
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
+#include "../Entityies/EntitySpawner.hpp"
 #include "Entityies/EntityHealth.hpp"
 #include "Entityies/BasicEnemy.hpp"
 #include "Exceptions/GameLogicException.hpp"
@@ -40,7 +41,7 @@ std::shared_ptr<Game> Game::getInstance() {
 
 Game::Game(const sf::VideoMode video_mode, const std::string &Title): BaseGameObject(Title) {
   m_totalTime = 0.0f;
-  m_window.create(video_mode, Title, sf::State::Windowed);
+  m_window.create(video_mode, Title, sf::State::Fullscreen);
   if (!m_renderTexture.resize(m_window.getSize())) {
     throw std::runtime_error("Failed to resize render texture");
   }
@@ -62,22 +63,21 @@ void Game::Init() {
   auto game_object = std::make_shared<BaseGameObject>("GameObject", transform);
   game_object->EmplaceGameObject<Collider>(ColliderMask::Enemy, GeometryShape::Rectangle, sf::Transform::Identity);
   game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer", sf::Transform::Identity, sf::Color(0, 255, 255), RenderOrder::Player, GeometryShape::Rectangle);
-  std::shared_ptr<EntityHealth> entityHealth = game_object->EmplaceGameObject<EntityHealth>(100.0f);
-  entityHealth->setOnDeath([](EntityHealth *entityHealth) {
-    entityHealth->getParent().lock()->SetParent(nullptr);
-  });
   for (auto i = -3; i <= 3; i++) {
     for (auto j = -3; j <= 3; j++) {
-      const auto x = EmplaceClone(game_object);
-      x->getLocalTransform().scale({7.0f, 7.0f}).rotate(sf::radians(i * 5 + sin(j)));
-      x->GlobalMoveTransform({i * 2000.0f, j * 2000.0f});
+      if (abs(i)==3||abs(j)==3) {
+        const auto x = EmplaceClone(game_object);
+        x->getLocalTransform().scale({ 25.0f, 25.0f}).rotate(sf::radians(cos(i) * 12 + sin(j)*20));
+        x->GlobalMoveTransform({i * 900.0f, j * 900.0f});
+      }
     }
   }
+  std::shared_ptr<BasicEnemy> enemy=std::make_shared<BasicEnemy>("Enemy");
   for (auto i =- 2; i <= 2; i++) {
     for (auto j = -2; j <= 2; j++) {
       sf::Transform tr;
-      tr.translate({-i * 2000.0f, -j * 2000.0f});
-      EmplaceGameObject<BasicEnemy>("Enemy", tr);
+      tr.translate({-i * 800.0f, -j * 800.0f});
+      EmplaceGameObject<EntitySpawner>(tr,3,enemy);
     }
   }
   auto debugMenu = EmplaceGameObject<DebugMenu>("DebugMenu");
@@ -161,9 +161,6 @@ void Game::processGameFrame() {
       }
     }
     renderAll();
-    for (auto gameObject: m_ToInactive) {
-      gameObject->RemoveGameObjectFromGame();
-    }
-    m_ToInactive.clear();
+
   }
 }
