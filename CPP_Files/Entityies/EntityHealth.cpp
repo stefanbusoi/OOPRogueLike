@@ -5,6 +5,10 @@ EntityHealth::EntityHealth(float maxHealt): m_maxhealth(maxHealt),
                                                                 m_currentHealth(maxHealt) {
 }
 
+void EntityHealth::update(float deltaT) {
+  m_TimeSinceLastAttack+= deltaT;
+}
+
 std::shared_ptr<BaseGameObject> EntityHealth::clone() const {
   std::shared_ptr<EntityHealth> clone = std::make_shared<EntityHealth>(m_maxhealth);
   clone->m_currentHealth = m_currentHealth;
@@ -21,11 +25,19 @@ std::shared_ptr<BaseGameObject> EntityHealth::clone() const {
 }
 
 void EntityHealth::dealDamage(float damageValue) {
-  m_currentHealth -= damageValue;
-  if (m_currentHealth <= 0) {
-    m_isDead = true;
-    m_onDeath.CallFunction(this);
+  if (m_ImunityTime<m_TimeSinceLastAttack) {
+    m_TimeSinceLastAttack=0.0f;
+    m_currentHealth -= damageValue;
+    m_onHit.CallFunction(this);
+    if (m_currentHealth <= 0) {
+      m_isDead = true;
+      m_onDeath.CallFunction(this);
+    }
   }
+}
+
+void EntityHealth::setImunityTime(float time) {
+  m_ImunityTime = time;
 }
 
 void EntityHealth::heal(float healValue) {
@@ -33,4 +45,8 @@ void EntityHealth::heal(float healValue) {
 }
 size_t EntityHealth::setOnDeath(const std::function<void(EntityHealth *)> &onDeath) {
   return m_onDeath.subscribe(onDeath);
+}
+
+size_t EntityHealth::setOnHit(const std::function<void(EntityHealth *)> &onDeath) {
+  return m_onHit.subscribe(onDeath);
 }

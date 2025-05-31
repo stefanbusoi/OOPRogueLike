@@ -108,6 +108,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Entityies/EnemySpawnerManager.h
         CPP_Files/Utilityies/RandomNumberGenerator.cpp
         CPP_Files/Utilityies/RandomNumberGenerator.h
+        CPP_Files/UI/Slider.cpp
+        CPP_Files/UI/Slider.h
+        CPP_Files/UI/HealtBar.cpp
+        CPP_Files/UI/HealtBar.h
 )
 
 

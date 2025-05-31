@@ -5,7 +5,7 @@
 #include "Render/PostProcessingShader.h"
 #include <SFML/Graphics.hpp>
 
-#include "../Entityies/EntitySpawner.hpp"
+#include "Entityies/EntitySpawner.hpp"
 #include "Entityies/EntityHealth.hpp"
 #include "Entityies/BasicEnemy.hpp"
 #include "Exceptions/GameLogicException.hpp"
@@ -14,6 +14,8 @@
 #include "Render/ShapeRenderer.hpp"
 #include "Collisions/ColliderManager.hpp"
 #include "Entityies/EnemySpawnerManager.h"
+#include "../UI/Slider.h"
+#include "UI/HealtBar.h"
 std::weak_ptr<Game> Game::s_instance = std::weak_ptr<Game>();
 
 void Game::renderAll() {
@@ -58,6 +60,7 @@ void Game::Init() {
   EmplaceGameObject<EnemySpawnerManager>();
   player_ = EmplaceGameObject<Player>("Player",playerPos);
   m_camera = EmplaceGameObject<Camera>("Camera");
+  EmplaceGameObject<HealtBar>();
 
   sf::Transform transform = sf::Transform::Identity;
   transform.scale({40.0f, 40.0f});

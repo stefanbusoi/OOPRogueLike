@@ -55,9 +55,11 @@ void Player::Init() {
 
   EmplaceGameObject<ShapeRenderer>("CircleRenderer", tr, sf::Color(0, 255, 0), RenderOrder::Player, GeometryShape::Circle);
   EmplaceGameObject<Collider>(ColliderMask::Player, GeometryShape::Circle, tr);
-  EmplaceGameObject<EntityHealth>(100.0f)->setOnDeath([](EntityHealth* e) {
+  auto playerHealth=EmplaceGameObject<EntityHealth>(100.0f);
+  playerHealth->setOnDeath([](EntityHealth* e) {
       e->getParent().lock()->SetParent(nullptr);
     });
+  playerHealth->setImunityTime(0.6f);
   m_phisicsObject = EmplaceGameObject<PhysicObject>(100.0f, 12.f, 0.0f);
   m_firearm = EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }
