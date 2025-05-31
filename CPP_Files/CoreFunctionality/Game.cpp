@@ -42,7 +42,7 @@ std::shared_ptr<Game> Game::getInstance() {
 
 Game::Game(const sf::VideoMode video_mode, const std::string &Title): BaseGameObject(Title) {
   m_totalTime = 0.0f;
-  m_window.create(video_mode, Title, sf::State::Windowed);
+  m_window.create(video_mode, Title, sf::State::Fullscreen);
   if (!m_renderTexture.resize(m_window.getSize())) {
     throw std::runtime_error("Failed to resize render texture");
   }
