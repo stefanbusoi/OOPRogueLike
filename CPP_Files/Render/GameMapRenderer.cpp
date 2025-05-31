@@ -17,12 +17,11 @@ void GameMapRenderer::Render() {
   Game &instance = *Game::getInstance();
   std::weak_ptr<Camera> camera = instance.getCamera();
 
-  sf::RenderWindow &window = instance.getWindow();
   sf::RenderTarget &render_texture = instance.getRenderTexture();
-  sf::RectangleShape fullscreenQuad(sf::Vector2f(window.getSize()));
+  sf::RectangleShape fullscreenQuad(sf::Vector2f(render_texture.getSize()));
   fullscreenQuad.setPosition({0, 0});
   float totalTime = instance.getTotalTime();
-  m_shader.setUniform("resolution", sf::Vector2f(window.getSize()));
+  m_shader.setUniform("resolution", sf::Vector2f(render_texture.getSize()));
   m_shader.setUniform("position", camera.lock()->getTransform().transformPoint({0, 0}));
   m_shader.setUniform("time", totalTime);
   render_texture.draw(fullscreenQuad, &m_shader);

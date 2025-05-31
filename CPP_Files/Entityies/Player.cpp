@@ -32,7 +32,7 @@ void Player::update(float deltaT) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) {
     speed=speed*3.0f;
   }
-  pos -= {960, 540};
+  pos -= sf::Vector2i(Game::getInstance()->getWindow().getSize())/2;
   sf::Angle ang = Utils::getAngle(m_transform);
   m_phisicsObject->setAcceleration(speed);
   if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {

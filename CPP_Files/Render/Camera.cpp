@@ -31,7 +31,7 @@ void Camera::update([[maybe_unused]] float deltaT) {
 
 void Camera::draw(const sf::Drawable &drawable, const sf::Transform &transform) const {
   sf::Transform viewTransform = m_transform;
-  viewTransform.translate({m_window->getSize().x / -2.0f, m_window->getSize().y / -2.0f});
+  viewTransform.translate(sf::Vector2f(m_window->getSize())/-2.0f);
 
   sf::Transform finalTransform = viewTransform.getInverse() * transform;
   Game::getInstance()->getRenderTexture().draw(drawable, finalTransform);

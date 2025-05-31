@@ -112,6 +112,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/UI/Slider.h
         CPP_Files/UI/HealtBar.cpp
         CPP_Files/UI/HealtBar.h
+        CPP_Files/UI/DeathScreen.cpp
+        CPP_Files/UI/DeathScreen.h
 )
 
 

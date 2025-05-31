@@ -8,10 +8,10 @@ void main()
     vec2 center=resolution/2/100;
     vec2 ShaderPosition=position/100;
 
-    vec2 uv = gl_FragCoord.xy / vec2(1920, 1080);
+    vec2 uv = gl_FragCoord.xy / resolution;
     uv.y=-uv.y;
 
-    uv *= vec2(1920, 1080);
+    uv *=resolution;
     uv /= 100;
 
     vec3 color=mod(floor(uv.x+ShaderPosition.x)+floor(uv.y+ShaderPosition.y),2)==0?vec3(0.4,0.4,0.4):vec3(0.2,0.2,0.2);

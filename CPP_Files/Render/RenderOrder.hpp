@@ -8,4 +8,5 @@ enum class RenderOrder {
   UIPreProcessing = 80,
   PostProcessing = 100,
   UIPostProcessing = 150,
+  DeathScreen = 200,
 };
