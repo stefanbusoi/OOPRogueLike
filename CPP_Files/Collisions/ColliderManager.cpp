@@ -35,18 +35,16 @@ void ColliderManager::update(float deltaTime) {
 
   for (const auto& Collider1:colliders) {
     std::shared_ptr<BaseGameObject> parent1 = Collider1->getParent().lock();
-    //if this is inside colliders
-    if (!Game::getInstance()->getColliders().contains(Collider1.get())) {
-      continue;
-    }
-
-    std::shared_ptr<PhysicObject> Physics1 = parent1->GetGameObjectOfType<PhysicObject>();
-    if (Physics1 == nullptr)
-      continue;
-
-
     for (const auto &Collider2: colliders) {
       std::shared_ptr<BaseGameObject> parent2 = Collider2->getParent().lock();
+
+      //if this is inside colliders
+      if (!Game::getInstance()->getColliders().contains(Collider1.get())) {
+        break;
+      }
+      std::shared_ptr<PhysicObject> Physics1 = parent1->GetGameObjectOfType<PhysicObject>();
+      if (Physics1 == nullptr)
+        continue;
 
       //If is inside colliders
       if (!Game::getInstance()->getColliders().contains(Collider2.get())) {

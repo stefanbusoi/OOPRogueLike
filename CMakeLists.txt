@@ -104,6 +104,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Collisions/ColliderManager.hpp
         CPP_Files/Entityies/EntitySpawner.cpp
         CPP_Files/Entityies/EntitySpawner.hpp
+        CPP_Files/Entityies/EnemySpawnerManager.cpp
+        CPP_Files/Entityies/EnemySpawnerManager.h
+        CPP_Files/Utilityies/RandomNumberGenerator.cpp
+        CPP_Files/Utilityies/RandomNumberGenerator.h
 )
 
 

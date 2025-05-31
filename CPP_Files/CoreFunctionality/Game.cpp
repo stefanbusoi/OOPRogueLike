@@ -13,6 +13,7 @@
 #include "UI/DebugMenu.hpp"
 #include "Render/ShapeRenderer.hpp"
 #include "Collisions/ColliderManager.hpp"
+#include "Entityies/EnemySpawnerManager.h"
 std::weak_ptr<Game> Game::s_instance = std::weak_ptr<Game>();
 
 void Game::renderAll() {
@@ -41,7 +42,7 @@ std::shared_ptr<Game> Game::getInstance() {
 
 Game::Game(const sf::VideoMode video_mode, const std::string &Title): BaseGameObject(Title) {
   m_totalTime = 0.0f;
-  m_window.create(video_mode, Title, sf::State::Fullscreen);
+  m_window.create(video_mode, Title, sf::State::Windowed);
   if (!m_renderTexture.resize(m_window.getSize())) {
     throw std::runtime_error("Failed to resize render texture");
   }
@@ -54,7 +55,7 @@ void Game::Init() {
   EmplaceGameObject<GameMapRenderer>("GameMap");
   EmplaceGameObject<PostProcessingShader>("Pixelate", std::filesystem::path("Shaders/Pixelate.frag"));
   EmplaceGameObject<PostProcessingShader>("PostProcessingShader", std::filesystem::path("Shaders/PostProcessingShader.frag"));
-
+  EmplaceGameObject<EnemySpawnerManager>();
   player_ = EmplaceGameObject<Player>("Player",playerPos);
   m_camera = EmplaceGameObject<Camera>("Camera");
 
@@ -73,6 +74,7 @@ void Game::Init() {
     }
   }
   std::shared_ptr<BasicEnemy> enemy=std::make_shared<BasicEnemy>("Enemy");
+  enemy->SetMovementSpeed(500.0f);
   for (auto i =- 2; i <= 2; i++) {
     for (auto j = -2; j <= 2; j++) {
       sf::Transform tr;

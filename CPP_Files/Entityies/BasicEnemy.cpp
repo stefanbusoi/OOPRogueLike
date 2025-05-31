@@ -17,7 +17,7 @@ void BasicEnemy::update(float deltaTime) {
   }else {
     if (!player.expired()) {
       sf::Vector2f Dir=Utils::getPosition(getGlobalTransform())-Utils::getPosition(player.lock()->getGlobalTransform());
-      physicObject.lock()->setAcceleration(-Dir.normalized()*movementSpeed);
+      physicObject.lock()->setAcceleration(-Dir.normalized()*m_movementSpeed);
     }else {
       physicObject.lock()->setAcceleration({0,0});
     }
@@ -54,7 +54,7 @@ std::shared_ptr<BaseGameObject> BasicEnemy::clone() const {
   }
   clone->m_parent.reset();
   clone->m_updateOrder = m_updateOrder;
-  clone->movementSpeed = movementSpeed;
+  clone->m_movementSpeed = m_movementSpeed;
   clone->physicObject=physicObject;
   return clone;
 }

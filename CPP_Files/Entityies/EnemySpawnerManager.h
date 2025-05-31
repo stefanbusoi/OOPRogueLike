@@ -1,0 +1,16 @@
+//
+// Created by fanel012 on 5/31/25.
+//
+
+#include "CoreFunctionality/BaseGameObject.hpp"
+
+
+class EnemySpawnerManager:public BaseGameObject {
+ float spawnTimer=0.4;
+ float Timer=0.0;
+public:
+ EnemySpawnerManager():BaseGameObject("EntitySpawner",sf::Transform::Identity){}
+ void update(float deltaT) override;
+};
+
+

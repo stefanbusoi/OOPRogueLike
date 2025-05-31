@@ -11,12 +11,12 @@ class BasicEnemy :public BaseGameObject{
 
   std::weak_ptr<Player> player;
   std::weak_ptr<PhysicObject> physicObject;
-  float movementSpeed=500.0f;
+  float m_movementSpeed=500.0f;
   public:
   BasicEnemy(std::string name,sf::Transform transform=sf::Transform::Identity);
   void update(float deltaTime) override;
   void Init() override;
-
+  void SetMovementSpeed(float movementSpeed){m_movementSpeed=movementSpeed;};
   std::shared_ptr<BaseGameObject> clone() const override;
 };
 
