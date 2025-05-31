@@ -59,7 +59,7 @@ void Game::Init() {
   m_camera = EmplaceGameObject<Camera>("Camera");
 
   sf::Transform transform = sf::Transform::Identity;
-  transform.translate({100.0f, 100.0f}).scale({40.0f, 40.0f});
+  transform.scale({40.0f, 40.0f});
   auto game_object = std::make_shared<BaseGameObject>("GameObject", transform);
   game_object->EmplaceGameObject<Collider>(ColliderMask::Enemy, GeometryShape::Rectangle, sf::Transform::Identity);
   game_object->EmplaceGameObject<ShapeRenderer>("CircleRenderer", sf::Transform::Identity, sf::Color(0, 255, 255), RenderOrder::Player, GeometryShape::Rectangle);

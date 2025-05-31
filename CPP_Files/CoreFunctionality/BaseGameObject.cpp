@@ -82,7 +82,7 @@ void BaseGameObject::MoveTransform(sf::Vector2f movement) {
 void BaseGameObject::GlobalMoveTransform(sf::Vector2f movement) {
   sf::Transform transform = sf::Transform::Identity;
   transform.translate(movement);
-  m_transform = m_parent.lock()->getGlobalTransform().getInverse() * transform * getGlobalTransform();
+  m_transform = getGlobalTransform().getInverse()*getLocalTransform() * transform * getGlobalTransform();
 }
 
 void BaseGameObject::AddGameObjectToGame() {
