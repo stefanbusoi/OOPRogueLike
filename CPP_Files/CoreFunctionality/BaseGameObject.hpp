@@ -61,7 +61,7 @@ public:
    * @param name name of the game object
    * @param transform position of the game object relative to it s parent
    */
-  explicit BaseGameObject(std::string name = "NONNAME", sf::Transform transform = sf::Transform::Identity);
+  explicit BaseGameObject(std::string name = "NONNAME", const sf::Transform &transform = sf::Transform::Identity);
 
   /**
    * initialise the game object, you can t use emplaceGameObject or emplaceClone inside constructors
@@ -169,13 +169,13 @@ public:
    * @param tr where to be placed based on parent position
    * @return a shared_ptr to it s clone
    */
-  std::shared_ptr<BaseGameObject> emplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr=sf::Transform::Identity);
+  std::shared_ptr<BaseGameObject> emplaceClone(const std::shared_ptr<BaseGameObject> &obj,const sf::Transform& tr=sf::Transform::Identity);
 
   friend std::ostream &operator<<(std::ostream &os, const BaseGameObject &obj);
 };
 
 
-inline std::shared_ptr<BaseGameObject> BaseGameObject::emplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr) {
+inline std::shared_ptr<BaseGameObject> BaseGameObject::emplaceClone(const std::shared_ptr<BaseGameObject> &obj,const sf::Transform& tr) {
   std::shared_ptr<BaseGameObject> x = obj->clone();
   x->setTransform(tr*x->getLocalTransform());
   x->SetParent(shared_from_this());

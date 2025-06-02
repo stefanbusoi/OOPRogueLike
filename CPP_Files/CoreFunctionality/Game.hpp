@@ -13,9 +13,9 @@ class Collider;
 class Game : public BaseGameObject {
   sf::RenderWindow m_window;
   sf::Clock m_clock;
-  float m_totalTime;
-  float m_precedentFrameTime;
-  float fps;
+  float m_totalTime{0.0f};
+  float m_precedentFrameTime{0.0f};
+  float fps{0.0f};
   std::weak_ptr<Camera> m_camera;
   sf::RenderTexture m_renderTexture;
   static std::weak_ptr<Game> s_instance;

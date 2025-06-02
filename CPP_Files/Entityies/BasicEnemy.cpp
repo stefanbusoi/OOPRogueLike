@@ -8,7 +8,7 @@
 #include "Render/ShapeRenderer.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
 
-BasicEnemy::BasicEnemy(std::string name, sf::Transform transform):BaseGameObject(name,transform) {}
+BasicEnemy::BasicEnemy(const std::string &name, sf::Transform transform):BaseGameObject(name,transform) {}
 
 void BasicEnemy::update(float deltaTime) {
   (void)deltaTime;
@@ -30,7 +30,7 @@ void BasicEnemy::init() {
     sf::Transform transform= sf::Transform::Identity;
     transform.scale({40.0f, 40.0f});
     emplaceGameObject<Collider>(ColliderMask::Enemy,GeometryShape::Circle, transform)->getOnCollide().subscribe(
-      [](Collider& col1,Collider& col2) {
+      [](const Collider& col1,Collider& col2) {
         (void)col1;
          std::weak_ptr<Player> x=std::dynamic_pointer_cast<Player>(col2.getParent().lock());
           if (!x.expired()) {

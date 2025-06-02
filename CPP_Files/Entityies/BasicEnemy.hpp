@@ -13,7 +13,7 @@ class BasicEnemy :public BaseGameObject{
   std::weak_ptr<PhysicObject> physicObject;
   float m_movementSpeed=500.0f;
   public:
-  BasicEnemy(std::string name,sf::Transform transform=sf::Transform::Identity);
+  BasicEnemy(const std::string &name,sf::Transform transform=sf::Transform::Identity);
   void update(float deltaTime) override;
   void init() override;
   void setMovementSpeed(float movementSpeed){m_movementSpeed=movementSpeed;};

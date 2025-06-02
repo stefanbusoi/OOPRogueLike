@@ -10,7 +10,7 @@
 #include "Collisions/Collider.h"
 int BaseGameObject::s_globalId = 0;
 
-BaseGameObject::BaseGameObject(std::string name, sf::Transform transform): m_transform(transform),
+BaseGameObject::BaseGameObject(std::string name, const sf::Transform &transform): m_transform(transform),
                                                                    m_name(std::move(name)) {
 }
 
@@ -21,7 +21,7 @@ void BaseGameObject::init() {
 BaseGameObject::~BaseGameObject() {
   //Only Game shoud ever have m_localID==0
   if (m_localId!=0) {
-    removeGameObjectFromGame();
+    BaseGameObject::removeGameObjectFromGame();
   }
 };
 

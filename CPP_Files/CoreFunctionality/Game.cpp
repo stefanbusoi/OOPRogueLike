@@ -14,7 +14,6 @@
 #include "Render/ShapeRenderer.hpp"
 #include "Collisions/ColliderManager.hpp"
 #include "Entityies/EnemySpawnerManager.h"
-#include "../UI/Slider.h"
 #include "UI/HealtBar.h"
 std::weak_ptr<Game> Game::s_instance = std::weak_ptr<Game>();
 
@@ -162,10 +161,13 @@ void Game::handleEvents() {
 
 void Game::processGameFrame() {
   sf::Time deltaTime = calculateDeltaTime();
+
   m_nrColliders = m_colliders.size();
   m_nrIrenderable = m_renderableObjects.size();
   m_nrGameObjects = m_gameObjects.size();
+
   handleEvents();
+
   if (isRunning()) {
     frameIsRunning = true;
     std::vector<std::weak_ptr<BaseGameObject> > p_gameObjects;
@@ -177,6 +179,7 @@ void Game::processGameFrame() {
         gameObject.lock()->update(deltaTime.asSeconds());
       }
     }
+
     renderAll();
 
   }
