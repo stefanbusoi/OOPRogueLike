@@ -8,6 +8,9 @@
 #include "Entityies/EntityHealth.hpp"
 #include "Exceptions/GameLogicException.hpp"
 HealtBar::HealtBar():Slider() {
+
+
+
     auto player=Game::getInstance()->GetGameObjectOfType<Player>();
     if (player==nullptr) {
         throw GameLogicException("HealtBar must be added after player");

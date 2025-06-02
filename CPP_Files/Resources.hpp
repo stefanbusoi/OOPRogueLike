@@ -15,6 +15,5 @@ class Resources {
 
 public:
   static sf::Font &getFont();
-
   static sf::Texture *getTexture(const std::filesystem::path &path);
 };

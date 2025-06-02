@@ -56,6 +56,8 @@ public:
 
   void exit();
 
+  void restartGame();
+
   sf::Time CalculateDeltaTime();
 
   void processGameFrame();

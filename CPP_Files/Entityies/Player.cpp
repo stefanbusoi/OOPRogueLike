@@ -6,6 +6,7 @@
 #include "Collisions/PhysicObject.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
 #include "Render/ShapeRenderer.hpp"
+#include "UI/DeathScreen.h"
 #include "Weapons/Firearm.hpp"
 
 
@@ -58,8 +59,10 @@ void Player::Init() {
   auto playerHealth=EmplaceGameObject<EntityHealth>(100.0f);
   playerHealth->setOnDeath([](EntityHealth* e) {
       e->getParent().lock()->SetParent(nullptr);
-    });
+      Game::getInstance()->EmplaceGameObject<DeathScreen>();
+  });
   playerHealth->setImunityTime(0.6f);
+
   m_phisicsObject = EmplaceGameObject<PhysicObject>(100.0f, 12.f, 0.0f);
   m_firearm = EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }
