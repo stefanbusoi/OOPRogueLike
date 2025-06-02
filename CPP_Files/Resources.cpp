@@ -5,16 +5,16 @@
 #include "Resources.hpp"
 
 
-std::map<std::filesystem::path, std::unique_ptr<sf::Texture>> Resources::texture;
-sf::Font Resources::font= sf::Font("Minecraft.ttf");
+std::map<std::filesystem::path, std::unique_ptr<sf::Texture>> Resources::m_texture;
+sf::Font Resources::m_font= sf::Font("Minecraft.ttf");
 
 sf::Font & Resources::getFont() {
-  return font;
+  return m_font;
 }
 
 sf::Texture * Resources::getTexture(const std::filesystem::path &path) {
-  if (!texture.contains(path)) {
-    texture[path]=std::make_unique<sf::Texture>(path.string());
+  if (!m_texture.contains(path)) {
+    m_texture[path]=std::make_unique<sf::Texture>(path.string());
   }
-  return texture[path].get();
+  return m_texture[path].get();
 }

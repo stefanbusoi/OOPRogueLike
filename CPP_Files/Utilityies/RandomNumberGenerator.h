@@ -8,8 +8,8 @@
 
 class RandomNumberGenerator {
 
-   static std::random_device randomDevice;
-   static std::mt19937_64 randomGenerator;
+   static std::random_device m_randomDevice;
+   static std::mt19937_64 m_randomGenerator;
 public:
    static float GetRandomNumber(float min,float max);
 };

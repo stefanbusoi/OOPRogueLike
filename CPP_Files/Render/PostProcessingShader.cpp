@@ -17,7 +17,7 @@ PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::pa
   }
 }
 
-void PostProcessingShader::Render() {
+void PostProcessingShader::render() {
   sf::RenderWindow &window = Game::getInstance()->getWindow();
   sf::RenderTexture &renderTexture = Game::getInstance()->getRenderTexture();
   std::weak_ptr<Camera> camera = Game::getInstance()->getCamera();
@@ -38,12 +38,12 @@ void PostProcessingShader::Render() {
   renderTexture.draw(fullscreenQuad, &m_shader);
 }
 
-void PostProcessingShader::AddGameObjectToGame() {
-  BaseGameObject::AddGameObjectToGame();
-  IRenderable::AddToRenderObjects();
+void PostProcessingShader::addGameObjectToGame() {
+  BaseGameObject::addGameObjectToGame();
+  IRenderable::addToRenderObjects();
 }
 
-void PostProcessingShader::RemoveGameObjectFromGame() {
-  BaseGameObject::RemoveGameObjectFromGame();
-  IRenderable::RemoveFromRenderObjects();
+void PostProcessingShader::removeGameObjectFromGame() {
+  BaseGameObject::removeGameObjectFromGame();
+  IRenderable::removeFromRenderObjects();
 }

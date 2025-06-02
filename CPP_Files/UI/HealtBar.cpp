@@ -11,11 +11,11 @@ HealtBar::HealtBar():Slider() {
 
 
 
-    auto player=Game::getInstance()->GetGameObjectOfType<Player>();
+    auto player=Game::getInstance()->getGameObjectOfType<Player>();
     if (player==nullptr) {
         throw GameLogicException("HealtBar must be added after player");
     }
-    auto PlayerHealth=player->GetGameObjectOfType<EntityHealth>();
+    auto PlayerHealth=player->getGameObjectOfType<EntityHealth>();
     m_maxValue=PlayerHealth->getMaxHealth();
     m_currentValue=PlayerHealth->getCurrentHealth();
     PlayerHealth->setOnHit([this](EntityHealth* health) {

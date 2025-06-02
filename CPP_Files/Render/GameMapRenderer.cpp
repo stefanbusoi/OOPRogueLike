@@ -13,7 +13,7 @@ void GameMapRenderer::print(std::ostream &os) const {
   BaseGameObject::print(os);
 }
 
-void GameMapRenderer::Render() {
+void GameMapRenderer::render() {
   Game &instance = *Game::getInstance();
   std::weak_ptr<Camera> camera = instance.getCamera();
 
@@ -40,12 +40,12 @@ void GameMapRenderer::update(float deltaT) {
   (void) deltaT;
 }
 
-void GameMapRenderer::AddGameObjectToGame() {
-  BaseGameObject::AddGameObjectToGame();
-  IRenderable::AddToRenderObjects();
+void GameMapRenderer::addGameObjectToGame() {
+  BaseGameObject::addGameObjectToGame();
+  IRenderable::addToRenderObjects();
 }
 
-void GameMapRenderer::RemoveGameObjectFromGame() {
-  BaseGameObject::RemoveGameObjectFromGame();
-  IRenderable::RemoveFromRenderObjects();
+void GameMapRenderer::removeGameObjectFromGame() {
+  BaseGameObject::removeGameObjectFromGame();
+  IRenderable::removeFromRenderObjects();
 }

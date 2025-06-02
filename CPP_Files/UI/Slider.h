@@ -11,17 +11,17 @@ protected:
     sf::Color m_BackGroundColor=sf::Color::Black;
     sf::Color m_mainColor=sf::Color::Red;
     //0-1 based on screen height and width
-    float padding=0.01;
-    float width=0.25;
-    float height=0.05;
+    float m_padding=0.01;
+    float m_width=0.25;
+    float m_height=0.05;
     sf::Vector2f m_position=sf::Vector2f(0.375,0.05);
 
 public:
     Slider();
     Slider(float maxValue);
 
-    void AddGameObjectToGame() override;
+    void addGameObjectToGame() override;
 
-    void RemoveGameObjectFromGame() override;
-    void Render() override;
+    void removeGameObjectFromGame() override;
+    void render() override;
 };

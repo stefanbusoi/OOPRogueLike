@@ -14,30 +14,30 @@ BaseGameObject::BaseGameObject(std::string name, sf::Transform transform): m_tra
                                                                    m_name(std::move(name)) {
 }
 
-void BaseGameObject::Init() {
+void BaseGameObject::init() {
 }
 
 
 BaseGameObject::~BaseGameObject() {
   //Only Game shoud ever have m_localID==0
   if (m_localId!=0) {
-    RemoveGameObjectFromGame();
+    removeGameObjectFromGame();
   }
 };
 
 void BaseGameObject::SetParent(const std::shared_ptr<BaseGameObject> &p_parent) {
   std::shared_ptr<Game>instance = Game::getInstance();
-  if (instance->IsInHirarchy(weak_from_this()) && instance->IsInHirarchy(p_parent)) {
+  if (instance->isInHirarchy(weak_from_this()) && instance->isInHirarchy(p_parent)) {
     m_transform = p_parent->getGlobalTransform().getInverse() * getGlobalTransform();
     p_parent->m_children.insert(shared_from_this());
     m_parent.lock()->m_children.erase(shared_from_this());
   }
-  if (!instance->IsInHirarchy(weak_from_this()) && instance->IsInHirarchy(p_parent)) {
-    AddGameObjectToGame();
+  if (!instance->isInHirarchy(weak_from_this()) && instance->isInHirarchy(p_parent)) {
+    addGameObjectToGame();
     p_parent->m_children.insert(weak_from_this().lock());
   }
-  if (instance->IsInHirarchy(weak_from_this()) && !instance->IsInHirarchy(p_parent)) {
-    RemoveGameObjectFromGame();
+  if (instance->isInHirarchy(weak_from_this()) && !instance->isInHirarchy(p_parent)) {
+    removeGameObjectFromGame();
     m_parent.lock()->m_children.erase(weak_from_this().lock());
   }
   m_parent = p_parent;
@@ -47,12 +47,12 @@ void BaseGameObject::SetParent(const std::shared_ptr<BaseGameObject> &p_parent) 
 void BaseGameObject::setActive(bool isActive) {
   if (m_isActive == isActive) return;
   if (isActive) {
-    if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
-      this->AddGameObjectToGame();
+    if (Game::getInstance()->isActiveInHirarchy(getParent())) {
+      this->addGameObjectToGame();
     }
   } else {
-    if (Game::getInstance()->IsActiveInHirarchy(getParent())) {
-      this->RemoveGameObjectFromGame();
+    if (Game::getInstance()->isActiveInHirarchy(getParent())) {
+      this->removeGameObjectFromGame();
     }
   }
   m_isActive = isActive;
@@ -65,7 +65,7 @@ void BaseGameObject::update(float deltaT) {
 std::shared_ptr<BaseGameObject> BaseGameObject::clone() const {
   std::shared_ptr<BaseGameObject> clone = std::make_shared<BaseGameObject>();
   for (const std::shared_ptr<BaseGameObject> &i: m_children) {
-    clone->EmplaceClone(i);
+    clone->emplaceClone(i);
   }
   clone->m_transform = m_transform;
   clone->m_name = m_name;
@@ -83,23 +83,23 @@ void BaseGameObject::MoveTransform(sf::Vector2f movement) {
   m_transform.translate(movement);
 }
 
-void BaseGameObject::GlobalMoveTransform(sf::Vector2f movement) {
+void BaseGameObject::globalMoveTransform(sf::Vector2f movement) {
   sf::Transform transform = sf::Transform::Identity;
   transform.translate(movement);
   m_transform = getGlobalTransform().getInverse()*getLocalTransform() * transform * getGlobalTransform();
 }
 
-void BaseGameObject::AddGameObjectToGame() {
+void BaseGameObject::addGameObjectToGame() {
   Game::getInstance()->getGameObjects().insert(this);
   for (auto i: getChildrens()) {
-    i->AddGameObjectToGame();
+    i->addGameObjectToGame();
   }
 }
 
-void BaseGameObject::RemoveGameObjectFromGame() {
+void BaseGameObject::removeGameObjectFromGame() {
   Game::getInstance()->getGameObjects().erase(this);
   for (auto i: getChildrens()) {
-    i->RemoveGameObjectFromGame();
+    i->removeGameObjectFromGame();
   }
 }
 

@@ -12,7 +12,7 @@ public:
 
   void unsubscribe(size_t handler_ID);
 
-  void CallFunction(ARGS &&... args);
+  void callFunction(ARGS &&... args);
 };
 
 
@@ -30,7 +30,7 @@ void GameEvent<ARGS...>::unsubscribe(size_t handler_ID) {
 }
 
 template<class ... ARGS>
-void GameEvent<ARGS...>::CallFunction(ARGS &&...args) {
+void GameEvent<ARGS...>::callFunction(ARGS &&...args) {
   for (const auto& [index,func] : EventFunctions) {
     func(std::forward<ARGS>(args)...);
   }

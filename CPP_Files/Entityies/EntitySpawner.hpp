@@ -10,7 +10,7 @@ class EntitySpawner:public BaseGameObject {
   std::shared_ptr<BaseGameObject> m_Entity;
 public:
   EntitySpawner(sf::Transform transform,float Time,std::shared_ptr<BaseGameObject> Entity);
-  void Init() override;
+  void init() override;
 
   void update(float deltaT) override;
 };

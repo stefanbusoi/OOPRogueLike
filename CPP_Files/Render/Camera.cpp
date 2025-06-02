@@ -11,7 +11,7 @@ void Camera::print(std::ostream &os) const {
 
 
 Camera::Camera(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform), m_window(&Game::getInstance()->getWindow()) {
-  m_player = Game::getInstance()->GetGameObjectOfType<Player>();
+  m_player = Game::getInstance()->getGameObjectOfType<Player>();
   m_updateOrder = UpdateOrder::Camera;
 }
 
@@ -21,7 +21,7 @@ sf::Transform &Camera::getTransform() {
 
 void Camera::update([[maybe_unused]] float deltaT) {
   if (m_player.expired()) {
-    m_player = Game::getInstance()->GetGameObjectOfType<Player>();
+    m_player = Game::getInstance()->getGameObjectOfType<Player>();
   } else {
     sf::Transform transform = sf::Transform::Identity;
     m_transform = transform.translate(Utils::getPosition(m_player.lock()->getGlobalTransform()));

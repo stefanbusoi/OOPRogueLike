@@ -3,7 +3,6 @@
 #include <set>
 #include <string>
 #include <vector>
-#include "Render/IRenderable.hpp"
 #include "UpdateOrder.hpp"
 #include "SFML/Graphics/Transform.hpp"
 class Collider;
@@ -30,70 +29,153 @@ protected:
   virtual void print(std::ostream &os) const;
 
 public:
+
+  /**
+   *
+   * @return get a clone of the current object
+   */
   virtual std::shared_ptr<BaseGameObject> clone() const;
 
   BaseGameObject(const BaseGameObject &other) = delete;
-
   BaseGameObject &operator=(const BaseGameObject &other) = delete;
 
-  virtual void AddGameObjectToGame();
+  /**
+   * Add the game object to the game
+   */
+  virtual void addGameObjectToGame();
 
-  virtual void RemoveGameObjectFromGame();
+  /**
+   * Removes the game object from the game
+   */
+  virtual void removeGameObjectFromGame();
 
+  /**
+   *
+   * @return Returns the update priority of this game object
+   */
   UpdateOrder getUpdateOrder() const { return m_updateOrder; }
 
 
+  /**
+   *
+   * @param name name of the game object
+   * @param transform position of the game object relative to it s parent
+   */
   explicit BaseGameObject(std::string name = "NONNAME", sf::Transform transform = sf::Transform::Identity);
 
-  virtual void Init();
+  /**
+   * initialise the game object, you can t use emplaceGameObject or emplaceClone inside constructors
+   */
+  virtual void init();
 
+  /**
+   * Updates the game object each frame
+   * @param deltaT the interval of time between this update and the precedent update
+   */
   virtual void update(float deltaT);
 
   virtual ~BaseGameObject();
 
+  /**
+    * set the parent of the game object, also adds the game object to the render and update queue if the parent is an active object
+    * @param p_parent
+    */
    void SetParent(const std::shared_ptr<BaseGameObject> &p_parent);
 
+  /**
+   *
+   * @return the parent of this game object or nullptr if is the root of current game object
+   */
   std::weak_ptr<BaseGameObject> getParent() { return m_parent; }
 
-  int GetId() const { return m_localId; }
+  int getId() const { return m_localId; }
   void setName(const std::string &name) { m_name = name; }
   std::string getName() const { return m_name; }
   void setTransform(const sf::Transform &transform) { m_transform = transform; }
 
+  /**
+   *
+   * @return returns the transform relative to the global space
+   */
   sf::Transform getGlobalTransform() const;
 
+  /**
+   *
+   * @return returns the transform relative to the parent
+   */
   sf::Transform &getLocalTransform();
 
+  /**
+   *
+   * @param movement move the game object relative to it s parent
+   */
   void MoveTransform(sf::Vector2f movement);
 
-  void GlobalMoveTransform(sf::Vector2f movement);
+  /**
+   *
+   * @param movement move the game object on the map relative to world space
+   */
+  void globalMoveTransform(sf::Vector2f movement);
 
-  void AddGameObjectToRenderObjects(IRenderable *game_object);
 
+  /**
+   *
+   * @param isActive set if this object is active or not
+   */
   void setActive(bool isActive);
 
-  bool IsInGame();
 
-  bool IsActive() const { return m_isActive; }
+  /**
+   *
+   * @return if this object is active
+   */
+  bool isActive() const { return m_isActive; }
 
+  /**
+   *
+   * @return all childrens of the current object
+   */
   const std::set<std::shared_ptr<BaseGameObject> > &getChildrens() { return m_children; }
 
+  /**
+   * Constructs a game object and inserts it in the childrens
+   * @tparam T type of the game objects
+   * @tparam ARGS constructor paramaters
+   * @return a shared pointer to that game object
+   */
   template<class T=BaseGameObject, class... ARGS>
-  std::shared_ptr<T> EmplaceGameObject(ARGS &&...);
+  std::shared_ptr<T> emplaceGameObject(ARGS &&...);
 
+  /**
+   *
+   * @tparam T type of the game object
+   * @return the first apearence of that type of GameObject or nullptr if are none
+   */
   template<class T=BaseGameObject>
-  std::shared_ptr<T> GetGameObjectOfType();
+  std::shared_ptr<T> getGameObjectOfType();
 
+
+  /**
+   *
+   * @tparam T type of the game object
+   * @return the all of that type
+   */
   template<class T=BaseGameObject>
-  std::vector<T *> GetGameObjectsOfType();
+  std::vector<T *> getGameObjectsOfType();
 
-  std::shared_ptr<BaseGameObject> EmplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr=sf::Transform::Identity);
+  /**
+   *
+   * @param obj the object to be cloned
+   * @param tr where to be placed based on parent position
+   * @return a shared_ptr to it s clone
+   */
+  std::shared_ptr<BaseGameObject> emplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr=sf::Transform::Identity);
 
   friend std::ostream &operator<<(std::ostream &os, const BaseGameObject &obj);
 };
 
 
-inline std::shared_ptr<BaseGameObject> BaseGameObject::EmplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr) {
+inline std::shared_ptr<BaseGameObject> BaseGameObject::emplaceClone(std::shared_ptr<BaseGameObject> obj,const sf::Transform& tr) {
   std::shared_ptr<BaseGameObject> x = obj->clone();
   x->setTransform(tr*x->getLocalTransform());
   x->SetParent(shared_from_this());
@@ -103,16 +185,16 @@ inline std::shared_ptr<BaseGameObject> BaseGameObject::EmplaceClone(std::shared_
 
 
 template<class T, class... ARGS>
-std::shared_ptr<T> BaseGameObject::EmplaceGameObject(ARGS &&... args) {
+std::shared_ptr<T> BaseGameObject::emplaceGameObject(ARGS &&... args) {
   std::shared_ptr<T> newGameObject = std::make_shared<T>(std::forward<ARGS>(args)...);
   m_children.insert(newGameObject);
-  newGameObject->Init();
+  newGameObject->init();
   newGameObject->SetParent(shared_from_this());
   return newGameObject;
 }
 
 template<class T>
-std::vector<T*> BaseGameObject::GetGameObjectsOfType() {
+std::vector<T*> BaseGameObject::getGameObjectsOfType() {
   std::vector<T*> ret;
   for (std::shared_ptr<BaseGameObject> x: m_children) {
     if (auto gameObject = std::dynamic_pointer_cast<T *>(x)) {
@@ -123,7 +205,7 @@ std::vector<T*> BaseGameObject::GetGameObjectsOfType() {
 }
 
 template<class T>
-std::shared_ptr<T> BaseGameObject::GetGameObjectOfType() {
+std::shared_ptr<T> BaseGameObject::getGameObjectOfType() {
   for (const std::shared_ptr<BaseGameObject> &x: m_children) {
     if (auto gameObject = std::dynamic_pointer_cast<T>(x)) {
       return gameObject;

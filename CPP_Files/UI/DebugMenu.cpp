@@ -10,7 +10,7 @@ DebugMenu::DebugMenu(const std::string &name, const sf::Transform &transform): B
   m_updateOrder = UpdateOrder::UI;
 }
 
-void DebugMenu::Render() {
+void DebugMenu::render() {
   sf::Text text(Resources::getFont());
   text.setFillColor(sf::Color::White);
   text.setCharacterSize(20);
@@ -39,9 +39,9 @@ void DebugMenu::Render() {
 }
 
 void DebugMenu::update(float deltaT) {
-  timer += deltaT;
-  if (timer > 0.5f) {
-    timer -= 0.5f;
+  m_timer += deltaT;
+  if (m_timer > 0.5f) {
+    m_timer -= 0.5f;
     for (auto &p: m_printList) {
       switch (p.type) {
         case Type::FLOAT:
@@ -75,14 +75,14 @@ void DebugMenu::print(std::ostream &os) const {
   BaseGameObject::print(os);
 }
 
-void DebugMenu::AddGameObjectToGame() {
-  BaseGameObject::AddGameObjectToGame();
-  IRenderable::AddToRenderObjects();
+void DebugMenu::addGameObjectToGame() {
+  BaseGameObject::addGameObjectToGame();
+  IRenderable::addToRenderObjects();
 }
 
-void DebugMenu::RemoveGameObjectFromGame() {
-  BaseGameObject::RemoveGameObjectFromGame();
-  IRenderable::RemoveFromRenderObjects();
+void DebugMenu::removeGameObjectFromGame() {
+  BaseGameObject::removeGameObjectFromGame();
+  IRenderable::removeFromRenderObjects();
 }
 
 std::ostream &operator<<(std::ostream &os, const DebugMenu &obj) {

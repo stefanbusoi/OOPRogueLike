@@ -15,8 +15,8 @@ class BasicEnemy :public BaseGameObject{
   public:
   BasicEnemy(std::string name,sf::Transform transform=sf::Transform::Identity);
   void update(float deltaTime) override;
-  void Init() override;
-  void SetMovementSpeed(float movementSpeed){m_movementSpeed=movementSpeed;};
+  void init() override;
+  void setMovementSpeed(float movementSpeed){m_movementSpeed=movementSpeed;};
   std::shared_ptr<BaseGameObject> clone() const override;
 };
 

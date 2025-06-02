@@ -2,6 +2,10 @@
 #include "CoreFunctionality/gameObjectComp.hpp"
 
 
+/**
+ * manages the acceleration and speed of the parent,
+ * if it present the collider is dynamic, if not is static
+ */
 class PhysicObject : public BaseGameObject {
   sf::Vector2f m_Acceleration;
   sf::Vector2f m_Speed;

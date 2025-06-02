@@ -16,7 +16,7 @@ std::shared_ptr<BaseGameObject> PhysicObject::clone() const {
   clone->m_Acceleration = m_Acceleration;
   clone->m_Speed = m_Speed;
   for (auto i: m_children) {
-    clone->EmplaceClone(i);
+    clone->emplaceClone(i);
   }
   clone->m_transform = m_transform;
   clone->m_name = m_name;
@@ -28,5 +28,5 @@ std::shared_ptr<BaseGameObject> PhysicObject::clone() const {
 void PhysicObject::update(float deltaT) {
   m_Speed += m_Acceleration * deltaT;
   m_Speed *= std::exp(-m_friction * deltaT);
-  m_parent.lock()->GlobalMoveTransform(deltaT * m_Speed);
+  m_parent.lock()->globalMoveTransform(deltaT * m_Speed);
 }

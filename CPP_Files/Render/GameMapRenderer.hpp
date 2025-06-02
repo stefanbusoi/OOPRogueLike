@@ -18,13 +18,13 @@ protected:
 public:
   explicit GameMapRenderer(const std::string &name = "NONNAME", const sf::Transform &transform = sf::Transform::Identity);
 
-  void Render() override;
+  void render() override;
 
   void update(float deltaT) override;
 
-  void AddGameObjectToGame() override;
+  void addGameObjectToGame() override;
 
-  void RemoveGameObjectFromGame() override;
+  void removeGameObjectFromGame() override;
 };
 
 

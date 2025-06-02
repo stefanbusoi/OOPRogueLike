@@ -33,7 +33,7 @@ struct PrintList {
 
 class DebugMenu : public BaseGameObject, public IRenderable {
   std::vector<PrintList> m_printList;
-  float timer = 0;
+  float m_timer = 0;
 
 protected:
   void print(std::ostream &os) const override;
@@ -41,15 +41,15 @@ protected:
 public:
   DebugMenu(const std::string &name = "NONNAME", const sf::Transform &transform = sf::Transform::Identity);
 
-  void Render() override;
+  void render() override;
 
   void update(float deltaT) override;
 
   void AddPrintList(const std::string &formatString, void *pointer, Type type);
 
-  void AddGameObjectToGame() override;
+  void addGameObjectToGame() override;
 
-  void RemoveGameObjectFromGame() override;
+  void removeGameObjectFromGame() override;
 
   friend std::ostream &operator<<(std::ostream &os, const DebugMenu &obj);
 };

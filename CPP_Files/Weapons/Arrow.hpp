@@ -11,15 +11,15 @@
 
 
 class Arrow :public BaseGameObject{
-    float timer{0.0f};
+    float m_timer{0.0f};
     public:
     Arrow(sf::Transform transform=sf::Transform::Identity);\
-    void Init() override;
+    void init() override;
     void update(float deltaT) override;
 
-    void AddGameObjectToGame() override;
+    void addGameObjectToGame() override;
 
     std::shared_ptr<BaseGameObject> clone() const override;
 
-    void RemoveGameObjectFromGame() override;
+    void removeGameObjectFromGame() override;
 };

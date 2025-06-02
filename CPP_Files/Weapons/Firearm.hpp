@@ -9,15 +9,15 @@ class Firearm : public BaseGameObject {
   float m_speed;
   float m_ang;
   float m_timer;
-  float lastShot = 0.0f;
-  float CurrentTimer = 0.0f;
+  float m_lastShot = 0.0f;
+  float m_CurrentTimer = 0.0f;
 
 public:
   Firearm(const std::string &name, sf::Transform transform);
 
-  void Fire();
+  void fire();
 
   void update(float deltaTime) override;
 
-  void Init() override;
+  void init() override;
 };

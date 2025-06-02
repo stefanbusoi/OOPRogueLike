@@ -15,7 +15,7 @@ std::shared_ptr<BaseGameObject> EntityHealth::clone() const {
   clone->m_isDead = m_isDead;
   clone->m_onDeath = m_onDeath;
   for (auto i: m_children) {
-    clone->EmplaceClone(i);
+    clone->emplaceClone(i);
   }
   clone->m_transform = m_transform;
   clone->m_name = m_name;
@@ -28,10 +28,10 @@ void EntityHealth::dealDamage(float damageValue) {
   if (m_ImunityTime<m_TimeSinceLastAttack) {
     m_TimeSinceLastAttack=0.0f;
     m_currentHealth -= damageValue;
-    m_onHit.CallFunction(this);
+    m_onHit.callFunction(this);
     if (m_currentHealth <= 0) {
       m_isDead = true;
-      m_onDeath.CallFunction(this);
+      m_onDeath.callFunction(this);
     }
   }
 }

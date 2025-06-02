@@ -39,15 +39,15 @@ public:
   static std::shared_ptr<Game> getInstance();
   static std::shared_ptr<Game> getInstance(sf::VideoMode video_mode, const std::string &Title);
 
-  void Init() override;
+  void init() override;
   ~Game() override;
   bool isRunning() const;
 
-  void AddGameObjectToGame() override;
+  void addGameObjectToGame() override;
 
-  void RemoveGameObjectFromGame() override;
+  void removeGameObjectFromGame() override;
 
-  bool IsActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
+  bool isActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
 
   sf::RenderWindow &getWindow() { return m_window; }
   sf::RenderTexture &getRenderTexture() { return m_renderTexture; }
@@ -55,14 +55,14 @@ public:
   float getTotalTime() { return m_totalTime; }
   float getPrecedentFrameTime() { return m_precedentFrameTime; }
 
-  bool IsInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
+  bool isInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
 
 
   void exit();
 
   void restartGame();
 
-  sf::Time CalculateDeltaTime();
+  sf::Time calculateDeltaTime();
 
   void processGameFrame();
 

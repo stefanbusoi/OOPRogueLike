@@ -32,12 +32,9 @@ void Player::update(float deltaT) {
   }
   static float dashCooldown=2.0f;
   dashCooldown -= deltaT;
-  static float dashTimer=0.1f;
-  dashTimer -= deltaT;
   static sf::Vector2f dashDirection={0.0f,0.0f};
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)&&dashCooldown<0.0f&&speed!=sf::Vector2f(0.0f,0.0f)) {
     dashCooldown = 2.0f;
-    dashTimer = 3.0f;
     dashDirection=speed.normalized();
     m_phisicsObject->setSpeed(speed+m_phisicsObject->getSpeed());
   }
@@ -45,7 +42,7 @@ void Player::update(float deltaT) {
   pos -= sf::Vector2i(Game::getInstance()->getWindow().getSize())/2;
   sf::Angle ang = Utils::getAngle(m_transform);
   if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-    m_firearm->Fire();
+    m_firearm->fire();
   }
   if (isKeyPressed(sf::Keyboard::Scancode::G)) {
     m_firearm->setActive(false);
@@ -57,22 +54,22 @@ void Player::update(float deltaT) {
   (void) deltaT;
 }
 
-void Player::Init() {
-  BaseGameObject::Init();
+void Player::init() {
+  BaseGameObject::init();
   sf::Transform tr = sf::Transform::Identity;
   tr.scale(sf::Vector2f(40.0f, 40.0f));
 
-  EmplaceGameObject<ShapeRenderer>("CircleRenderer", tr, sf::Color(0, 255, 0), RenderOrder::Player, GeometryShape::Circle);
-  EmplaceGameObject<Collider>(ColliderMask::Player, GeometryShape::Circle, tr);
-  auto playerHealth=EmplaceGameObject<EntityHealth>(100.0f);
+  emplaceGameObject<ShapeRenderer>("CircleRenderer", tr, sf::Color(0, 255, 0), RenderOrder::Player, GeometryShape::Circle);
+  emplaceGameObject<Collider>(ColliderMask::Player, GeometryShape::Circle, tr);
+  auto playerHealth=emplaceGameObject<EntityHealth>(100.0f);
   playerHealth->setOnDeath([](EntityHealth* e) {
       e->getParent().lock()->SetParent(nullptr);
-      Game::getInstance()->EmplaceGameObject<DeathScreen>();
+      Game::getInstance()->emplaceGameObject<DeathScreen>();
   });
   playerHealth->setImunityTime(0.6f);
 
-  m_phisicsObject = EmplaceGameObject<PhysicObject>(100.0f, 12.f, 0.0f);
-  m_firearm = EmplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
+  m_phisicsObject = emplaceGameObject<PhysicObject>(100.0f, 12.f, 0.0f);
+  m_firearm = emplaceGameObject<Firearm>("Firearm", sf::Transform::Identity);
 }
 
 void Player::print(std::ostream &os) const {
@@ -81,12 +78,12 @@ void Player::print(std::ostream &os) const {
 }
 
 
-void Player::AddGameObjectToGame() {
-  BaseGameObject::AddGameObjectToGame();
+void Player::addGameObjectToGame() {
+  BaseGameObject::addGameObjectToGame();
 }
 
-void Player::RemoveGameObjectFromGame() {
-  BaseGameObject::RemoveGameObjectFromGame();
+void Player::removeGameObjectFromGame() {
+  BaseGameObject::removeGameObjectFromGame();
 }
 
 Player::Player(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform) {

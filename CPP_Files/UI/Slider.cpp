@@ -16,17 +16,17 @@ Slider::Slider(float maxValue):Slider(){
     m_currentValue = maxValue;
 }
 
-void Slider::AddGameObjectToGame() {
-    BaseGameObject::AddGameObjectToGame();
-    IRenderable::AddToRenderObjects();
+void Slider::addGameObjectToGame() {
+    BaseGameObject::addGameObjectToGame();
+    IRenderable::addToRenderObjects();
 }
-void Slider::RemoveGameObjectFromGame() {
-    BaseGameObject::RemoveGameObjectFromGame();
-    IRenderable::RemoveFromRenderObjects();
+void Slider::removeGameObjectFromGame() {
+    BaseGameObject::removeGameObjectFromGame();
+    IRenderable::removeFromRenderObjects();
 
 }
 
-void Slider::Render() {
+void Slider::render() {
     std::shared_ptr<Game> x = Game::getInstance();
     sf::RenderTarget &renderTexture = x->getRenderTexture();
 
@@ -34,14 +34,14 @@ void Slider::Render() {
     sf::Vector2u size = renderTexture.getSize();
     sf::RectangleShape BackGroundShape;
     BackGroundShape.setFillColor(m_BackGroundColor);
-    BackGroundShape.setSize(sf::Vector2f(size.x*width, size.y*height));
+    BackGroundShape.setSize(sf::Vector2f(size.x*m_width, size.y*m_height));
 
     sf::RectangleShape ContendShape;
     ContendShape.setFillColor(m_mainColor);
-    ContendShape.setSize(sf::Vector2f((size.x)*(width-2*padding)*(m_currentValue/m_maxValue), (size.y)*(height-2*padding)));
+    ContendShape.setSize(sf::Vector2f((size.x)*(m_width-2*m_padding)*(m_currentValue/m_maxValue), (size.y)*(m_height-2*m_padding)));
     sf::Transform tr;
     tr.translate({m_position.x*size.x, m_position.y*size.y});
     renderTexture.draw(BackGroundShape,tr);
-    tr.translate({padding*size.x,padding*size.y});
+    tr.translate({m_padding*size.x,m_padding*size.y});
     renderTexture.draw(ContendShape,tr);
 }

@@ -30,13 +30,13 @@ Collider::~Collider() {
   Game::getInstance()->getColliders().erase(this);
 }
 
-void Collider::AddGameObjectToGame() {
-  BaseGameObject::AddGameObjectToGame();
+void Collider::addGameObjectToGame() {
+  BaseGameObject::addGameObjectToGame();
   Game::getInstance()->getColliders().insert(this);
 }
 
-void Collider::RemoveGameObjectFromGame() {
-  BaseGameObject::RemoveGameObjectFromGame();
+void Collider::removeGameObjectFromGame() {
+  BaseGameObject::removeGameObjectFromGame();
   Game::getInstance()->getColliders().erase(this);
 }
 
@@ -49,7 +49,7 @@ void Collider::update(float deltaTime) {
 std::shared_ptr<BaseGameObject> Collider::clone() const {
   std::shared_ptr<Collider> clone = std::make_shared<Collider>(m_colliderMask, m_shape, m_transform);
   for (std::shared_ptr<BaseGameObject> i: m_children) {
-    clone->EmplaceClone(i);
+    clone->emplaceClone(i);
   }
   clone->m_name = m_name;
   clone->m_parent.reset();
@@ -58,7 +58,7 @@ std::shared_ptr<BaseGameObject> Collider::clone() const {
   return clone;
 }
 
-collisionData Collider::ColCircleCircle(const sf::Transform &tr1, const sf::Transform &tr2) {
+collisionData Collider::colCircleCircle(const sf::Transform &tr1, const sf::Transform &tr2) {
   sf::Vector2f pos1 = Utils::getPosition(tr1);
   sf::Vector2f pos2 = Utils::getPosition(tr2);
 
@@ -107,7 +107,7 @@ collisionData PointInsideCircle(sf::Vector2f pointPos, sf::Vector2f CirclePos, f
   return data;
 }
 
-collisionData CircleInLine(sf::Vector2f pos1, sf::Vector2f pos2, sf::Vector2f CirclePos, float radius) {
+collisionData Collider::CircleInLine(sf::Vector2f pos1, sf::Vector2f pos2, sf::Vector2f CirclePos, float radius) {
   sf::Vector2f deltaPos1 = CirclePos - pos1;
   sf::Vector2f LineDir = pos2 - pos1;
 
@@ -127,23 +127,8 @@ collisionData CircleInLine(sf::Vector2f pos1, sf::Vector2f pos2, sf::Vector2f Ci
   return data;
 }
 
-collisionData Collider::ColCircleLine(const sf::Transform &tr1, const sf::Transform &tr2) {
-  (void)tr1;
-  (void)tr2;
-  //sf::Vector2f pos1 = Utils::getPosition(tr1);
- // float radius1 = Utils::getSize(tr1).x;
 
-  //sf::Vector2f RelPoint2_1 = tr2.transformPoint({0.0f, 0.0f}) - pos1;
-  //sf::Vector2f RelPoint2_2 = tr2.transformPoint({1.0f, 0.0f}) - pos1;
-  //sf::Vector2f RelPoint2_3 = tr2.transformPoint({1.0f, 1.0f}) - pos1;
-  //sf::Vector2f RelPoint2_4 = tr2.transformPoint({1.0f, 1.0f}) - pos1;
-  collisionData data;
-
-
-  return data;
-}
-
-collisionData Collider::ColCircleSquare(const sf::Transform &tr1, const sf::Transform &tr2) {
+collisionData Collider::colCircleSquare(const sf::Transform &tr1, const sf::Transform &tr2) {
   sf::Vector2f pos1 = Utils::getPosition(tr1);
   float radius1 = Utils::getSize(tr1).x;
 
@@ -185,15 +170,15 @@ collisionData Collider::ColCircleSquare(const sf::Transform &tr1, const sf::Tran
 
   return data;
 }
-collisionData Collider::CheckCollision(const Collider &col1, const Collider &col2) {
+collisionData Collider::checkCollision(const Collider &col1, const Collider &col2) {
   if (col1.m_shape == GeometryShape::Circle && col2.m_shape == GeometryShape::Circle) {
-    return ColCircleCircle(col1.getGlobalTransform(), col2.getGlobalTransform());
+    return colCircleCircle(col1.getGlobalTransform(), col2.getGlobalTransform());
   }
   if (col1.m_shape == GeometryShape::Circle && col2.m_shape == GeometryShape::Rectangle) {
-    return ColCircleSquare(col1.getGlobalTransform(), col2.getGlobalTransform());
+    return colCircleSquare(col1.getGlobalTransform(), col2.getGlobalTransform());
   }
   if (col1.m_shape == GeometryShape::Circle && col2.m_shape == GeometryShape::Line) {
-    return ColCircleLine(col2.getGlobalTransform(), col1.getGlobalTransform());
+    return colCircleLine(col2.getGlobalTransform(), col1.getGlobalTransform());
   }
   throw GameLogicException("this collision type is not accepted");
 }

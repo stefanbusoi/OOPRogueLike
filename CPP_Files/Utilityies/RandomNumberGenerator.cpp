@@ -3,10 +3,10 @@
 //
 
 #include "RandomNumberGenerator.h"
-std::random_device RandomNumberGenerator::randomDevice;
-std::mt19937_64 RandomNumberGenerator::randomGenerator;
+std::random_device RandomNumberGenerator::m_randomDevice;
+std::mt19937_64 RandomNumberGenerator::m_randomGenerator;
 
 float RandomNumberGenerator::GetRandomNumber(float min, float max) {
     std::uniform_real_distribution<float> distribution(min, max);
-    return distribution(randomGenerator);
+    return distribution(m_randomGenerator);
 }

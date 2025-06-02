@@ -16,6 +16,6 @@ void EnemySpawnerManager::update(float deltaT) {
         sf::Transform tr;
         tr.translate({RandomNumberGenerator::GetRandomNumber(-1600,1600),RandomNumberGenerator::GetRandomNumber(-1600.f,1600.f)});
         std::shared_ptr<BasicEnemy> enemy= std::make_shared<BasicEnemy>("Enemy");
-        Game::getInstance()->EmplaceGameObject<EntitySpawner>(tr,2.0f,enemy);
+        Game::getInstance()->emplaceGameObject<EntitySpawner>(tr,2.0f,enemy);
     }
 }

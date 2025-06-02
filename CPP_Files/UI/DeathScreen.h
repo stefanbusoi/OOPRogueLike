@@ -14,8 +14,8 @@ public:
     DeathScreen();
 
 
-    void AddGameObjectToGame() override;
+    void addGameObjectToGame() override;
 
-    void RemoveGameObjectFromGame() override;
-    void Render() override;
+    void removeGameObjectFromGame() override;
+    void render() override;
 };

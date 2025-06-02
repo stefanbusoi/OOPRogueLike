@@ -14,17 +14,17 @@ DeathScreen::DeathScreen() {
 }
 
 
-void DeathScreen::AddGameObjectToGame() {
-    BaseGameObject::AddGameObjectToGame();
-    IRenderable::AddToRenderObjects();
+void DeathScreen::addGameObjectToGame() {
+    BaseGameObject::addGameObjectToGame();
+    IRenderable::addToRenderObjects();
 }
 
-void DeathScreen::RemoveGameObjectFromGame() {
-    BaseGameObject::RemoveGameObjectFromGame();
-    IRenderable::RemoveFromRenderObjects();
+void DeathScreen::removeGameObjectFromGame() {
+    BaseGameObject::removeGameObjectFromGame();
+    IRenderable::removeFromRenderObjects();
 }
 
-void DeathScreen::Render() {
+void DeathScreen::render() {
     auto& renderTexture=Game::getInstance()->getRenderTexture();
     sf::RectangleShape rect;
     rect.setSize(sf::Vector2f(renderTexture.getSize()));

@@ -9,14 +9,14 @@
 #include "Render/ShapeRenderer.hpp"
 #include "Utilityies/TransformUtilityies.hpp"
 
-void Firearm::Fire() {
-  if (IsActive()) {
-    if (lastShot + m_timer <= CurrentTimer) {
-      std::shared_ptr<BaseGameObject> bullet = Game::getInstance()->EmplaceClone(bulletPrefab);
-      bullet->GlobalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform()) + Utils::getPosition(getGlobalTransform()));
-      lastShot = CurrentTimer;
+void Firearm::fire() {
+  if (isActive()) {
+    if (m_lastShot + m_timer <= m_CurrentTimer) {
+      std::shared_ptr<BaseGameObject> bullet = Game::getInstance()->emplaceClone(bulletPrefab);
+      bullet->globalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform()) + Utils::getPosition(getGlobalTransform()));
+      m_lastShot = m_CurrentTimer;
       bullet->getLocalTransform().rotate(-Utils::getAngle(getGlobalTransform()) + sf::degrees(180.0f));
-      std::weak_ptr<PhysicObject> x=bullet->GetGameObjectOfType<PhysicObject>();
+      std::weak_ptr<PhysicObject> x=bullet->getGameObjectOfType<PhysicObject>();
       if (!x.expired()) {
         sf::Vector2f bulletSpeed;
         bulletSpeed = {1000.0f, 0.0f};
@@ -28,24 +28,24 @@ void Firearm::Fire() {
 }
 
 void Firearm::update(float deltaTime) {
-  CurrentTimer += deltaTime;
+  m_CurrentTimer += deltaTime;
 }
 
 Firearm::Firearm(const std::string &name, sf::Transform transform): BaseGameObject(name, transform) {
-  lastShot = 0.0f;
+  m_lastShot = 0.0f;
   m_timer = 0.35f;
-  CurrentTimer = 0.0f;
+  m_CurrentTimer = 0.0f;
   sf::Transform BulletTransform;
   BulletTransform.translate({0.0f, 4.f});
   BulletTransform.scale({100.f, 100.f});
   bulletPrefab = std::make_shared<Arrow>(sf::Transform::Identity);
-  bulletPrefab->Init();
+  bulletPrefab->init();
 }
 
-void Firearm::Init() {
+void Firearm::init() {
   sf::Transform tr = sf::Transform::Identity;
 
   tr.translate({0.0f, 40.0f})
       .scale({100.f, -130.0f});
-  EmplaceGameObject<ShapeRenderer>("CircleRenderer", tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PlayerWeapons, GeometryShape::Rectangle);
+  emplaceGameObject<ShapeRenderer>("CircleRenderer", tr, std::filesystem::path("Assets/bow_arrow.png"), RenderOrder::PlayerWeapons, GeometryShape::Rectangle);
 }

@@ -17,11 +17,11 @@ protected:
   void print(std::ostream &os) const override;
 
 public:
-  void Init() override;
+  void init() override;
 
-  void AddGameObjectToGame() override;
+  void addGameObjectToGame() override;
 
-  void RemoveGameObjectFromGame() override;
+  void removeGameObjectFromGame() override;
 
   explicit Player(const std::string &name = "NONNAME", const sf::Transform &transform = sf::Transform::Identity);
 

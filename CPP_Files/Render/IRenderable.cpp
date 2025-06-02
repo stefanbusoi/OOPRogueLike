@@ -1,14 +1,14 @@
 #include "CoreFunctionality/Game.hpp"
 
 IRenderable::~IRenderable() {
-  RemoveFromRenderObjects();
+  removeFromRenderObjects();
 }
 
-void IRenderable::AddToRenderObjects() {
+void IRenderable::addToRenderObjects() {
   Game::getInstance()->getRenderObjects().insert(this);
 }
 
-void IRenderable::RemoveFromRenderObjects() {
+void IRenderable::removeFromRenderObjects() {
   Game::getInstance()->getRenderObjects().erase(this);
 }
 

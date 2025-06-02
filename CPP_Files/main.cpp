@@ -12,7 +12,7 @@
 int main() {
   try {
     std::shared_ptr<Game> game = Game::getInstance(sf::VideoMode({1920, 1200}), "RogueLike");
-    game->Init();
+    game->init();
     while (game->isRunning()) {
       game->processGameFrame();
     }

@@ -10,8 +10,8 @@
  *
  */
 class Resources {
-  static sf::Font font;
-  static std::map<std::filesystem::path, std::unique_ptr<sf::Texture> > texture;
+  static sf::Font m_font;
+  static std::map<std::filesystem::path, std::unique_ptr<sf::Texture> > m_texture;
 
 public:
   static sf::Font &getFont();

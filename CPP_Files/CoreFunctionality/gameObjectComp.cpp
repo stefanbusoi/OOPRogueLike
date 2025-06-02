@@ -6,21 +6,21 @@
 
 bool gameObjectComp::operator()(const BaseGameObject *lhs, const BaseGameObject *rhs) const {
   if (lhs->getUpdateOrder() == rhs->getUpdateOrder()) {
-    return lhs->GetId() < rhs->GetId();
+    return lhs->getId() < rhs->getId();
   }
   return lhs->getUpdateOrder() < rhs->getUpdateOrder();
 }
 
 bool ColliderComp::operator()(const Collider *lhs, const Collider *rhs) const {
-  return lhs->GetId() < rhs->GetId();
+  return lhs->getId() < rhs->getId();
 }
 
 
 bool iRendableComp::operator()(IRenderable *lhs, IRenderable *rhs) const {
   if (lhs->getRenderOrder() == rhs->getRenderOrder()) {
     if (dynamic_cast<BaseGameObject *>(lhs) != nullptr && dynamic_cast<BaseGameObject *>(rhs) != nullptr) {
-      return dynamic_cast<BaseGameObject *>(lhs)->GetId() <
-             dynamic_cast<BaseGameObject *>(rhs)->GetId();
+      return dynamic_cast<BaseGameObject *>(lhs)->getId() <
+             dynamic_cast<BaseGameObject *>(rhs)->getId();
     }
     if (dynamic_cast<BaseGameObject *>(lhs) != nullptr)
       return true;

@@ -10,16 +10,16 @@
 
 std::shared_ptr<BaseGameObject> ShapeRenderer::clone() const {
   std::shared_ptr<ShapeRenderer> clone;
-  if (texture) {
+  if (m_IsTexture) {
     clone = std::make_shared<ShapeRenderer>(m_name, m_transform, m_circleColor, m_renderOrder, m_shape);
     clone->m_texture = m_texture;
-    clone->texture = texture;
+    clone->m_IsTexture = m_IsTexture;
   } else {
     clone = std::make_shared<ShapeRenderer>(m_name, m_transform, m_circleColor, m_renderOrder, m_shape);
-    clone->texture = texture;
+    clone->m_IsTexture = m_IsTexture;
   }
   for (auto i: m_children) {
-    clone->EmplaceClone(i);
+    clone->emplaceClone(i);
   }
   clone->m_name = m_name;
   clone->m_parent.reset();
@@ -33,7 +33,7 @@ ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &trans
   m_circleColor = color;
   m_renderOrder = render_order;
   m_shape = geometry_shape;
-  texture = false;
+  m_IsTexture = false;
 }
 
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const std::filesystem::path &path, const RenderOrder &render_order, GeometryShape geometry_shape) {
@@ -41,7 +41,7 @@ ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &trans
   m_name = name;
   m_renderOrder = render_order;
   m_shape = geometry_shape;
-  texture = true;
+  m_IsTexture = true;
   m_texture = Resources::getTexture(path);
 }
 
@@ -49,14 +49,14 @@ void ShapeRenderer::update(float deltaTime) {
   BaseGameObject::update(deltaTime * 0.005f);
 }
 
-void ShapeRenderer::Render() {
+void ShapeRenderer::render() {
   std::weak_ptr<Camera> camera = Game::getInstance()->getCamera();
   sf::Transform transform = getGlobalTransform();
 
   if (m_shape == GeometryShape::Circle) {
     sf::CircleShape shape(1.f);
     shape.setOrigin({1, 1});
-    if (texture) {
+    if (m_IsTexture) {
       shape.setTexture(m_texture);
     } else {
       shape.setFillColor(m_circleColor);
@@ -67,7 +67,7 @@ void ShapeRenderer::Render() {
   if (m_shape == GeometryShape::Rectangle) {
     sf::RectangleShape shape({1.0f, 1.0f});
     shape.setOrigin({0.5, 0.5});
-    if (texture) {
+    if (m_IsTexture) {
       shape.setTexture(m_texture);
     } else {
       shape.setFillColor(m_circleColor);
@@ -76,10 +76,10 @@ void ShapeRenderer::Render() {
   }
 }
 
-void ShapeRenderer::AddGameObjectToGame() {
-  IRenderable::AddToRenderObjects();
+void ShapeRenderer::addGameObjectToGame() {
+  IRenderable::addToRenderObjects();
 }
 
-void ShapeRenderer::RemoveGameObjectFromGame() {
-  IRenderable::RemoveFromRenderObjects();
+void ShapeRenderer::removeGameObjectFromGame() {
+  IRenderable::removeFromRenderObjects();
 }

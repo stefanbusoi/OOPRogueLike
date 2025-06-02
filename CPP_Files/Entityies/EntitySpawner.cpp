@@ -13,17 +13,17 @@ EntitySpawner::EntitySpawner(sf::Transform transform,float Time,std::shared_ptr<
   m_SpawnTimer=Time;
 }
 
-void EntitySpawner::Init() {
+void EntitySpawner::init() {
   sf::Transform transform;
   transform.scale({100.0f,100.0f});
-  EmplaceGameObject<ShapeRenderer>("ShapeRenderer",transform,"Assets/SpawnIcon.png",RenderOrder::Player,GeometryShape::Rectangle);
+  emplaceGameObject<ShapeRenderer>("ShapeRenderer",transform,"Assets/SpawnIcon.png",RenderOrder::Player,GeometryShape::Rectangle);
 }
 
 void EntitySpawner::update(float deltaT) {
   m_Time+=deltaT;
   if (m_Time>=m_SpawnTimer) {
-    auto entity=Game::getInstance()->EmplaceClone(m_Entity,m_transform);
-    entity->Init();
+    auto entity=Game::getInstance()->emplaceClone(m_Entity,m_transform);
+    entity->init();
 
     SetParent(nullptr);
   }

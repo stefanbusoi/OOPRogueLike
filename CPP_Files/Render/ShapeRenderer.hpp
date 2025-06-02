@@ -10,7 +10,7 @@ class ShapeRenderer : public IRenderable, public BaseGameObject {
   sf::Color m_circleColor;
   sf::Texture *m_texture;
   GeometryShape m_shape;
-  bool texture;
+  bool m_IsTexture;
 
 public:
   std::shared_ptr<BaseGameObject> clone() const override;
@@ -21,9 +21,9 @@ public:
 
   void update(float deltaTime) override;
 
-  void Render() override;
+  void render() override;
 
-  void AddGameObjectToGame() override;
+  void addGameObjectToGame() override;
 
-  void RemoveGameObjectFromGame() override;
+  void removeGameObjectFromGame() override;
 };
