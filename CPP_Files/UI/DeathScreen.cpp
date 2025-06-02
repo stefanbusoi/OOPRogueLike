@@ -28,7 +28,7 @@ void DeathScreen::render() {
     auto& renderTexture=Game::getInstance()->getRenderTexture();
     sf::RectangleShape rect;
     rect.setSize(sf::Vector2f(renderTexture.getSize()));
-    rect.setFillColor(sf::Color(0.0f,0.0f,0.0f,126.5f));
+    rect.setFillColor(sf::Color(0,0,0,127));
     renderTexture.draw(rect);
 
     sf::Transform diedTr;
