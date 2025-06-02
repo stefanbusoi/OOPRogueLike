@@ -3,6 +3,8 @@
 #include "CoreFunctionality/BaseGameObject.hpp"
 #include <format>
 
+#include "Render/IRenderable.hpp"
+
 enum class Type {
   none = 0,
   INT = 1,

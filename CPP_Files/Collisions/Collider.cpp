@@ -177,8 +177,5 @@ collisionData Collider::checkCollision(const Collider &col1, const Collider &col
   if (col1.m_shape == GeometryShape::Circle && col2.m_shape == GeometryShape::Rectangle) {
     return colCircleSquare(col1.getGlobalTransform(), col2.getGlobalTransform());
   }
-  if (col1.m_shape == GeometryShape::Circle && col2.m_shape == GeometryShape::Line) {
-    return colCircleLine(col2.getGlobalTransform(), col1.getGlobalTransform());
-  }
   throw GameLogicException("this collision type is not accepted");
 }
