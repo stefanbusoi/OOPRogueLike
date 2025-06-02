@@ -10,17 +10,19 @@
 #include "Utilityies/TransformUtilityies.hpp"
 
 void Firearm::Fire() {
-  if (lastShot + m_timer <= CurrentTimer) {
-    std::shared_ptr<BaseGameObject> bullet = Game::getInstance()->EmplaceClone(bulletPrefab);
-    bullet->GlobalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform()) + Utils::getPosition(getGlobalTransform()));
-    lastShot = CurrentTimer;
-    bullet->getLocalTransform().rotate(-Utils::getAngle(getGlobalTransform()) + sf::degrees(180.0f));
-    std::weak_ptr<PhysicObject> x=bullet->GetGameObjectOfType<PhysicObject>();
-    if (!x.expired()) {
-      sf::Vector2f bulletSpeed;
-      bulletSpeed = {1000.0f, 0.0f};
-      bulletSpeed = bulletSpeed.rotatedBy(-Utils::getAngle(getGlobalTransform()) + sf::degrees(90.0f));
-      x.lock()->setSpeed(bulletSpeed);
+  if (IsActive()) {
+    if (lastShot + m_timer <= CurrentTimer) {
+      std::shared_ptr<BaseGameObject> bullet = Game::getInstance()->EmplaceClone(bulletPrefab);
+      bullet->GlobalMoveTransform(-Utils::getPosition(bullet->getGlobalTransform()) + Utils::getPosition(getGlobalTransform()));
+      lastShot = CurrentTimer;
+      bullet->getLocalTransform().rotate(-Utils::getAngle(getGlobalTransform()) + sf::degrees(180.0f));
+      std::weak_ptr<PhysicObject> x=bullet->GetGameObjectOfType<PhysicObject>();
+      if (!x.expired()) {
+        sf::Vector2f bulletSpeed;
+        bulletSpeed = {1000.0f, 0.0f};
+        bulletSpeed = bulletSpeed.rotatedBy(-Utils::getAngle(getGlobalTransform()) + sf::degrees(90.0f));
+        x.lock()->setSpeed(bulletSpeed);
+      }
     }
   }
 }

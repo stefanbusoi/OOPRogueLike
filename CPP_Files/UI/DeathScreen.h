@@ -9,9 +9,9 @@
 
 class DeathScreen:public IRenderable ,public BaseGameObject{
 protected:
-    float maxScore=0;
+    float m_deadTime;
 public:
-    DeathScreen(float max_score=0);
+    DeathScreen();
 
 
     void AddGameObjectToGame() override;

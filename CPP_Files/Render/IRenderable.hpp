@@ -11,7 +11,7 @@ public:
   friend std::ostream &operator<<(std::ostream &os, const IRenderable &obj);
 
   virtual void Render() = 0;
-
+  virtual ~IRenderable();
   void AddToRenderObjects();
 
   void RemoveFromRenderObjects();

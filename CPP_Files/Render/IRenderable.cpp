@@ -1,5 +1,9 @@
 #include "CoreFunctionality/Game.hpp"
 
+IRenderable::~IRenderable() {
+  RemoveFromRenderObjects();
+}
+
 void IRenderable::AddToRenderObjects() {
   Game::getInstance()->getRenderObjects().insert(this);
 }

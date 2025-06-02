@@ -96,6 +96,12 @@ void Game::Init() {
 Game::~Game() { if (isRunning()) exit(); }
 bool Game::isRunning() const { return m_window.isOpen(); }
 
+void Game::AddGameObjectToGame() {
+}
+
+void Game::RemoveGameObjectFromGame() {
+}
+
 bool Game::IsActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject) {
   if (p_gameObject.expired()) return false;
   while (!p_gameObject.lock()->getParent().expired()) {

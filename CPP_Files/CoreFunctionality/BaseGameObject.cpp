@@ -18,7 +18,12 @@ void BaseGameObject::Init() {
 }
 
 
-BaseGameObject::~BaseGameObject() = default;
+BaseGameObject::~BaseGameObject() {
+  //Only Game shoud ever have m_localID==0
+  if (m_localId!=0) {
+    RemoveGameObjectFromGame();
+  }
+};
 
 void BaseGameObject::SetParent(const std::shared_ptr<BaseGameObject> &p_parent) {
   std::shared_ptr<Game>instance = Game::getInstance();
@@ -57,7 +62,6 @@ void BaseGameObject::setActive(bool isActive) {
 void BaseGameObject::update(float deltaT) {
   (void) deltaT;
 }
-
 std::shared_ptr<BaseGameObject> BaseGameObject::clone() const {
   std::shared_ptr<BaseGameObject> clone = std::make_shared<BaseGameObject>();
   for (const std::shared_ptr<BaseGameObject> &i: m_children) {

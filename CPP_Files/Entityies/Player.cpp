@@ -11,7 +11,7 @@
 
 
 void Player::update(float deltaT) {
-  float SpeedConst = 5000;
+  float SpeedConst = 7000;
   sf::Vector2i pos = sf::Mouse::getPosition(Game::getInstance()->getWindow());
   sf::Vector2f speed;
   if (isKeyPressed(sf::Keyboard::Scancode::A)) {
@@ -30,12 +30,20 @@ void Player::update(float deltaT) {
     speed = speed.normalized();
     speed = speed * SpeedConst;
   }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)) {
-    speed=speed*3.0f;
+  static float dashCooldown=2.0f;
+  dashCooldown -= deltaT;
+  static float dashTimer=0.1f;
+  dashTimer -= deltaT;
+  static sf::Vector2f dashDirection={0.0f,0.0f};
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scancode::Space)&&dashCooldown<0.0f&&speed!=sf::Vector2f(0.0f,0.0f)) {
+    dashCooldown = 2.0f;
+    dashTimer = 3.0f;
+    dashDirection=speed.normalized();
+    m_phisicsObject->setSpeed(speed+m_phisicsObject->getSpeed());
   }
+  m_phisicsObject->setAcceleration(speed);
   pos -= sf::Vector2i(Game::getInstance()->getWindow().getSize())/2;
   sf::Angle ang = Utils::getAngle(m_transform);
-  m_phisicsObject->setAcceleration(speed);
   if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
     m_firearm->Fire();
   }

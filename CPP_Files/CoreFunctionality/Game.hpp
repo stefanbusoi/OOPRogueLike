@@ -43,6 +43,10 @@ public:
   ~Game() override;
   bool isRunning() const;
 
+  void AddGameObjectToGame() override;
+
+  void RemoveGameObjectFromGame() override;
+
   bool IsActiveInHirarchy(std::weak_ptr<BaseGameObject> p_gameObject);
 
   sf::RenderWindow &getWindow() { return m_window; }
