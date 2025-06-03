@@ -142,7 +142,7 @@ void Game::handleEvents() {
   while (const std::optional event = getWindow().pollEvent()) {
     if (event->is<sf::Event::Closed>()) {
       exit();
-    } else if (event->is<sf::Event::Resized>()) { std::cout << "New width: " << getWindow().getSize().x << '\n' << "New height: " << getWindow().getSize().y << '\n'; } else if (event->is<sf::Event::KeyPressed>()) {
+    } else if (event->is<sf::Event::KeyPressed>()) {
       const auto *keyPressed = event->getIf<sf::Event::KeyPressed>();
       if (keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
         exit();
@@ -150,9 +150,6 @@ void Game::handleEvents() {
       if (keyPressed->scancode==sf::Keyboard::Scancode::L) {
         restartGame();
       }
-    } else if (event->is<sf::Event::MouseButtonPressed>()) {
-      const auto *keyPressed = event->getIf<sf::Event::MouseButtonPressed>();
-      std::cout << "X: " << keyPressed->position.x << ",Y: " << keyPressed->position.y;
     }
   }
 }
