@@ -6,7 +6,7 @@
 
 #include "Collisions/Collider.h"
 
-class ShapeRenderer : public IRenderable, public BaseGameObject {
+class ShapeRenderer :  public BaseGameObject,public IRenderable {
   sf::Color m_circleColor;
   sf::Texture *m_texture;
   GeometryShape m_shape;
