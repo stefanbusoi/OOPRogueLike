@@ -8,11 +8,8 @@
 
 Slider::Slider()
     :BaseGameObject("Slider", sf::Transform::Identity),
-    IRenderable(RenderOrder::UIPreProcessing),
-    m_maxValue(0),
-    m_currentValue(0)
+    IRenderable(RenderOrder::UIPreProcessing)
 {
-    m_renderOrder = RenderOrder::UIPreProcessing;
     m_updateOrder = UpdateOrder::UI;
 }
 

@@ -4,10 +4,10 @@
 #include "SFML/Graphics/Color.hpp"
 
 
-class Slider:public IRenderable ,public BaseGameObject{
+class Slider:public BaseGameObject,public IRenderable{
 protected:
-    float m_maxValue;
-    float m_currentValue;
+    float m_maxValue=0.0f;
+    float m_currentValue=0.0f;
     sf::Color m_BackGroundColor=sf::Color::Black;
     sf::Color m_mainColor=sf::Color::Red;
     //0-1 based on screen height and width

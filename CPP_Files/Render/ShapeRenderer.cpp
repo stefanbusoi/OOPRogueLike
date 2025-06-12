@@ -11,11 +11,11 @@
 std::shared_ptr<BaseGameObject> ShapeRenderer::clone() const {
   std::shared_ptr<ShapeRenderer> clone;
   if (m_IsTexture) {
-    clone = std::make_shared<ShapeRenderer>(m_name, m_transform, m_circleColor, m_renderOrder, m_shape);
+    clone = std::make_shared<ShapeRenderer>(m_name, m_transform, m_shapeColor, m_renderOrder, m_shape);
     clone->m_texture = m_texture;
     clone->m_IsTexture = m_IsTexture;
   } else {
-    clone = std::make_shared<ShapeRenderer>(m_name, m_transform, m_circleColor, m_renderOrder, m_shape);
+    clone = std::make_shared<ShapeRenderer>(m_name, m_transform, m_shapeColor, m_renderOrder, m_shape);
     clone->m_IsTexture = m_IsTexture;
   }
   for (auto i: m_children) {
@@ -28,19 +28,19 @@ std::shared_ptr<BaseGameObject> ShapeRenderer::clone() const {
 }
 
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const sf::Color &color, const RenderOrder &render_order, GeometryShape geometry_shape)
-  :BaseGameObject(name,transform),
-  IRenderable(render_order),
-  m_circleColor(color),
-  m_shape(geometry_shape),
-  m_IsTexture(false)
-{
+  : BaseGameObject(name, transform),
+    IRenderable(render_order),
+    m_shapeColor(color),
+    m_texture(nullptr),
+    m_shape(geometry_shape),
+    m_IsTexture(false) {
 }
 
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const std::filesystem::path &path, const RenderOrder &render_order, GeometryShape geometry_shape)
   :BaseGameObject(name,transform),
   IRenderable(render_order),
-  m_shape(geometry_shape),
   m_texture(Resources::getTexture(path)),
+  m_shape(geometry_shape),
   m_IsTexture(true)
 {
 }
@@ -59,7 +59,7 @@ void ShapeRenderer::render() {
     if (m_IsTexture) {
       shape.setTexture(m_texture);
     } else {
-      shape.setFillColor(m_circleColor);
+      shape.setFillColor(m_shapeColor);
     }
     camera.lock()->draw(shape, transform);
     return;
@@ -70,7 +70,7 @@ void ShapeRenderer::render() {
     if (m_IsTexture) {
       shape.setTexture(m_texture);
     } else {
-      shape.setFillColor(m_circleColor);
+      shape.setFillColor(m_shapeColor);
     }
     camera.lock()->draw(shape, transform);
   }
