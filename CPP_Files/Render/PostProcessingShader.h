@@ -4,10 +4,11 @@
 #include "SFML/Graphics/Shader.hpp"
 
 class PostProcessingShader : public BaseGameObject, public IRenderable {
-  sf::Shader m_shader;
-  std::filesystem::path m_path;
+
 
 protected:
+  sf::Shader m_shader;
+  std::filesystem::path m_path;
   void print(std::ostream &os) const override;
 
 public:

@@ -4,5 +4,6 @@
 class HealtBar:public Slider {
 public:
     HealtBar();
+
 };
 

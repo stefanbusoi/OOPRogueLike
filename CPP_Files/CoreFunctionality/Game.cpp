@@ -14,6 +14,7 @@
 #include "Render/ShapeRenderer.hpp"
 #include "Collisions/ColliderManager.hpp"
 #include "Entityies/EnemySpawnerManager.h"
+#include "UI/DashBar.hpp"
 #include "UI/HealtBar.h"
 std::weak_ptr<Game> Game::s_instance = std::weak_ptr<Game>();
 
@@ -60,6 +61,7 @@ void Game::init() {
   player_ = emplaceGameObject<Player>("Player",playerPos);
   m_camera = emplaceGameObject<Camera>("Camera");
   emplaceGameObject<HealtBar>();
+  emplaceGameObject<DashBar>();
 
   sf::Transform transform = sf::Transform::Identity;
   transform.scale({40.0f, 40.0f});

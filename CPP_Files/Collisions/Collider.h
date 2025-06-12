@@ -36,12 +36,13 @@ struct collisionData {
 };
 
 /**
- * A GameObject witch can colide with other objects
+ * A GameObject witch can colide with other objects, needs an active ColliderManager to work
  */
 class Collider : public BaseGameObject {
 
 
 public:
+
   ColliderMask m_colliderMask;
   GeometryShape m_shape;
   GameEvent<Collider&,Collider&> m_onCollide;

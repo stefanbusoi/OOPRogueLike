@@ -6,7 +6,7 @@
 
 
 class EnemySpawnerManager:public BaseGameObject {
- float spawnTimer=0.4;
+ float spawnTimer=0.8;
  float Timer=0.0;
 public:
  EnemySpawnerManager():BaseGameObject("EntitySpawner",sf::Transform::Identity){}

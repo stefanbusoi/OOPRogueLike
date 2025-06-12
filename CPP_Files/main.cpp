@@ -8,7 +8,7 @@
 #include "Exceptions/FileException.hpp"
 #include "Exceptions/GameLogicException.hpp"
 #include "Exceptions/ShaderExceptions.hpp"
-
+ 
 int main() {
   try {
     std::shared_ptr<Game> game = Game::getInstance(sf::VideoMode({1920, 1200}), "RogueLike");

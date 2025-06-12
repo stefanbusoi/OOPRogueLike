@@ -114,6 +114,10 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/UI/HealtBar.h
         CPP_Files/UI/DeathScreen.cpp
         CPP_Files/UI/DeathScreen.h
+        CPP_Files/Render/RenerableGameObject.cpp
+        CPP_Files/Render/RenerableGameObject.hpp
+        CPP_Files/UI/DashBar.cpp
+        CPP_Files/UI/DashBar.hpp
 )
 
 
