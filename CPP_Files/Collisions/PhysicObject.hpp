@@ -27,7 +27,7 @@ public:
   void setFriction(float friction) { m_friction = friction; }
 
   float getElasticity() { return m_elasticity; }
-  void setElasticity(float elasticity);
+  void setElasticity(float elasticity){ m_elasticity=elasticity;};
 
   sf::Vector2f getSpeed() { return m_Speed; }
   void setSpeed(sf::Vector2f speed) { m_Speed = speed; }

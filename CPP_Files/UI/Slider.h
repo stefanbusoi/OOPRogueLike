@@ -18,7 +18,7 @@ protected:
 
 public:
     Slider();
-    Slider(float maxValue);
+    explicit Slider(float maxValue);
 
     void addGameObjectToGame() override;
 

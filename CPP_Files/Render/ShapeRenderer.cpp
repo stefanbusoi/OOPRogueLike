@@ -39,8 +39,8 @@ ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &trans
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const std::filesystem::path &path, const RenderOrder &render_order, GeometryShape geometry_shape)
   :BaseGameObject(name,transform),
   m_shape(geometry_shape),
-  m_IsTexture(true),
-  m_texture(Resources::getTexture(path))
+  m_texture(Resources::getTexture(path)),
+  m_IsTexture(true)
 {
   m_renderOrder = render_order;
 }
