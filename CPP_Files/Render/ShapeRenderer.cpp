@@ -29,20 +29,20 @@ std::shared_ptr<BaseGameObject> ShapeRenderer::clone() const {
 
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const sf::Color &color, const RenderOrder &render_order, GeometryShape geometry_shape)
   :BaseGameObject(name,transform),
+  IRenderable(render_order),
   m_circleColor(color),
   m_shape(geometry_shape),
   m_IsTexture(false)
 {
-  m_renderOrder = render_order;;
 }
 
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const std::filesystem::path &path, const RenderOrder &render_order, GeometryShape geometry_shape)
   :BaseGameObject(name,transform),
+  IRenderable(render_order),
   m_shape(geometry_shape),
   m_texture(Resources::getTexture(path)),
   m_IsTexture(true)
 {
-  m_renderOrder = render_order;
 }
 
 void ShapeRenderer::update(float deltaTime) {

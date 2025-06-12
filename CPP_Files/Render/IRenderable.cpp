@@ -1,5 +1,9 @@
 #include "CoreFunctionality/Game.hpp"
 
+IRenderable::IRenderable(RenderOrder renderOrder) {
+  m_renderOrder=renderOrder;
+}
+
 IRenderable::~IRenderable() {
   removeFromRenderObjects();
 }

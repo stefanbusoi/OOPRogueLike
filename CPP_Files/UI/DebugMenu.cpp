@@ -5,8 +5,10 @@
 #include "Resources.hpp"
 #include "Exceptions/GameLogicException.hpp"
 
-DebugMenu::DebugMenu(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform) {
-  m_renderOrder = RenderOrder::UIPostProcessing;
+DebugMenu::DebugMenu(const std::string &name, const sf::Transform &transform):
+  BaseGameObject(name, transform),
+  IRenderable(RenderOrder::UIPostProcessing)
+{
   m_updateOrder = UpdateOrder::UI;
 }
 

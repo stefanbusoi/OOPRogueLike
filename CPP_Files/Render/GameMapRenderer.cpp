@@ -27,8 +27,10 @@ void GameMapRenderer::render() {
   render_texture.draw(fullscreenQuad, &m_shader);
 }
 
-GameMapRenderer::GameMapRenderer(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform) {
-  m_renderOrder = RenderOrder::Terrain;
+GameMapRenderer::GameMapRenderer(const std::string &name, const sf::Transform &transform):
+  BaseGameObject(name, transform),
+  IRenderable(RenderOrder::Terrain)
+{
   m_updateOrder = UpdateOrder::Default;
   if (!m_shader.loadFromFile("Shaders/fragment.frag", sf::Shader::Type::Fragment)) {
     std::cerr << "Failed to load fragment shader" << std::endl;

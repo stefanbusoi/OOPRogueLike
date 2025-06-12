@@ -8,9 +8,10 @@
 
 #include "Resources.hpp"
 
-DeathScreen::DeathScreen() {
+DeathScreen::DeathScreen():
+    IRenderable(RenderOrder::UIPostProcessing)
+{
     m_deadTime=Game::getInstance()->getTotalTime();
-    m_renderOrder= RenderOrder::UIPostProcessing;
 }
 
 
