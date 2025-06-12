@@ -9,6 +9,7 @@
 #include "Exceptions/GameLogicException.hpp"
 
 void DashBar::update(float deltaT) {
+  (void) deltaT;
   if (!player.expired()) {
     m_currentValue=player.lock()->getDashTotalCooldown()-player.lock()->getDashCurrentCooldown();
   }else {

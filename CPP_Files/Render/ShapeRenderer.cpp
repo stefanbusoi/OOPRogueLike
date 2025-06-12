@@ -27,22 +27,22 @@ std::shared_ptr<BaseGameObject> ShapeRenderer::clone() const {
   return clone;
 }
 
-ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const sf::Color &color, const RenderOrder &render_order, GeometryShape geometry_shape) {
-  m_transform = transform;
-  m_name = name;
-  m_circleColor = color;
-  m_renderOrder = render_order;
-  m_shape = geometry_shape;
-  m_IsTexture = false;
+ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const sf::Color &color, const RenderOrder &render_order, GeometryShape geometry_shape)
+  :BaseGameObject(name,transform),
+  m_circleColor(color),
+  m_shape(geometry_shape),
+  m_IsTexture(false)
+{
+  m_renderOrder = render_order;;
 }
 
-ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const std::filesystem::path &path, const RenderOrder &render_order, GeometryShape geometry_shape) {
-  m_transform = transform;
-  m_name = name;
+ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const std::filesystem::path &path, const RenderOrder &render_order, GeometryShape geometry_shape)
+  :BaseGameObject(name,transform),
+  m_shape(geometry_shape),
+  m_IsTexture(true),
+  m_texture(Resources::getTexture(path))
+{
   m_renderOrder = render_order;
-  m_shape = geometry_shape;
-  m_IsTexture = true;
-  m_texture = Resources::getTexture(path);
 }
 
 void ShapeRenderer::update(float deltaTime) {
