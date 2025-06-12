@@ -8,6 +8,10 @@ void RendableGameObject::addGameObjectToGame()  {
   BaseGameObject::addGameObjectToGame();
 }
 
+RendableGameObject::RendableGameObject(const std::string &name, const sf::Transform &tr, RenderOrder m_renderOrder):
+  BaseGameObject(name,tr),
+  IRenderable(m_renderOrder) {}
+
 void RendableGameObject::removeGameObjectFromGame()  {
   IRenderable::removeFromRenderObjects();
   BaseGameObject::addGameObjectToGame();

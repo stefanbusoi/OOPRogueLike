@@ -6,8 +6,8 @@
 #include "Exceptions/GameLogicException.hpp"
 
 DebugMenu::DebugMenu(const std::string &name, const sf::Transform &transform):
-  BaseGameObject(name, transform),
-  IRenderable(RenderOrder::UIPostProcessing)
+  RendableGameObject(name, transform,RenderOrder::UIPostProcessing)
+
 {
   m_updateOrder = UpdateOrder::UI;
 }
@@ -75,16 +75,6 @@ void DebugMenu::AddPrintList(const std::string &formatString, void *pointer, Typ
 void DebugMenu::print(std::ostream &os) const {
   os << "Class DebugMenu:";
   BaseGameObject::print(os);
-}
-
-void DebugMenu::addGameObjectToGame() {
-  BaseGameObject::addGameObjectToGame();
-  IRenderable::addToRenderObjects();
-}
-
-void DebugMenu::removeGameObjectFromGame() {
-  BaseGameObject::removeGameObjectFromGame();
-  IRenderable::removeFromRenderObjects();
 }
 
 std::ostream &operator<<(std::ostream &os, const DebugMenu &obj) {

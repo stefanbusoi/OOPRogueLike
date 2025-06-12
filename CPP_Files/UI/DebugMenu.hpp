@@ -4,6 +4,7 @@
 #include <format>
 
 #include "Render/IRenderable.hpp"
+#include "Render/RenerableGameObject.hpp"
 
 enum class Type {
   none = 0,
@@ -33,7 +34,7 @@ struct PrintList {
   };
 };
 
-class DebugMenu : public BaseGameObject, public IRenderable {
+class DebugMenu :public RendableGameObject {
   std::vector<PrintList> m_printList;
   float m_timer = 0;
 
@@ -48,10 +49,6 @@ public:
   void update(float deltaT) override;
 
   void AddPrintList(const std::string &formatString, void *pointer, Type type);
-
-  void addGameObjectToGame() override;
-
-  void removeGameObjectFromGame() override;
 
   friend std::ostream &operator<<(std::ostream &os, const DebugMenu &obj);
 };

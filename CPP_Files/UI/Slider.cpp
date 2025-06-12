@@ -7,8 +7,8 @@
 
 
 Slider::Slider()
-    :BaseGameObject("Slider", sf::Transform::Identity),
-    IRenderable(RenderOrder::UIPreProcessing)
+    :RendableGameObject("Slider", sf::Transform::Identity,RenderOrder::UIPreProcessing)
+
 {
     m_updateOrder = UpdateOrder::UI;
 }
@@ -18,15 +18,6 @@ Slider::Slider(float maxValue):Slider(){
     m_currentValue = maxValue;
 }
 
-void Slider::addGameObjectToGame() {
-    BaseGameObject::addGameObjectToGame();
-    IRenderable::addToRenderObjects();
-}
-void Slider::removeGameObjectFromGame() {
-    BaseGameObject::removeGameObjectFromGame();
-    IRenderable::removeFromRenderObjects();
-
-}
 
 void Slider::render() {
     std::shared_ptr<Game> x = Game::getInstance();

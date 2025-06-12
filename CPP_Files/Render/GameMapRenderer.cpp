@@ -28,8 +28,7 @@ void GameMapRenderer::render() {
 }
 
 GameMapRenderer::GameMapRenderer(const std::string &name, const sf::Transform &transform):
-  BaseGameObject(name, transform),
-  IRenderable(RenderOrder::Terrain)
+  RendableGameObject(name, transform,RenderOrder::Terrain)
 {
   m_updateOrder = UpdateOrder::Default;
   if (!m_shader.loadFromFile("Shaders/fragment.frag", sf::Shader::Type::Fragment)) {
@@ -42,12 +41,3 @@ void GameMapRenderer::update(float deltaT) {
   (void) deltaT;
 }
 
-void GameMapRenderer::addGameObjectToGame() {
-  BaseGameObject::addGameObjectToGame();
-  IRenderable::addToRenderObjects();
-}
-
-void GameMapRenderer::removeGameObjectFromGame() {
-  BaseGameObject::removeGameObjectFromGame();
-  IRenderable::removeFromRenderObjects();
-}

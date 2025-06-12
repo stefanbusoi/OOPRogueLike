@@ -9,21 +9,12 @@
 #include "Resources.hpp"
 
 DeathScreen::DeathScreen():
-    IRenderable(RenderOrder::UIPostProcessing)
+    RendableGameObject("DeathScreen",sf::Transform::Identity,RenderOrder::UIPostProcessing)
 {
     m_deadTime=Game::getInstance()->getTotalTime();
 }
 
 
-void DeathScreen::addGameObjectToGame() {
-    BaseGameObject::addGameObjectToGame();
-    IRenderable::addToRenderObjects();
-}
-
-void DeathScreen::removeGameObjectFromGame() {
-    BaseGameObject::removeGameObjectFromGame();
-    IRenderable::removeFromRenderObjects();
-}
 
 void DeathScreen::render() {
     auto& renderTexture=Game::getInstance()->getRenderTexture();

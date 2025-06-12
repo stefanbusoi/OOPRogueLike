@@ -7,9 +7,10 @@
 
 #include "CoreFunctionality/BaseGameObject.hpp"
 #include "IRenderable.hpp"
+#include "RenerableGameObject.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
-class GameMapRenderer : public BaseGameObject, public IRenderable {
+class GameMapRenderer :public RendableGameObject {
   sf::Shader m_shader;
 
 protected:
@@ -22,9 +23,6 @@ public:
 
   void update(float deltaT) override;
 
-  void addGameObjectToGame() override;
-
-  void removeGameObjectFromGame() override;
 };
 
 

@@ -28,8 +28,7 @@ std::shared_ptr<BaseGameObject> ShapeRenderer::clone() const {
 }
 
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const sf::Color &color, const RenderOrder &render_order, GeometryShape geometry_shape)
-  : BaseGameObject(name, transform),
-    IRenderable(render_order),
+  : RendableGameObject(name, transform,render_order),
     m_shapeColor(color),
     m_texture(nullptr),
     m_shape(geometry_shape),
@@ -37,8 +36,7 @@ ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &trans
 }
 
 ShapeRenderer::ShapeRenderer(const std::string &name, const sf::Transform &transform, const std::filesystem::path &path, const RenderOrder &render_order, GeometryShape geometry_shape)
-  :BaseGameObject(name,transform),
-  IRenderable(render_order),
+  :RendableGameObject(name,transform,render_order),
   m_texture(Resources::getTexture(path)),
   m_shape(geometry_shape),
   m_IsTexture(true)
@@ -76,10 +74,3 @@ void ShapeRenderer::render() {
   }
 }
 
-void ShapeRenderer::addGameObjectToGame() {
-  IRenderable::addToRenderObjects();
-}
-
-void ShapeRenderer::removeGameObjectFromGame() {
-  IRenderable::removeFromRenderObjects();
-}

@@ -59,7 +59,7 @@ void ColliderManager::update(float deltaTime) {
         continue;
 
       //check if the collision shoud happen;
-      if (Collider::ColliderMatrix[(int) Collider2->m_colliderMask][(int) Collider1->m_colliderMask] == 0)
+      if (Collider::ColliderMatrix[(int) Collider2->getColliderMask()][(int) Collider1->getColliderMask()] == 0)
         continue;
       auto collisionData = Collider::checkCollision(*Collider1, *Collider2);
 

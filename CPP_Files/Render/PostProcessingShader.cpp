@@ -10,8 +10,7 @@ void PostProcessingShader::print(std::ostream &os) const {
 }
 
 PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::path ShaderPath):
-   BaseGameObject(name, sf::Transform::Identity)
-  ,IRenderable(RenderOrder::PostProcessing)
+   RendableGameObject(name, sf::Transform::Identity,RenderOrder::PostProcessing)
   ,m_path(ShaderPath)
 {
   if (!m_shader.loadFromFile(ShaderPath, sf::Shader::Type::Fragment)) {
@@ -40,12 +39,4 @@ void PostProcessingShader::render() {
   renderTexture.draw(fullscreenQuad, &m_shader);
 }
 
-void PostProcessingShader::addGameObjectToGame() {
-  BaseGameObject::addGameObjectToGame();
-  IRenderable::addToRenderObjects();
-}
 
-void PostProcessingShader::removeGameObjectFromGame() {
-  BaseGameObject::removeGameObjectFromGame();
-  IRenderable::removeFromRenderObjects();
-}

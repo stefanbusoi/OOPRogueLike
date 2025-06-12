@@ -4,9 +4,10 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
+#include "RenerableGameObject.hpp"
 #include "Collisions/Collider.h"
 
-class ShapeRenderer :  public BaseGameObject,public IRenderable {
+class ShapeRenderer :  public RendableGameObject {
   sf::Color m_shapeColor;
   sf::Texture *m_texture;
   GeometryShape m_shape;
@@ -23,7 +24,4 @@ public:
 
   void render() override;
 
-  void addGameObjectToGame() override;
-
-  void removeGameObjectFromGame() override;
 };

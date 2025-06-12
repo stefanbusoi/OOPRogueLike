@@ -8,8 +8,9 @@
 
 
 class RendableGameObject:public BaseGameObject, public IRenderable{
+public:
   void addGameObjectToGame() override;
-
+  RendableGameObject(const std::string& name,const sf::Transform& tr,RenderOrder m_renderOrder );
   void removeGameObjectFromGame() override;
 };
 

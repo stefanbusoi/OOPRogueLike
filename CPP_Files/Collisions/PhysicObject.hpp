@@ -20,6 +20,7 @@ public:
 
   void update(float deltaT) override;
 
+
   float getMass() { return m_mass; }
   void setMass(float mass) { m_mass = mass; }
 

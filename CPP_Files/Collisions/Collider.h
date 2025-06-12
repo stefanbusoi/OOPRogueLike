@@ -39,13 +39,11 @@ struct collisionData {
  * A GameObject witch can colide with other objects, needs an active ColliderManager to work
  */
 class Collider : public BaseGameObject {
-
-
-public:
-
+  GameEvent<Collider&,Collider&> m_onCollide;
   ColliderMask m_colliderMask;
   GeometryShape m_shape;
-  GameEvent<Collider&,Collider&> m_onCollide;
+public:
+
   static int ColliderMatrix[5][5];
   /**
    *
@@ -70,7 +68,11 @@ public:
    * @return an Game Event witch is triggered when a collision happen, the first paramater is always this object
    */
   GameEvent<Collider &, Collider &> &getOnCollide() { return m_onCollide; }
-
+  /**
+   *
+   * @return Mask of the collider
+   */
+  ColliderMask getColliderMask(){return m_colliderMask;}
   /**
    *
    * @param col1 the first collider

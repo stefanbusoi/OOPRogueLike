@@ -1,9 +1,10 @@
 #pragma once
 #include "CoreFunctionality/BaseGameObject.hpp"
 #include "IRenderable.hpp"
+#include "RenerableGameObject.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
-class PostProcessingShader : public BaseGameObject, public IRenderable {
+class PostProcessingShader : public RendableGameObject {
 
 
 protected:
@@ -15,8 +16,4 @@ public:
   PostProcessingShader(std::string name, std::filesystem::path ShaderPath);
 
   void render() override;
-
-  void addGameObjectToGame() override;
-
-  void removeGameObjectFromGame() override;
 };

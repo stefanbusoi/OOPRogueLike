@@ -5,12 +5,12 @@
 #include "CoreFunctionality/BaseGameObject.hpp"
 
 
-class EnemySpawnerManager:public BaseGameObject {
- float spawnTimer=0.8;
- float Timer=0.0;
+class EnemySpawnerManager : public BaseGameObject {
+  float spawnTimer = 0.8;
+  float Timer = 0.0;
+
 public:
- EnemySpawnerManager():BaseGameObject("EntitySpawner",sf::Transform::Identity){}
- void update(float deltaT) override;
+  EnemySpawnerManager(): BaseGameObject("EntitySpawner", sf::Transform::Identity) {}
+
+  void update(float deltaT) override;
 };
-
-
