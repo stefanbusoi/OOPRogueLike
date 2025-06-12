@@ -24,10 +24,10 @@ void DashBar::render() {
 
 DashBar::DashBar():Slider() {
 
-  m_padding=0.01;
-  m_width=0.25;
-  m_height=0.03;
-  m_position=sf::Vector2f(0.375,0.09);
+  m_padding=0.01f;
+  m_width=0.25f;
+  m_height=0.03f;
+  m_position=sf::Vector2f(0.375f,0.09f);
   m_mainColor=sf::Color(200,200,255);
    player=Game::getInstance()->getGameObjectOfType<Player>();
   if (player.expired()) {
