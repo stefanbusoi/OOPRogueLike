@@ -96,7 +96,6 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Entityies/EntityHealth.hpp
         CPP_Files/Entityies/BasicEnemy.cpp
         CPP_Files/Entityies/BasicEnemy.hpp
-        CPP_Files/Events/GameEvent.cpp
         CPP_Files/Events/GameEvent.hpp
         CPP_Files/Weapons/Arrow.cpp
         CPP_Files/Weapons/Arrow.hpp

@@ -35,11 +35,8 @@ public:
 
   void setImunityTime(float time);
 
-  void heal(float healValue);
 
   void dealDamage(float damageValue);
-
-  bool isDead() const { return m_isDead; }
 
   /**
    *

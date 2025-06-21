@@ -79,9 +79,6 @@ sf::Transform &BaseGameObject::getLocalTransform() {
   return m_transform;
 }
 
-void BaseGameObject::MoveTransform(sf::Vector2f movement) {
-  m_transform.translate(movement);
-}
 
 void BaseGameObject::globalMoveTransform(sf::Vector2f movement) {
   sf::Transform transform = sf::Transform::Identity;

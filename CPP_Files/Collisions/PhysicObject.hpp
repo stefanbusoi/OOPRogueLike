@@ -22,10 +22,7 @@ public:
 
 
   float getMass() { return m_mass; }
-  void setMass(float mass) { m_mass = mass; }
 
-  float getFriction() { return m_friction; }
-  void setFriction(float friction) { m_friction = friction; }
 
   /**
    * 1-elastic collision
@@ -34,11 +31,9 @@ public:
    * @return The elasticity of the object
    */
   float getElasticity() { return m_elasticity; }
-  void setElasticity(float elasticity){ m_elasticity=elasticity;};
 
   sf::Vector2f getSpeed() { return m_Speed; }
   void setSpeed(sf::Vector2f speed) { m_Speed = speed; }
 
-  sf::Vector2f getAcceleration() { return m_Acceleration; }
   void setAcceleration(sf::Vector2f acceleration) { m_Acceleration = acceleration; }
 };

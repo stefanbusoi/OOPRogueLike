@@ -39,10 +39,7 @@ void EntityHealth::dealDamage(float damageValue) {
 void EntityHealth::setImunityTime(float time) {
   m_ImunityTime = time;
 }
-
-void EntityHealth::heal(float healValue) {
-  m_currentHealth = std::min(m_currentHealth + healValue, m_maxhealth);
-}
+  
 size_t EntityHealth::setOnDeath(const std::function<void(EntityHealth *)> &onDeath) {
   return m_onDeath.subscribe(onDeath);
 }

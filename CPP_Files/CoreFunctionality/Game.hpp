@@ -77,11 +77,6 @@ public:
    * @return Total time from the game start
    */
   float getTotalTime() { return m_totalTime; }
-  /**
-   *
-   * @return Time passesd since the last frame
-   */
-  float getPrecedentFrameTime() { return m_precedentFrameTime; }
 
   /**
    *

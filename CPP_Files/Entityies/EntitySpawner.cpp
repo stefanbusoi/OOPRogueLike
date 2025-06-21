@@ -8,10 +8,13 @@
 
 #include "Render/ShapeRenderer.hpp"
 
-EntitySpawner::EntitySpawner(sf::Transform transform,float Time,std::shared_ptr<BaseGameObject> Entity):BaseGameObject("EntitySpawner",transform) {
-  m_Entity = Entity;
-  m_SpawnTimer=Time;
-}
+EntitySpawner::EntitySpawner(sf::Transform transform,float Time,std::shared_ptr<BaseGameObject> Entity):
+  BaseGameObject("EntitySpawner",transform),
+  m_Entity(Entity)
+  {
+    m_Entity = Entity;
+    m_SpawnTimer=Time;
+  }
 
 void EntitySpawner::init() {
   sf::Transform transform;

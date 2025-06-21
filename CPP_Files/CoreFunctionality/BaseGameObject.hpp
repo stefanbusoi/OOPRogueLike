@@ -89,8 +89,6 @@ public:
   std::weak_ptr<BaseGameObject> getParent() { return m_parent; }
 
   int getId() const { return m_localId; }
-  void setName(const std::string &name) { m_name = name; }
-  std::string getName() const { return m_name; }
   void setTransform(const sf::Transform &transform) { m_transform = transform; }
 
   /**
@@ -105,11 +103,7 @@ public:
    */
   sf::Transform &getLocalTransform();
 
-  /**
-   *
-   * @param movement move the game object relative to it s parent
-   */
-  void MoveTransform(sf::Vector2f movement);
+
 
   /**
    *
@@ -161,7 +155,7 @@ public:
    * @return the all of that type
    */
   template<class T=BaseGameObject>
-  std::vector<T *> getGameObjectsOfType();
+  [[maybe_unused]] std::vector<T *> getGameObjectsOfType();
 
   /**
    *

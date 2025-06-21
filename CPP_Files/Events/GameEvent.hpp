@@ -23,7 +23,7 @@ public:
    *
    * @param handler_ID the id of the function, returned from subscribe(const std::function<...>)
    */
-  void unsubscribe(size_t handler_ID);
+ [[maybe_unused]] void unsubscribe(size_t handler_ID);
 
   /**
    * calls all subscribed functions
@@ -42,7 +42,7 @@ size_t GameEvent<ARGS...>::subscribe(const std::function<void(ARGS &&...args)> &
 }
 
 template<class ... ARGS>
-void GameEvent<ARGS...>::unsubscribe(size_t handler_ID) {
+ void GameEvent<ARGS...>::unsubscribe(size_t handler_ID) {
   EventFunctions.erase(handler_ID);
 }
 
