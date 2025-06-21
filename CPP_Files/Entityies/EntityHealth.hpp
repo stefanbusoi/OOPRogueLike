@@ -24,7 +24,7 @@ public:
    *
    * @param maxHealh max healt of the entity
    */
-  EntityHealth(float maxHealh);
+  explicit EntityHealth(float maxHealh);
 
   void update(float deltaT) override;
 

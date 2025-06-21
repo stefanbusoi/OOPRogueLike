@@ -10,8 +10,10 @@ void Camera::print(std::ostream &os) const {
 }
 
 
-Camera::Camera(const std::string &name, const sf::Transform &transform): BaseGameObject(name, transform), m_window(&Game::getInstance()->getWindow()) {
-  m_player = Game::getInstance()->getGameObjectOfType<Player>();
+Camera::Camera(const std::string &name, const sf::Transform &transform):
+  BaseGameObject(name, transform),
+m_window(&Game::getInstance()->getWindow()),
+  m_player(Game::getInstance()->getGameObjectOfType<Player>()){
   m_updateOrder = UpdateOrder::Camera;
 }
 
