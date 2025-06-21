@@ -15,7 +15,7 @@
 class Arrow :public BaseGameObject{
     float m_timer{0.0f};
     public:
-    Arrow(sf::Transform transform=sf::Transform::Identity);\
+    explicit Arrow(sf::Transform transform=sf::Transform::Identity);
     void init() override;
     void update(float deltaT) override;
 

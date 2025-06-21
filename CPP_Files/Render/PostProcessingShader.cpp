@@ -9,7 +9,7 @@ void PostProcessingShader::print(std::ostream &os) const {
   BaseGameObject::print(os);
 }
 
-PostProcessingShader::PostProcessingShader(std::string name, std::filesystem::path ShaderPath):
+PostProcessingShader::PostProcessingShader(const std::string& name,const std::filesystem::path& ShaderPath):
    RendableGameObject(name, sf::Transform::Identity,RenderOrder::PostProcessing)
   ,m_path(ShaderPath)
 {

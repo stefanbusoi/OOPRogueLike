@@ -21,7 +21,7 @@ public:
    * @param name name of the shader(used for debug)
    * @param ShaderPath path of the shader
    */
-  PostProcessingShader(std::string name, std::filesystem::path ShaderPath);
+  PostProcessingShader(const std::string& name,const std::filesystem::path& ShaderPath);
 
   void render() override;
 };

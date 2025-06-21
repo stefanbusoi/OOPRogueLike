@@ -151,14 +151,6 @@ public:
 
   /**
    *
-   * @tparam T type of the game object
-   * @return the all of that type
-   */
-  template<class T=BaseGameObject>
-  [[maybe_unused]] std::vector<T *> getGameObjectsOfType();
-
-  /**
-   *
    * @param obj the object to be cloned
    * @param tr where to be placed based on parent position
    * @return a shared_ptr to it s clone
@@ -187,16 +179,7 @@ std::shared_ptr<T> BaseGameObject::emplaceGameObject(ARGS &&... args) {
   return newGameObject;
 }
 
-template<class T>
- [[maybe_unused]]std::vector<T*> BaseGameObject::getGameObjectsOfType() {
-  std::vector<T*> ret;
-  for (std::shared_ptr<BaseGameObject> x: m_children) {
-    if (auto gameObject = std::dynamic_pointer_cast<T *>(x)) {
-      ret.push_back(gameObject);
-    }
-  }
-  return ret;
-}
+
 
 template<class T>
 std::shared_ptr<T> BaseGameObject::getGameObjectOfType() {
