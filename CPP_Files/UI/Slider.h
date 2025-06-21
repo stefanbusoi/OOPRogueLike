@@ -5,6 +5,9 @@
 #include "SFML/Graphics/Color.hpp"
 
 
+/**
+ * renders a slider to the screen
+ */
 class Slider:public RendableGameObject{
 protected:
     float m_maxValue=0.0f;

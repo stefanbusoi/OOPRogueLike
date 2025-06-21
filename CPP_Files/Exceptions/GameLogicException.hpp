@@ -6,6 +6,9 @@
 #include <string>
 
 
+/**
+ * Exception thrown when is an Game logic error(missing components on types of objects witch are necesary...)
+ */
 class GameLogicException:public std::exception {
 private:
   std::string m_message;

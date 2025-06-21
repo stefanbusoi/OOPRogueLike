@@ -1,6 +1,5 @@
 //
 // Created by stefa on 3/16/2025.
-//
 
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
@@ -10,6 +9,9 @@
 #include "RenerableGameObject.hpp"
 #include "SFML/Graphics/Shader.hpp"
 
+/**
+ * renders the map(tile pattern) of the game
+ */
 class GameMapRenderer :public RendableGameObject {
   sf::Shader m_shader;
 

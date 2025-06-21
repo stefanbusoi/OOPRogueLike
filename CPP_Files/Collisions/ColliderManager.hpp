@@ -16,7 +16,6 @@ class ColliderManager : public BaseGameObject{
 
     void removeGameObjectFromGame() override;
 
-    ~ColliderManager() override;
 
     void init() override;
 

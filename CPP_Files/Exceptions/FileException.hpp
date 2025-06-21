@@ -4,6 +4,9 @@
 #include <string>
 
 
+/**
+ * exception throw when is a problem with files,(Missing files, reading priviliges missing ...)
+ */
 class FileException:public std::exception {
 private:
   std::string m_message;

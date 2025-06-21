@@ -4,6 +4,10 @@
 #include "CoreFunctionality/BaseGameObject.hpp"
 #include "Entityies/Player.hpp"
 
+/**
+ * Camera uned to render the scene
+ * it follow the player
+ */
 class Camera : public BaseGameObject {
   sf::RenderWindow *m_window;
   std::weak_ptr<Player> m_player;
@@ -18,9 +22,13 @@ public:
 
   sf::Transform &getTransform();
 
+  /**
+   *
+   * @param drawable what to draw on the screen
+   * @param transform where to draw on the screen
+   */
   void draw(const sf::Drawable &drawable, const sf::Transform &transform) const;
 
   void update(float deltaT) override;
 
-  float getViewRadius() const;
 };

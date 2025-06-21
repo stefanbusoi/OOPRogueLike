@@ -110,8 +110,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         CPP_Files/Utilityies/RandomNumberGenerator.h
         CPP_Files/UI/Slider.cpp
         CPP_Files/UI/Slider.h
-        CPP_Files/UI/HealtBar.cpp
-        CPP_Files/UI/HealtBar.h
+        CPP_Files/UI/HealthBar.cpp
+        CPP_Files/UI/HealthBar.h
         CPP_Files/UI/DeathScreen.cpp
         CPP_Files/UI/DeathScreen.h
         CPP_Files/Render/RenerableGameObject.cpp

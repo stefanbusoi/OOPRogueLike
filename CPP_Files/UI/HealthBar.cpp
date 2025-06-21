@@ -2,12 +2,12 @@
 // Created by fanel012 on 5/31/25.
 //
 
-#include "HealtBar.h"
+#include "HealthBar.h"
 
 #include "CoreFunctionality/Game.hpp"
 #include "Entityies/EntityHealth.hpp"
 #include "Exceptions/GameLogicException.hpp"
-HealtBar::HealtBar():Slider() {
+HealthBar::HealthBar():Slider() {
 
     m_padding=0.01f;
     m_width=0.25f;

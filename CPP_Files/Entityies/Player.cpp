@@ -29,6 +29,8 @@ void Player::update(float deltaT) {
   PlayerMovement(deltaT);
 }
 
+float Player::getDashTotalCooldown() const { return m_DashCooldown; }
+
 void Player::init() {
   BaseGameObject::init();
   sf::Transform tr = sf::Transform::Identity;

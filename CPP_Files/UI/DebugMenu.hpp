@@ -15,6 +15,9 @@ enum class Type {
   INT2F = 5,
 };
 
+/**
+ * @form
+ */
 struct PrintList {
   std::string formatString;
   void *pt;
@@ -34,6 +37,9 @@ struct PrintList {
   };
 };
 
+/**
+ * show some debug stats
+ */
 class DebugMenu :public RendableGameObject {
   std::vector<PrintList> m_printList;
   float m_timer = 0;
@@ -48,6 +54,12 @@ public:
 
   void update(float deltaT) override;
 
+  /**
+   * 
+   * @param formatString format of the print (like used by std::format)
+   * @param pointer pointer to the data
+   * @param type type of data
+   */
   void AddPrintList(const std::string &formatString, void *pointer, Type type);
 
   friend std::ostream &operator<<(std::ostream &os, const DebugMenu &obj);

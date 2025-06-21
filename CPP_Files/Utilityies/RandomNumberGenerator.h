@@ -1,11 +1,13 @@
 //
 // Created by fanel012 on 5/31/25.
-//
 
 #pragma once
 #include <random>
 
 
+/**
+ * used to generate random numbers
+ */
 class RandomNumberGenerator {
 
    static std::random_device m_randomDevice;

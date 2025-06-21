@@ -1,6 +1,5 @@
 //
 // Created by stefa on 5/24/2025.
-//
 
 #pragma once
 
@@ -10,6 +9,9 @@
 #include "SFML/Graphics/Transform.hpp"
 
 
+/**
+ * represents an arrow in the game
+ */
 class Arrow :public BaseGameObject{
     float m_timer{0.0f};
     public:

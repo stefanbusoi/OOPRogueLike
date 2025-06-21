@@ -47,6 +47,6 @@ size_t EntityHealth::setOnDeath(const std::function<void(EntityHealth *)> &onDea
   return m_onDeath.subscribe(onDeath);
 }
 
-size_t EntityHealth::setOnHit(const std::function<void(EntityHealth *)> &onDeath) {
-  return m_onHit.subscribe(onDeath);
+size_t EntityHealth::setOnHit(const std::function<void(EntityHealth *)> &onHit) {
+  return m_onHit.subscribe(onHit);
 }

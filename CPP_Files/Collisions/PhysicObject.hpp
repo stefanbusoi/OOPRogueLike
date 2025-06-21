@@ -27,6 +27,12 @@ public:
   float getFriction() { return m_friction; }
   void setFriction(float friction) { m_friction = friction; }
 
+  /**
+   * 1-elastic collision
+   * 0-plastic collision
+   * collisionElasticity=max(elast1,elast2)
+   * @return The elasticity of the object
+   */
   float getElasticity() { return m_elasticity; }
   void setElasticity(float elasticity){ m_elasticity=elasticity;};
 

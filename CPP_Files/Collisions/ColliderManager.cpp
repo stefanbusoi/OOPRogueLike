@@ -19,7 +19,6 @@ void ColliderManager::removeGameObjectFromGame() {
     BaseGameObject::removeGameObjectFromGame();
 }
 
-ColliderManager::~ColliderManager() = default;
 
 void ColliderManager::init() {
     BaseGameObject::init();

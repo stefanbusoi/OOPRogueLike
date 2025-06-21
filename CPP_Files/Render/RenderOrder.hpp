@@ -1,5 +1,8 @@
 #pragma once
 
+/**
+ * represents the order in which the objects are rendered
+ */
 enum class RenderOrder {
   Terrain = 10,
   Default = 40,

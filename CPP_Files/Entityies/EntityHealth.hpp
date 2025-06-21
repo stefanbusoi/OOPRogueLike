@@ -1,6 +1,5 @@
 //
 // Created by stefa on 5/14/2025.
-//
 #pragma once
 #include <functional>
 
@@ -8,6 +7,9 @@
 #include "CoreFunctionality/BaseGameObject.hpp"
 
 
+/**
+ * Manages the Health of an entity
+ */
 class EntityHealth : public BaseGameObject {
   float m_maxhealth;
   float m_currentHealth;
@@ -18,6 +20,10 @@ class EntityHealth : public BaseGameObject {
   GameEvent<EntityHealth *> m_onHit;
 
 public:
+  /**
+   *
+   * @param maxHealh max healt of the entity
+   */
   EntityHealth(float maxHealh);
 
   void update(float deltaT) override;
@@ -35,7 +41,17 @@ public:
 
   bool isDead() const { return m_isDead; }
 
+  /**
+   *
+   * @param onDeath what to do when the entity get at 0 hp
+   * @return an index used to remove from OnDeath
+   */
   size_t setOnDeath(const std::function<void(EntityHealth *)> &onDeath);
 
-  size_t setOnHit(const std::function<void(EntityHealth *)> &onDeath);
+  /**
+   *
+   * @param onHit what to do when the entity takes damage
+   * @return and index used to remove from OnHit
+   */
+  size_t setOnHit(const std::function<void(EntityHealth *)> &onHit);
 };

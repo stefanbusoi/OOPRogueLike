@@ -4,6 +4,9 @@
 #include "CoreFunctionality/BaseGameObject.hpp"
 
 
+/**
+ * projectile weapon used by the player
+ */
 class Firearm : public BaseGameObject {
   std::shared_ptr<BaseGameObject> bulletPrefab;
   float m_speed=20.0f;
