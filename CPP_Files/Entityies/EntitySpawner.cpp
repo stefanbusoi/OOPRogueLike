@@ -12,7 +12,6 @@ EntitySpawner::EntitySpawner(sf::Transform transform,float Time,std::shared_ptr<
   BaseGameObject("EntitySpawner",transform),
   m_Entity(Entity)
   {
-    m_Entity = Entity;
     m_SpawnTimer=Time;
   }
 

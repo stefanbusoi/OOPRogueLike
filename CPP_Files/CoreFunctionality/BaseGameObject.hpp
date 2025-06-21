@@ -188,7 +188,7 @@ std::shared_ptr<T> BaseGameObject::emplaceGameObject(ARGS &&... args) {
 }
 
 template<class T>
-std::vector<T*> BaseGameObject::getGameObjectsOfType() {
+ [[maybe_unused]]std::vector<T*> BaseGameObject::getGameObjectsOfType() {
   std::vector<T*> ret;
   for (std::shared_ptr<BaseGameObject> x: m_children) {
     if (auto gameObject = std::dynamic_pointer_cast<T *>(x)) {
